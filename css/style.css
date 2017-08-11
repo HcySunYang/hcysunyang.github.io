@@ -197,6 +197,9 @@ textarea {
   padding-left: 50px;
 }
 @media screen and (max-width: 840px) {
+  #container {
+    padding-bottom: 40px;
+  }
   .sidebar-content {
     margin: 0;
     padding-top: 0;
@@ -204,6 +207,9 @@ textarea {
   }
   .sidebar-content h2 {
     text-align: center;
+  }
+  .sidebar-content .toc-h2 {
+    display: none;
   }
   .sidebar-content .sidebar-img-panel {
     text-align: center;
@@ -217,7 +223,7 @@ textarea {
   .sidebar-content .archive-list-item {
     text-align: center;
   }
-  .sidebar-content .toc {
+  .sidebar-content .toc-wrap {
     position: fixed;
     background-color: #fff;
     top: 60px;
@@ -229,7 +235,7 @@ textarea {
     transition: 0.4s;
     transform: translateX(101%);
   }
-  .sidebar-content .toc.active {
+  .sidebar-content .toc-wrap.active {
     transform: translateX(0);
   }
 }
