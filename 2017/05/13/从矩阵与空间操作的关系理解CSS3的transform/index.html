@@ -1,0 +1,343 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>从矩阵与空间操作的关系理解CSS3的transform | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="前不久开源了一个插件化移动端运动效果库 finger-mover，说到运动效果，不得不提到CSS3的 transform，也就是变换。这篇文章概括了在实现 finger-mover 时对 transform 的理解与总结。 注：文中的图片多数截取自视频：线性代数的本质，也强烈建议大家系统的观看这套视频。另外如果文中有误请不吝指教。">
+<meta name="keywords" content="finger-mover,css3,transform">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从矩阵与空间操作的关系理解CSS3的transform">
+<meta property="og:url" content="hcysun.me/2017/05/13/从矩阵与空间操作的关系理解CSS3的transform/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="前不久开源了一个插件化移动端运动效果库 finger-mover，说到运动效果，不得不提到CSS3的 transform，也就是变换。这篇文章概括了在实现 finger-mover 时对 transform 的理解与总结。 注：文中的图片多数截取自视频：线性代数的本质，也强烈建议大家系统的观看这套视频。另外如果文中有误请不吝指教。">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformuse-the-scene.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformarrow.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformnumber.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformpoint.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transform3.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformji-xl.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformfunction.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformtransform.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transforminput-output.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformbefore.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformafter.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformwanqu.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformhe.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformzuobiao.png?imageView/2/w/50">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformqian.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformhou.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformhou-plus.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformjisuan.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformzuobiao2.png?imageView/2/w/50">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformbianhuan2.png?imageView/2/w/200">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformzuobiao3.png?imageView/2/w/300">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformaaafuck.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformjuzhen.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformyiban.png?imageView/2/w/500">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformyuanyin.png?imageView/2/w/400">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformmr1.png?imageView/2/w/200">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformmr2.png?imageView/2/w/100">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformmr3.png?imageView/2/w/100">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformmr4.png?imageView/2/w/100">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformzbx.png?imageView/2/w/100">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformzbx2.png?imageView/2/w/100">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformtrans.png?imageView/2/w/300">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformsanjiao.png?imageView/2/w/200">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformmr1.png?imageView/2/w/100">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transform3dmr.png?imageView/2/w/200">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transform3d.png?imageView/2/w/200">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transform3d33.png?imageView/2/w/70">
+<meta property="og:updated_time" content="2017-05-13T03:59:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从矩阵与空间操作的关系理解CSS3的transform">
+<meta name="twitter:description" content="前不久开源了一个插件化移动端运动效果库 finger-mover，说到运动效果，不得不提到CSS3的 transform，也就是变换。这篇文章概括了在实现 finger-mover 时对 transform 的理解与总结。 注：文中的图片多数截取自视频：线性代数的本质，也强烈建议大家系统的观看这套视频。另外如果文中有误请不吝指教。">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/transformuse-the-scene.png?imageView/2/w/500">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">从矩阵与空间操作的关系理解CSS3的transform</h1>
+    <p>前不久开源了一个插件化移动端运动效果库 <a href="https://github.com/HcySunYang/finger-mover" target="_blank" rel="external">finger-mover</a>，说到运动效果，不得不提到CSS3的 <code>transform</code>，也就是变换。这篇文章概括了在实现 <a href="https://github.com/HcySunYang/finger-mover" target="_blank" rel="external">finger-mover</a> 时对 <code>transform</code> 的理解与总结。</p>
+<p>注：文中的图片多数截取自视频：<a href="http://www.bilibili.com/video/av6731067/index_1.html#page=1" target="_blank" rel="external">线性代数的本质</a>，也强烈建议大家系统的观看这套视频。另外如果文中有误请不吝指教。</p>
+<a id="more"></a>
+<p>文章结构如下：</p>
+<pre><code>* 矩阵
+    * 概述
+* 向量
+    * 什么是向量
+    * 基向量
+* 线性变换
+* 如何用数值描述线性变换？
+* 回到 CSS 的 transform
+</code></pre><p>我不知道大家所理解的矩阵是怎样的，但我所理解的矩阵是：该阵法免疫法术攻击且100%反伤对方随机一个单位（回合制游戏）。</p>
+<p>以上描述是在小学时代的理解，现在可能有所不同，慢慢说……</p>
+<h2 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h2><h4 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h4><p>矩阵，是线性代数中涉及的内容，线性代数在科学领域有很多应用的场景，如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformuse-the-scene.png?imageView/2/w/500" alt=""></p>
+<p>大部分同学在大学时期应该都学过一本叫做线性代数的书，如果没猜错的话，你们的老师在教学的时候大多都是概念性的灌输，比如矩阵乘法如何运算，加法如何运算，大家只要记住就ok了，但是大部分同学都不理解，<em>为什么矩阵的乘法要这样算？矩阵乘法的意义是什么？</em>，特别是我们搞计算机的，如果有做过 2D/3D 变换的同学一定听说过矩阵，比如在前端的CSS中，使用 <code>transform</code> 做 2D/3D 的变换，其中就应用到了矩阵的知识，这篇文章并不是一篇数学性质的文章，所以大家不要看了感觉一阵眩晕，这篇文章的目的在于：从矩阵与空间之间的关系讲述：为什么矩阵可以应用在空间操作(变换)。或者用一句大白话：<em>这玩意儿怎么就能让<code>div</code>翻过来，转过去，扭的他爹都不认识他的。</em></p>
+<p>先看一段 css 代码：</p>
+<pre><code class="css">/* 2D */
+transform: matrix(1, 0, 0, 1, 0, 0);
+/* 3D */
+transform: matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+</code></pre>
+<p>上面两行 css 代码其实什么变换都不会做，因为那是变换的默认状态，即没有变换。但是其中使用到了 <code>matrix</code>，翻译成中文叫做：矩阵。如果有深入研究过 css 的同学对这两行代码也许不陌生，但是大多数人在使用 <code>transform</code> 变换时很少直接使用 <code>matrix</code> 矩阵，除非你不想让人看懂你在做些什么鸟变换…，所以更多的时候，我们会使用类似如下语法：</p>
+<pre><code class="css">transform: translateX(100px) rotateZ(30deg);
+</code></pre>
+<p>如上代码所示，一目了然，要做什么变换大家一看就知道了。但其实，这只是一个语法糖，其底层依然使用的是 <code>matrix</code>。</p>
+<p>如果想要理解矩阵为何可以应用到 2D/3D 变换，那么只从数值水平的角度理解是不够的，你需要从几何的角度去理解矩阵，这存在着根本性的差异。而这，也就是本篇文章的真正意义。</p>
+<p>不过，这需要我们先了解一些必要的基本概念，这些概念至关重要，首先就是向量</p>
+<h2 id="向量"><a href="#向量" class="headerlink" title="向量"></a>向量</h2><h4 id="什么是向量"><a href="#什么是向量" class="headerlink" title="什么是向量"></a>什么是向量</h4><p>既然矩阵是线性代数的一部分，那么就不得不提到 <em>向量</em>，因为向量是线性代数最基础、最根源的组成部分，所以我们要先搞清楚，向量是什么？我说过，这篇文章不会很“数学”，所以大家不要被吓到。用一句话描述向量是什么：</p>
+<blockquote>
+<p>向量：空间中的箭头</p>
+</blockquote>
+<p>这个在大家的印象里应该很好理解，这个箭头由两个因素决定：<code>方向</code> 和 <code>长度</code>，我们先把目光局限在二维空间下，如图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformarrow.png?imageView/2/w/500" alt=""></p>
+<p>上图中，在一个坐标系中画了四个不同长度和方向的箭头，每个箭头从原点发出，他们代表了二维空间中的四个向量，在线性代数中，向量通常以原点作为起点。</p>
+<p>如果你已经理解了“向量是空间中的箭头”这种观点，下面我们再进一步，我们重新用一句话来描述向量：</p>
+<blockquote>
+<p>向量：是有序的数字列表</p>
+</blockquote>
+<p>假设大家对坐标系的概念都有所了解，我们还是把目光局限在二维空间，在坐标系中任意选取单位长度，这样我们就能够使用一个一个的刻度来标刻这个坐标系，选取特定的方向为x/y轴的正方向，那么不难看出，每一个向量，都可以用唯一的一个坐标来表示，同样的，坐标系中的每一个坐标都对应着一个唯一的箭头(向量)，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformnumber.png?imageView/2/w/500" alt=""></p>
+<p>在坐标系中，由于坐标通常用来标示一个点，如 <code>P(2, 8)</code> 表示点 P 的坐标为 <code>(2, 8)</code>，为了区分点和向量，在表示向量时，我们通常把坐标竖着写，然后用一对儿中括号来描述，如上图中的：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformpoint.png?imageView/2/w/500" alt=""></p>
+<p>在三维空间也是一样的道理，如下图，我就不做重复的解释，唯一不同的是，每一个向量由 x/y/z 三个数字组成的坐标来表示：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transform3.png?imageView/2/w/500" alt=""></p>
+<p>对于向量，你只需要知道它是“空间中的箭头”或者“有序的数字列表”这就足够了，怎么样？不难理解吧，我们继续往下看，在坐标系中存在一种特殊的向量，我们称之为 <em>基向量</em>。</p>
+<h4 id="基向量"><a href="#基向量" class="headerlink" title="基向量"></a>基向量</h4><p>基向量，也叫单位向量，是单位长度为1的向量，如下图中：<code>i帽</code> 和 <code>j帽</code> 就是这个二维坐标系的基向量：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformji-xl.png?imageView/2/w/500" alt=""></p>
+<p>对于向量，我们就先介绍到这里，这已经足够了。除了向量，还有一个概念需要大家了解，即线性变换。</p>
+<h2 id="线性变换"><a href="#线性变换" class="headerlink" title="线性变换"></a>线性变换</h2><p>“变换”本质上是“函数”的一种花哨的叫法，玩编程的都知道函数，与在数学中的概念类似，函数接收输入的内容，并输出对应的结果，如图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformfunction.png?imageView/2/w/500" alt=""></p>
+<p>变换也是同样的道理，只不过接收向量作为输入，并输出变换后的向量：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformtransform.png?imageView/2/w/500" alt=""></p>
+<p>既然 “变换” 与 “函数” 本质相同，那么为什么叫变换而不叫函数呢？这实际上就暗示了我们，你可以把这个输入输出的过程，看做一个向量从初始状态到最终状态的一个变化过程，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transforminput-output.png?imageView/2/w/500" alt=""></p>
+<p>现在，我们把情况宏观一下，目前只讨论一个向量的变换，我们知道，二维空间的一整个平面，可以看做是由无数个向量组成(或者无数个点组成，因为每一个点唯一标识一个向量，所以这里说平面由无数个向量组成)，假如这无数个向量同时做相同的变换，那其实就可以看做是平面的变换，如下图：</p>
+<p>变换前：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformbefore.png?imageView/2/w/500" alt=""></p>
+<p>变换后：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformafter.png?imageView/2/w/500" alt=""></p>
+<p>不过，并非所有变换都叫做线性变换，线性变换必须要满足下面两个条件：</p>
+<ul>
+<li>1、直线在变换后仍然为直线，不能有所弯曲</li>
+<li>2、原点不能移动</li>
+</ul>
+<p>如下变换，就不是一个线性变换，因为直线变成了曲线：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformwanqu.png?imageView/2/w/500" alt=""></p>
+<h2 id="如何用数值描述线性变换？"><a href="#如何用数值描述线性变换？" class="headerlink" title="如何用数值描述线性变换？"></a>如何用数值描述线性变换？</h2><p>在上一小节中我们知道，空间的变换也可以说是向量的变换，而向量在空间中，可以用一组有序的数字列表来表示(即向量的坐标)，所以向量变换前后，必然会引起“有序数字列表的变换”，那么我们是否可以用数字去描述变换呢？</p>
+<p>之前在向量一节中，我们了解过<em>基向量</em>，单位长度为1，其实空间中的任意一个向量我们都可以看做是：<em>基向量变换后的和向量</em>，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformhe.png?imageView/2/w/500" alt=""></p>
+<p>向量 <b>v</b> 的坐标是 <img src="http://7xlolm.com1.z0.glb.clouddn.com/transformzuobiao.png?imageView/2/w/50" alt="">，如果我们把 <code>3</code> 和 <code>-2</code> 看做两个标量，也就是纯数字，那么向量  <b>v</b> 可以看做是基向量被标量缩放后相加得到的和向量： <b>v</b> = 3<b>i</b> + (-2<b>j</b>)</p>
+<p>了解了这些，我们现在就通过一个例子，来认识一个至关重要的事实，假如我们有向量 <b>v</b> = -1<b>i</b> + 2<b>j</b>，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformqian.png?imageView/2/w/500" alt=""></p>
+<p>此时，基向量 <b>i</b> 的坐标是 <code>(1, 0)</code>【注意：为了方便，这里就用圆括号代表向量的坐标，下同】，基向量 <b>j</b> 的坐标是 <code>(0, 1)</code>，假设经过了某些变换之后，基向量 <b>i</b> 的坐标变为 <code>(1， -2)</code>，基向量 <b>j</b> 的坐标变为 <code>(3， 0)</code>，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformhou.png?imageView/2/w/500" alt=""></p>
+<p>那么变换后的向量 <b>v</b> 依然满足 <b>v</b> = -1<b>i</b> + 2<b>j</b>，如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformhou-plus.png?imageView/2/w/500" alt=""></p>
+<p>以上例子所描述的事实，实际上是线性变换的性质的推论，该性质可以从几何角度表述为：线性变换后的网格平行且等距。</p>
+<p>既然线性变换前后都满足该线性关系：<b>v</b> = -1<b>i</b> + 2<b>j</b></p>
+<p>那么很容易根据变换后 <code>i帽</code> 和 <code>j帽</code> 的坐标推算出变换后 <b>v</b> 的坐标：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformjisuan.png?imageView/2/w/500" alt=""></p>
+<p>也就是 <code>(5, 2)</code>，即：<img src="http://7xlolm.com1.z0.glb.clouddn.com/transformzuobiao2.png?imageView/2/w/50" alt=""></p>
+<p>那么我们是否可以认为，给定任意一个向量，其坐标 <code>(x, y)</code>，我们可以通过变换后的基向量的坐标推断出该向量变换后的坐标呢？答案是肯定的，假如基向量变换后的坐标 <code>i帽</code> 和 <code>j帽</code> 如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformbianhuan2.png?imageView/2/w/200" alt=""></p>
+<p>那么任意向量 <code>(x, y)</code> 在经过变换后的坐标计算如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformzuobiao3.png?imageView/2/w/300" alt=""></p>
+<p>这告诉我们另外一个事实，<b>二维空间的线性变换仅由四个数字完全确定</b>，这四个数字就是基向量 <b>i</b> 变换后 <b>i帽</b> 的坐标，以及基向量 <b>j</b> 变换后 <b>j帽</b> 的坐标，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformaaafuck.png?imageView/2/w/500" alt=""></p>
+<p>是不是很酷？只需要四个数字，我们就确定了二维空间的一个变换。通常，我们把这四个数字放到一个 <code>2 x 2</code> 的格子中，我们称之为 <code>2 x 2</code> 矩阵：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformjuzhen.png?imageView/2/w/500" alt=""></p>
+<p>现在，当你再看到 <code>2 x 2</code> 矩阵的时候，你的第一几何直观反映应该是：它描述了一个二维空间的变换。</p>
+<p>我们把情况一般化，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformyiban.png?imageView/2/w/500" alt=""></p>
+<p>我们有一个 <code>2 x 2</code> 的矩阵 <code>[a, c] [b, d]</code>，其中 <code>[a, c]</code> 是基向量 <b>i</b> 变换后的坐标，<code>[b, d]</code> 是基向量 <b>j</b> 变换后的坐标，那么根据这个变换，以及线性变换的性质，我们可以推断出任意向量 <code>[x, y]</code> 变换后的坐标：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformyuanyin.png?imageView/2/w/400" alt=""></p>
+<p class="tip"><br>实际上，这就是数学家之所以这样定义 矩阵的向量乘法 的原因。<br></p>
+
+<p>到了这里，让我们整理一下思路，首先，对于一个 <code>2 x 2</code> 的矩阵，你的直观几何感受应该是，第一列的两个数是对基向量 <b>i</b> 的变换，第二列的两个数是对基向量 <b>j</b> 的变换，这四个数字组成的 <code>2 x 2</code> 的矩阵，描述了一个对空间的线性变换，我们可以根据这个变换推断出任意一点(或者任意向量)变换后的坐标。</p>
+<p>其实我么你还可以换一个角度考虑，我们就单纯的把 <code>2 x 2</code> 矩阵叫做变换，那么向量与矩阵的乘积，就要可以看做是该向量应用了这个变换。其实，这就是矩阵向量乘法的几何意义。</p>
+<h2 id="回到-CSS-的-transform"><a href="#回到-CSS-的-transform" class="headerlink" title="回到 CSS 的 transform"></a>回到 CSS 的 transform</h2><p>说了一大堆，是时候回到 <code>CSS</code> 的 <code>transform</code>，我们来看一下2D变换下 <code>transform</code> 属性的 <code>matrix</code> 写法：</p>
+<pre><code class="css">transform: matrix(a, b, c, d, e, f);
+</code></pre>
+<p>在文章开始，我们知道各个参数默认值如下：</p>
+<pre><code class="css">transform: matrix(1, 0, 0, 1, 0, 0);
+</code></pre>
+<p>有的同学可能会问：说好的 <code>2 x 2</code> 矩阵也就是四个数字就能确定一个二维空间变换，你这里明明有6个数啊，其实，<code>transform</code> 2D变换是一个 <code>3 * 3</code> 的矩阵，为什么是这样？因为：<em>位移(translate)</em>，前面我们说过，线性变换要满足其中一个特点：原点不能移动，但是位移却使原点发生了移动，所以 <code>2 x 2</code> 矩阵满足不了需求，只能再加一列，也就是 <code>3 x 3</code> 的矩阵。</p>
+<p>把 <code>matrix</code> 中的 <code>a b c d e f</code> 放到一个 <code>3 x 3</code> 的矩阵中应该是这样的：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformmr1.png?imageView/2/w/200" alt=""></p>
+<p>其实，在没有<code>位移(translate)</code>的情况下，<code>[a, b] [c, d]</code> 四个数字组成的 <code>2 x 2</code> 矩阵是完全可以描述2D变换的，现在我们只看由 <code>[a, b] [c, d]</code> 组成的 <code>2 x 2</code> 矩阵：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformmr2.png?imageView/2/w/100" alt=""></p>
+<p>我们把 <code>a b c d</code> 四个数字使用默认值替换一下，即：<code>a = 1</code>，<code>b = 0</code>，<code>c = 0</code>，<code>d = 1</code>，如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformmr3.png?imageView/2/w/100" alt=""></p>
+<p>通过之前的介绍，我们在看到这个矩阵的时候，应该知道，第一列的坐标 <code>(1, 0)</code> 应该是基向量 <b>i</b> 变换后的坐标，但是基向量 <b>i</b> 在变换前的坐标就是 <code>(1, 0)</code>，也就是说没有任何变换，同理，基向量 <b>j</b> 也没有任何变换，所以说，这就是 <code>a b c d</code> 默认值设定为下面代码所示的值的原因：</p>
+<pre><code class="css">transform: matrix(a, b, c, d, e, f);
+// a b c d 默认值为 1 0 0 1
+transform: matrix(1, 0, 0, 1, e, f);
+</code></pre>
+<p>那么大家想想一下，我们把 <code>a</code> 的值从 <code>1</code> 变为 <code>2</code> 会发生什么？如果把 <code>a</code> 的值从 <code>1</code> 变为 <code>2</code> 那么矩阵如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformmr4.png?imageView/2/w/100" alt=""></p>
+<p>也就是说，基向量 <b>i</b> 的坐标从 <code>(1, 0)</code> 变成了 <code>(2, 0)</code>，这是在干什么？是不是基向量 <b>i</b> 被放大为了原来的二倍？举一个通俗的例子：原本单位长度1代表20px，被放大后单位长度1则代表40px。同样的，当我们把 <code>a</code> 的值从 <code>1</code> 变为 <code>0.5</code> 则意味着把基向量 <b>i</b> 缩小为原来的一半。事实上：在 <code>transform: matrix()</code> 中，修改 <code>a</code> 的值，就是在改变 <code>x</code> 轴方向的缩放比例：</p>
+<pre><code class="css">transform: matrix(2, 0, 0, 1, 0, 0);
+/* 等价于 */
+transform: scaleX(2);
+</code></pre>
+<p>相信大家已经知道了，修改 <code>d</code> 的值，就是改变 <code>y</code> 轴的缩放比例：</p>
+<pre><code class="css">transform: matrix(1, 0, 0, 4, 0, 0);
+/* 等价于 */
+transform: scaleY(4);
+</code></pre>
+<p>那么旋转要如何修改 <code>matrix</code> 中的值呢？其实，想要知道如何修改 <code>a b c d</code> 的值，只需要知道，旋转后基向量 <b>i</b> 和 <b>j</b> 的坐标就可以了，将旋转后的坐标对号填入就可以得到变换矩阵，下面，我们就来看看如何确定旋转后基向量 <b>i</b> 和 <b>j</b> 的坐标。</p>
+<p>我们知道，在 <code>web</code> 开发中的坐标系和数学中的坐标系在正方向的选取上不太一致，在大家所熟悉的坐标系中，正方向的选取如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformzbx.png?imageView/2/w/100" alt=""></p>
+<p>而在 <code>web</code> 开发中，坐标系的正方向选取是这样的：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformzbx2.png?imageView/2/w/100" alt=""></p>
+<p>假设我们将其顺时针旋转 45 度，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformtrans.png?imageView/2/w/300" alt=""></p>
+<p>假设，上图中我们旋转的是单位向量，那么旋转后单位向量 <b>i</b> 的坐标应该是 <code>(cosθ, sinθ)</code>，单位向量 <b>j</b> 的坐标应该是 <code>(-sinθ, cosθ)</code>，所以如果用矩阵表示的话，应该是这样的：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transformsanjiao.png?imageView/2/w/200" alt=""></p>
+<p>如果写到 <code>matrix</code> 里，自然就是下面这个样子：</p>
+<pre><code class="css">transform: matrix(cosθ, sinθ, -sinθ, cosθ, 0, 0)
+</code></pre>
+<p>所以，如果我们要顺时针旋转 45 度，下面两种写法是等价的：</p>
+<pre><code class="css">/*
+ * Math.cos(Math.PI / 180 * 45) = 0.707106
+ * Math.sin(Math.PI / 180 * 45) = 0.707106
+ */
+transform: matrix(0.707106, 0.707106, -0.707106, 0.707106, 0, 0)
+
+/* 等价于 */
+transform: rotate(45deg);
+</code></pre>
+<p>通过上面缩放和旋转的例子，我们已经知道了，<code>2 x 2</code> 的矩阵确实能够描述二维空间的变换，这也就是矩阵能够操作空间的原因。在 <code>transform</code> 中，除了缩放(<code>scale</code>)、旋转(<code>rotate</code>) 还有倾斜(<code>skew</code>)，对于倾斜，类似于我们寻找旋转后基向量的坐标一样，你只需要根据倾斜所定义的变换规则，找到基向量变换后的坐标就可以了，实际上倾斜对应如下规则：</p>
+<pre><code class="css">transform: matrix(1, tan(θy), tan(θx), 1, 0, 0);
+</code></pre>
+<p>大家自己拿只笔在纸上画一画应该就能搞清楚倾斜在做什么样子的变换。</p>
+<p>无论 缩放(<code>scale</code>)、旋转(<code>rotate</code>) 还是倾斜(<code>skew</code>)，他们都不会是原点发生改变，所以使用 <code>a b c d</code> 四个数字组成的矩阵完全可以描述，但是不要忘了，我们还有一个 位移(<code>translate</code>)，这时，就不得不提到 <code>e f</code> 了，我想我不说大家也都知道了，<code>e f</code> 分别代表了 <code>x y</code> 方向的位移，事实也如大家所想：</p>
+<pre><code class="css">transform: matrix(1, 0, 0, 1, 100, 200)
+
+/* 等价于 */
+transform: translateX(100px) translateY(200px);
+</code></pre>
+<p>至此，<code>transform</code> 使用 <code>3 x 3</code> 矩阵：<img src="http://7xlolm.com1.z0.glb.clouddn.com/transformmr1.png?imageView/2/w/100" alt=""> 来描述二维空间变换的方式，以及是如何做到的我们就算讲完了。</p>
+<p>除了2D变换，还有3D变换，在 <code>transform</code> 中，使用 <code>4 x 4</code> 的矩阵描述3D变换，但实际上，三维空间的线性变换只需要一个 <code>3 x 3</code> 的矩阵就可以描述了，那么为什么搞了一个 <code>4 x 4</code>矩阵呢？实际上这和我们在将二维空间的变换使用 <code>3 x 3</code> 矩阵的道理是一样的，那就是位移。</p>
+<p>我们来看一下3D变换的 <code>matrix</code> 默认值：</p>
+<pre><code class="css">transform: matrix(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p);
+transform: matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+</code></pre>
+<p>这十六个数字就是 <code>4 x 4</code> 矩阵的 16 个数值：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transform3dmr.png?imageView/2/w/200" alt=""></p>
+<p>如果换成对应数字，是这样的：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/transform3d.png?imageView/2/w/200" alt=""></p>
+<p>类似于我们讲解 2D 变换一样，其中由 <img src="http://7xlolm.com1.z0.glb.clouddn.com/transform3d33.png?imageView/2/w/70" alt=""> 组成的 <code>3 x 3</code> 矩阵用来描述空间的 3D 线性变换，如：<code>rotateX</code> <code>rotateY</code> <code>scaleZ</code> 等等，注意：<code>rotateZ</code> 是 2D 变换哦。</p>
+<p>而 <code>m</code> <code>n</code> <code>o</code> 则分别用来描述位移：<code>translateX</code> <code>translateY</code> <code>translateZ</code>。</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

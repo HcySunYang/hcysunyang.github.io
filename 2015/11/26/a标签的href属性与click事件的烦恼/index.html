@@ -1,0 +1,164 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>a标签的href属性与click事件的烦恼 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="最近公司做项目，Hybrid App，我负责首页H5的开发工作，首页是一个常规app的首页，顶部是轮播图，然后是三个按钮，下面是一个列表，列表是a标签，点击a标签会跳转，然而让我长了姿势。。。">
+<meta name="keywords" content="js,html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="a标签的href属性与click事件的烦恼">
+<meta property="og:url" content="hcysun.me/2015/11/26/a标签的href属性与click事件的烦恼/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="最近公司做项目，Hybrid App，我负责首页H5的开发工作，首页是一个常规app的首页，顶部是轮播图，然后是三个按钮，下面是一个列表，列表是a标签，点击a标签会跳转，然而让我长了姿势。。。">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511271.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20151127a.gif">
+<meta property="og:updated_time" content="2015-11-27T03:09:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="a标签的href属性与click事件的烦恼">
+<meta name="twitter:description" content="最近公司做项目，Hybrid App，我负责首页H5的开发工作，首页是一个常规app的首页，顶部是轮播图，然后是三个按钮，下面是一个列表，列表是a标签，点击a标签会跳转，然而让我长了姿势。。。">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511271.pic.jpg">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">a标签的href属性与click事件的烦恼</h1>
+    <blockquote>
+<p>最近公司做项目，Hybrid App，我负责首页H5的开发工作，首页是一个常规app的首页，顶部是轮播图，然后是三个按钮，下面是一个列表，列表是a标签，点击a标签会跳转，然而让我长了姿势。。。</p>
+</blockquote>
+<a id="more"></a>
+<p>首先来看一张图，是我们目前开发的app首页：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201511271.pic.jpg" alt="app首页，可点击的列表元素"></p>
+<p>红色区域就是可点击的列表元素，当点击的时候，会通过a标签的href内的连接进行跳转（href属性内的连接不是http协议，是我们自己定义的协议，native端通过截获协议实现native跳转），但是发现很迟钝，即点击之后会有一点延迟才会执行跳转，我的第一反应就是click事件延迟300毫秒的原因，但是当时自己比较low，觉得这是一个a标签，只是简单的加一个href属性，他得跳转我们怎么去控制了，而且这和click貌似没什么关系吧，所以一直这么想当然着。</p>
+<p>问题的转机出现在列表页面，列表页面的DOM结构和首页中的列表DOM结构完全一样，但是列表页面点击跳转的反应速度相当的快，这让我们更加不解，后来铁了心的觉得要对比两个文件到底哪里不一样（相当费力），最终，发现列表页面应用了fastclick模块，仅此区别，于是之前的声音又回荡于耳际：“难道a标签的href属性在跳转的时候与click事件有关？”，经过验证的确如此：</p>
+<h2 id="当点击浏览器a标签的时候，浏览器的默认机制如下："><a href="#当点击浏览器a标签的时候，浏览器的默认机制如下：" class="headerlink" title="当点击浏览器a标签的时候，浏览器的默认机制如下："></a>当点击浏览器a标签的时候，浏览器的默认机制如下：</h2><p>1、触发a的click事件<br>2、读取href属性的值<br>3、如果是URI则跳转<br>4、如果是javascript代码则执行该代码</p>
+<p>下面我们一起来做一个实验：</p>
+<p>我们在一个html页面中写下如下代码：</p>
+<pre><code>&lt;a href=&quot;http://www.baidu.com&quot; id=&quot;a&quot;&gt;这是一个a标签&lt;/a&gt;
+</code></pre><p>代码只有一个a标签，接下来我们使用js分别给a标签触发 touchstart、touchend、mousedown、mouseup、click 事件，测试一下能够是a标签跳转的都有哪些事件，我们的js代码如下：</p>
+<pre><code>// 事件数组
+var events = &#39;touchstart touchend mousedown mouseup click&#39;.split(&#39; &#39;);
+var n = 0;
+// 开启定时器，每两秒钟为a标签触发相应事件
+var timer = setInterval(function(){
+    var event = new Event(events[n]);
+    document.getElementById(&#39;a&#39;).dispatchEvent(event); // 触发事件。
+    console.log(event.type);
+    n++;
+    if (n == events.length) {
+        clearInterval(timer);
+    }
+},2000);
+</code></pre><p>测试结果如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20151127a.gif" alt="每隔两秒触发一次事件，只有click事件触发时，a标签才会跳转"></p>
+<p>我们可以看到，在控制台中每隔两秒钟就会打印出当前a标签触发的事件，当最后一个click事件触发时，a标签执行了跳转，跳转到了百度，这也就说明，a标签的跳转只有click事件能够触发，所以当点击a标签，发出请求的时候，浏览器会先去触发a的click事件，我们都知道，click事件在移动端会有300毫秒的延迟，所以这就是首页中列表点击迟钝的原因，而我之前一直认为的是，a标签的跳转与click事件无关。我怎么这么low呢？？？？？？？？？</p>
+<p>所以最后：大家以后开发移动端页面的时候，不要觉得你没有显示的去给某个元素绑定click事件就不会存在300毫秒延迟的问题，实际上a标签的跳转也会触发click事件，如果不加处理的话，也会有300毫秒延迟的问题，这对于用户体验是极其不好的。在这个分享给大家，还是那句老话：共勉。</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

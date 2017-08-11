@@ -1,0 +1,348 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>nodejs使用mongodb做数据持久化 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="前段时间，写了一篇博客，讲解了在Mac下使用brew安装mongodb，这篇文章可以看做是续篇，使用nodejs操作mongodb，并封装一些有用的方法。">
+<meta name="keywords" content="nodejs,mongodb">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nodejs使用mongodb做数据持久化">
+<meta property="og:url" content="hcysun.me/2015/12/02/nodejs使用mongodb做数据持久化/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="前段时间，写了一篇博客，讲解了在Mac下使用brew安装mongodb，这篇文章可以看做是续篇，使用nodejs操作mongodb，并封装一些有用的方法。">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512021.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512026.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512023.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512024.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512025.pic.jpg">
+<meta property="og:updated_time" content="2015-12-02T08:59:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nodejs使用mongodb做数据持久化">
+<meta name="twitter:description" content="前段时间，写了一篇博客，讲解了在Mac下使用brew安装mongodb，这篇文章可以看做是续篇，使用nodejs操作mongodb，并封装一些有用的方法。">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512021.pic.jpg">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">nodejs使用mongodb做数据持久化</h1>
+    <blockquote>
+<p>前段时间，写了一篇博客，讲解了在<a href="http://hcysun.me/2015/11/21/Mac%E4%B8%8B%E4%BD%BF%E7%94%A8brew%E5%AE%89%E8%A3%85mongodb/">Mac下使用brew安装mongodb</a>，这篇文章可以看做是续篇，使用nodejs操作mongodb，并封装一些有用的方法。</p>
+</blockquote>
+<a id="more"></a>
+<p>nodejs操作mongodb，首先要使用npm安装操作mongodb数据库的包，有两个选择 <a href="https://www.npmjs.com/package/mongoose" target="_blank" rel="external">mongoose</a> 和 <a href="https://www.npmjs.com/package/mongodb" target="_blank" rel="external">mongodb</a>，由于mongodb的使用方式更接近mongodb原生的语法，所以这里我们使用<a href="https://www.npmjs.com/package/mongodb" target="_blank" rel="external">mongodb</a>模块，操作数据库。</p>
+<p>在<a href="http://hcysun.me/2015/11/21/Mac%E4%B8%8B%E4%BD%BF%E7%94%A8brew%E5%AE%89%E8%A3%85mongodb/">Mac下使用brew安装mongodb</a>这篇文章中，已经讲解了mongodb数据库的性质和安装，也介绍了一个连接mongodb的客户端工具 Robomongo ，所以这里就不在赘述。</p>
+<p>不过，简单介绍下mongodb数据库的语法还是有必要的，如果你已经了解，那么可以跳过这里，接下来，我们就使用原生的语法来做一次CURD操作。</p>
+<h2 id="1、启动mongodb服务"><a href="#1、启动mongodb服务" class="headerlink" title="1、启动mongodb服务"></a>1、启动mongodb服务</h2><pre><code>mongo
+</code></pre><p>在终端执行命令 mongo 就可以启动mongodb服务了，我们会进入到mongo的交互模式，如图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201512021.pic.jpg" alt="启动mongodb服务"></p>
+<p>我们可以看到，mongo启动后，默认连接的是test数据库，注意，mongodb是非关系型数据库，和MySQL不同，在mongodb中：</p>
+<pre><code>nodql           &lt;=====&gt;        sql
+数据库(database) &lt;=====&gt; 数据库(database)
+集合(collection) &lt;=====&gt; 表(table)
+文档(docs)         &lt;=====&gt; 行(rows)
+字段(field)         &lt;=====&gt; 列(field)
+</code></pre><p>我们执行下面的命令来查看我们当前操作的数据库：</p>
+<pre><code>db
+</code></pre><p>如下，我们当前操作的数据库是 test 库：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201512026.pic.jpg" alt="显示当前我们所操作的数据库"></p>
+<p>也可以执行下面这条命令来查看所以数据库：</p>
+<pre><code>show dbs
+</code></pre><p>如下图，展示出我们所有的数据库，但是请注意，如果你的数据库里面没有任何数据，是不会被显示出来的：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201512023.pic.jpg" alt="显示所有数据库，空数据库没有显示"></p>
+<p>我们可以使用下面这条命令切换数据库：</p>
+<pre><code>use hcy
+</code></pre><p>这样，我们就切换到了数据库名字为hcy的数据库，我们可以执行 db 命令来查看是否切换成功：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201512024.pic.jpg" alt="切换数据库"></p>
+<p>注意，使用use db_name来切换数据库的时候，如果该数据库不存在，那么会创建该数据库，所以如果你要创建一个数据库，也是用use命令就好啦。</p>
+<p>如果要删除一个数据库，我们首先要切换到当前数据库下，然后执行下面的命令就可以删除这个数据库了：</p>
+<pre><code>use hcy
+
+db.dropDatabase()
+</code></pre><p>这样就会删除hcy这个数据库，我们再来查看所有数据库，发现hcy库已经不见了，被我们删掉了：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201512025.pic.jpg" alt="删除数据库"></p>
+<p>下面，我们讲述最简单的curd操作：</p>
+<h3 id="1、向hcy数据库中的users集合插入一个文档"><a href="#1、向hcy数据库中的users集合插入一个文档" class="headerlink" title="1、向hcy数据库中的users集合插入一个文档"></a>1、向hcy数据库中的users集合插入一个文档</h3><p>标题中的话如果翻译成sql数据库的语言就是：“向hcy数据库中的users表中插入一条数据”，那么我们看看怎么向mongodb数据库的集合中插入文档：</p>
+<pre><code>use hcy
+
+db.users.insert({
+    name : &#39;hcy&#39;,
+    age : 21
+})
+</code></pre><p>首先，我们切换到hcy数据库，如果没有该数据库就会自动创建该数据库，然后执行插入数据操作，我们可以使用下面的命令查询一个集合中的数据：</p>
+<pre><code>db.users.find()
+</code></pre><p>这样会查询出hcy库中users集合下面的所有数据，如果需要条件查找，像下面这条命令，只需要在find()方法中传入一个json对象作为筛选条件即可：</p>
+<pre><code>db.users.find({name:&#39;hcy&#39;})
+</code></pre><p>删除数据：</p>
+<pre><code>db.users.remove()
+</code></pre><p>上面的数据会删除users集合下得所有文档(数据)，也可以传入第一个参数，作为筛选条件：</p>
+<pre><code>db.users.remove({
+    name : &#39;hcy&#39;
+})
+</code></pre><p>上面的命令会删除掉users集合中，所有name值为hcy的所有文档，也可以传入第二个参数，是一个boolean值，true为只删除一条：</p>
+<pre><code>db.users.remove({
+    name : &#39;hcy&#39;
+}, true)
+</code></pre><p>修改数据有两种方法，可以使用 update()方法，也可以使用save()方法，先来看update()方法:</p>
+<pre><code>db.collection.update(
+   &lt;query&gt;,
+   &lt;update&gt;,
+   {
+     upsert: &lt;boolean&gt;,
+     multi: &lt;boolean&gt;,
+     writeConcern: &lt;document&gt;
+   }
+)
+</code></pre><blockquote>
+<p>query : update的查询条件，类似sql update查询内where后面的。<br>update : update的对象和一些更新的操作符（如$,$inc…）等，也可以理解为sql update查询内set后面的<br>upsert : 可选，这个参数的意思是，如果不存在update的记录，是否插入objNew,true为插入，默认是false，不插入。<br>multi : 可选，mongodb 默认是false,只更新找到的第一条记录，如果这个参数为true,就把按条件查出来多条记录全部更新。<br>writeConcern :可选，抛出异常的级别。</p>
+</blockquote>
+<p>这里我只介绍了语法，也可以使用save()方法：</p>
+<pre><code>db.collection.save(
+   &lt;document&gt;,
+   {
+     writeConcern: &lt;document&gt;
+   }
+)
+</code></pre><blockquote>
+<p>document : 文档数据。<br>writeConcern :可选，抛出异常的级别。</p>
+</blockquote>
+<p>例子如下：</p>
+<pre><code>db.users.save({
+    &quot;_id&quot; : ObjectId(&quot;56064f89ade2f21f36b03136&quot;),
+    &quot;name&quot; : &quot;aaaa&quot;,
+    &quot;age&quot; : &quot;100&quot;
+})
+</code></pre><p>上面的例子中，我们替换了 _id 为 56064f89ade2f21f36b03136 的文档数据。</p>
+<p>如果想了解更多mongodb原生语法知识，<a href="http://www.runoob.com/mongodb/mongodb-tutorial.html" target="_blank" rel="external">这里</a>是一个好去处</p>
+<p>现在，你应该对mongodb有了一定的了解了，那么我们如何在nodejs中操作mongodb呢？</p>
+<p>首先在项目中使用npm安装mongodb模块</p>
+<pre><code>npm install --save mongodb
+</code></pre><p>当我们想要在项目中使用这个模块操作数据库的时候，我们就可以引入该模块</p>
+<pre><code>var MongoClient = require(&#39;mongodb&#39;).MongoClient;
+</code></pre><p>上面的代码返回一个mongodb客户端实例，连接数据库：</p>
+<pre><code>var mongoConnectUrl = &#39;mongodb://localhost:27017/hcy&#39;;
+MongoClient.connect(mongoConnectUrl, function(err, db){
+    if(err) return console.log(err);
+    console.log(&#39;连接成功&#39;);
+});
+</code></pre><p>上面的mongoConnectUrl是我们连接mongodb数据库的一个url，注意，mongodb默认监听的端口是27017，另外，如果始终连接不成功，你可以把localhost换成你电脑的ip地址试一试，笔者在测试的时候只能使用ip地址，使用localhost始终连接失败，在url的最后是你要连接的数据库，这里我们连接到hcy数据库。</p>
+<p>连接数据库成功后，我们可以创建一个集合，并操作里面的数据，我们封装一个方法：</p>
+<h2 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h2><pre><code>/**
+ * 插入数据
+ * @method insertData
+ * @param {String} mongoConnectUrl 数据库连接
+ * @param {String} coll 集合名称
+ * @param {Array} data 插入的数据
+ * @param {Function} callback 回调函数
+ * @return {Null}
+ *
+ */
+function insertData(mongoConnectUrl, coll, data, callback){
+    MongoClient.connect(mongoConnectUrl, function(err, db){
+        if(err) return console.log(err);
+        // 打开集合
+        var collection = db.collection(coll);
+        // 插入数据
+        collection.insertMany(data, function(err, result){
+            //console.log(result)
+            // 记得要关闭数据库
+            db.close();
+            callback(result);
+        });
+
+    });
+}
+</code></pre><h2 id="查询数据"><a href="#查询数据" class="headerlink" title="查询数据"></a>查询数据</h2><pre><code>/**
+ * 查询数据
+ * @method findData
+ * @param {String} mongoConnectUrl 数据库连接
+ * @param {String} coll 集合名称
+ * @param {Object} opation 条件
+ * @param {Function} callback 回调函数
+ * @return {Null}
+ *
+ */
+function findData(mongoConnectUrl, coll, opation, callback){
+    MongoClient.connect(mongoConnectUrl, function(err, db){
+        if(err) return console.log(err);
+        // 打开集合
+        var collection = db.collection(coll);
+        // 根据条件查询数据
+        var userData = collection.find(opation);
+        // 遍历数据
+        userData.toArray(function(err2, docs) {
+            // docs是查询出来的文档，json对象，可以打印出来看看
+            db.close();
+            callback(docs);
+        });
+
+    });
+}
+</code></pre><h2 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h2><pre><code>/**
+ * @method deleteData
+ * @param {String} mongoConnectUrl 数据库连接
+ * @param {String} coll 集合名称
+ * @param {Object} opation 条件
+ * @param {Number} num 删除数据的数量，即删除几条
+ * @return {Null}
+ *
+ */
+function deleteData(mongoConnectUrl, coll, opation, num, callback){
+    var i = num;
+    var res = [];
+    var tempRes = [];
+    var thisFn = arguments.callee;
+    MongoClient.connect(mongoConnectUrl, function(err, db){
+        if(err) return console.log(err);
+
+        var collection = db.collection(coll);
+        if(i &gt; 0){
+            i--;
+            collection.deleteOne(opation, function(err, result){
+                // console.log(result)
+                res.push(result);
+                thisFn(mongoConnectUrl, coll, opation, i, callback);
+                if(i == 0){
+                    db.close();
+                    tempRes = res;
+                    res = []
+                    i = 0;
+                    callback(tempRes);
+                }
+
+            });
+        }
+
+    });
+},
+</code></pre><h2 id="修改一条数据"><a href="#修改一条数据" class="headerlink" title="修改一条数据"></a>修改一条数据</h2><pre><code>/**
+ * @method deleteData
+ * @param {String} mongoConnectUrl 数据库连接
+ * @param {String} coll 集合名称
+ * @param {Object} opation 条件
+ * @param {Object} data 更新的数据
+ * @return {Null}
+ *
+ */
+function deleteData(mongoConnectUrl, coll, opation, data, callback){
+    MongoClient.connect(mongoConnectUrl, function(err, db){
+        if(err) return console.log(err);
+
+        var collection = db.collection(coll);
+
+        collection.updateOne(opation, { $set: data }, function(err, result) {
+            db.close();
+            callback(result);
+        });
+
+    });
+},
+</code></pre>
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

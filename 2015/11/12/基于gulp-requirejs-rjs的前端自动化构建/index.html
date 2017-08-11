@@ -1,0 +1,245 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>基于gulp requirejs rjs的前端自动化构建系列文章(一) | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="前端的自动化，顾名思义，就是让一件事能够在我们的一条命令下就能够自动去执行并很好的完成，而不再需要我们手动去重复这些工作，这个系列文章不仅仅去单一的讲述每一块知识点或者工具的使用方法，因为网上的文章已经很多了，而是在清晰的给读者讲述这些“工具”用法的同时，真正的把他们组合在一起并且搭建一个项目框架雏形来，本系列文章涉及到的知识点有：   js的模块化（重点在AMD规范） requirejs的介绍">
+<meta name="keywords" content="js,自动化,gulp,requirejs,rjs,构建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于gulp requirejs rjs的前端自动化构建系列文章(一)">
+<meta property="og:url" content="hcysun.me/2015/11/12/基于gulp-requirejs-rjs的前端自动化构建/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="前端的自动化，顾名思义，就是让一件事能够在我们的一条命令下就能够自动去执行并很好的完成，而不再需要我们手动去重复这些工作，这个系列文章不仅仅去单一的讲述每一块知识点或者工具的使用方法，因为网上的文章已经很多了，而是在清晰的给读者讲述这些“工具”用法的同时，真正的把他们组合在一起并且搭建一个项目框架雏形来，本系列文章涉及到的知识点有：   js的模块化（重点在AMD规范） requirejs的介绍">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511122.pic.jpg">
+<meta property="og:updated_time" content="2015-11-12T11:20:39.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于gulp requirejs rjs的前端自动化构建系列文章(一)">
+<meta name="twitter:description" content="前端的自动化，顾名思义，就是让一件事能够在我们的一条命令下就能够自动去执行并很好的完成，而不再需要我们手动去重复这些工作，这个系列文章不仅仅去单一的讲述每一块知识点或者工具的使用方法，因为网上的文章已经很多了，而是在清晰的给读者讲述这些“工具”用法的同时，真正的把他们组合在一起并且搭建一个项目框架雏形来，本系列文章涉及到的知识点有：   js的模块化（重点在AMD规范） requirejs的介绍">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511122.pic.jpg">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">基于gulp requirejs rjs的前端自动化构建系列文章(一)</h1>
+    <blockquote>
+<p>前端的自动化，顾名思义，就是让一件事能够在我们的一条命令下就能够自动去执行并很好的完成，而不再需要我们手动去重复这些工作，这个系列文章不仅仅去单一的讲述每一块知识点或者工具的使用方法，因为网上的文章已经很多了，而是在清晰的给读者讲述这些“工具”用法的同时，真正的把他们组合在一起并且搭建一个项目框架雏形来，本系列文章涉及到的知识点有：</p>
+</blockquote>
+<ul>
+<li>js的模块化（重点在AMD规范）</li>
+<li>requirejs的介绍及使用</li>
+<li>rjs的使用</li>
+<li>新一代构建工具gulp的介绍及使用</li>
+<li>组合以上工具搭建前端自动化开发框架</li>
+</ul>
+<a id="more"></a>
+<h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>其实上面的每一个知识点都可以单独成文，但是我又不喜欢把本应该是“一件事”的东西拆分的七零八碎，网上很多文章都是其中某一个知识点的总结、介绍或者使用，这样的弊端就是，读者能够看的明白你在说什么，也知道这些工具是干什么的，但是偏偏不会把他们放在一块组合去使用，而且读者可能在搜索引擎中搜索知识点的时候都是单独去搜索，这样学习不同的知识点需要阅读的文章并不是同一个人得文章，这样在思路上和例子代码上很难联系到一块，因为本人当时大概就经历过这样的过程，所以趋于这样的原因，我决定来写此系列文章，由于作者水平有限，并且多是抱着积累学习和分享的态度，所以特别希望大家能够给与指正和建议。</p>
+<p>好啦，接下来开始我的系列文章第一篇。</p>
+<h1 id="一、js模块化与AMD"><a href="#一、js模块化与AMD" class="headerlink" title="一、js模块化与AMD"></a>一、js模块化与AMD</h1><h3 id="元某人时期，我国最早的人类，距今约170万年"><a href="#元某人时期，我国最早的人类，距今约170万年" class="headerlink" title="元某人时期，我国最早的人类，距今约170万年"></a>元某人时期，我国最早的人类，距今约170万年</h3><p>简介：javascript这门语言很灵活，但是在最初阶段模块化并没有受到重视，是后来nodejs的出现，使得js在浏览器端的模块化迅速崛起，那么到底什么是模块化，我们从头来。</p>
+<p>在元某人时期，人类写js代码都是这样的，在head标签中或者body结束标签的上面通过script标签引入一个js脚本文件：</p>
+<pre><code>    &lt;script src=&quot;a.js&quot;&gt;&lt;/script&gt;
+</code></pre><p>于是所有的代码都写在了 a.js 这个文件中，后来，代码越来越多，如果全部写在a.js文件中会使得代码非常不好维护，至于为什么不好维护（自己脑补），你可以想象一下2000行的js文件，然后你忘记一个函数的名称，于是在写代码的时候上下拉来拉去。。。。。。。。这样，人们自然的就想到分出几个js文件，于是，聪明的元某人就把一些类似于获取元素，添加class等等等等功能封装成一个个的函数，单独的写在一个js文件里，取名叫做util.js，意思是工具文件的意思，以后需要用到这些函数的话就直接引入这个文件就可以了，如下：</p>
+<pre><code>    &lt;script src=&quot;util.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;a.js&quot;&gt;&lt;/script&gt;
+</code></pre><p>后来元某人发现，工具文件util.js的内容也变的越来越多，于是又把不同功能的函数区分开来，写在不同的文件里，比如把ajax操作函数都分装在了ajax.js文件中，把操作DOM元素的函数封装在了dom.js文件中等等，于是，html页面引入的js文件看上去就成了这样：</p>
+<pre><code>    &lt;script src=&quot;ajax.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;dom.js&quot;&gt;&lt;/script&gt;
+    ...
+    ...
+    &lt;script src=&quot;a.js&quot;&gt;&lt;/script&gt;
+</code></pre><p>那么这样做的坏处是显而易见的：<br>1 html文件中引入了过多的js脚本文件，这不会使得浏览器发出很多次http请求，这是影响页面性能的最糟糕因素。<br>2 所有变量及函数都是全局变量，极易冲突，比如a.js中有个变量obj，b.js中也有个变量obj。<br>3 依赖顺序不易管理，比如我们上面的代码，dom.js依赖ajax.js中的一个函数，那么你必须先引入ajax.js文件再引入dom.js文件。</p>
+<h3 id="北京人时期，距今约20-70万年"><a href="#北京人时期，距今约20-70万年" class="headerlink" title="北京人时期，距今约20 ~ 70万年"></a>北京人时期，距今约20 ~ 70万年</h3><p>此北京人非彼北京人，有点历史常识的都应该明白 = =。<br>北京人很聪明的，他们发现了上面的问题后，提出，如果每一个文件里面的内容（变量和函数），都用一个对象存储，这样就能打打减小冲突的可能，假如我们将dom.js中的函数都放在一个对象下面，于是dom.js就变成了这样：</p>
+<pre><code>var Dom = {
+    // 获取元素
+    getEle : function(){...},
+    // 克隆元素
+    cloneEle : function(){...},    
+    // 其他dom方法
+    ...
+};
+</code></pre><p>北京人的确缓解了变量冲突的问题，注意，我用的是“缓解”并不是“解决”，因为这样做只能减少冲突，不能保证一定不会冲突，这样，我们在使用这些函数的时候，就会像这样：</p>
+<pre><code>Dom.getEle();
+</code></pre><p>如果层级深得话还可能类似于这样：</p>
+<pre><code>Dom.XXX.getEle();
+</code></pre><p>这并不是读者在杜撰，在为了暴露缺点而乱写的，来看看Yahoo! 的 YUI2 项目，下面是一段真实的代码：</p>
+<pre><code>if (org.cometd.Utils.isString(response)) {
+  return org.cometd.JSON.fromJSON(response);
+}
+</code></pre><p>这样是很让人恼火的，我为了使用一个函数，要记住一大串的调用关系，写起来也特别麻烦，假如我记不住调用关系我还要去查询，及其影响开发效率，并且这种做法也仅仅是缓解了命名冲突的问题并没有真正解决，包括文件依赖关系的处理，和页面需要发送的http请求数量等问题依旧没有得到处理。</p>
+<p>后来的 山顶洞人、半坡人、河姆渡人通通没有解决这类问题（谁知道有没有解决呢~ ~，也是醉了）</p>
+<p>但是再苦难的问题都难不倒我们“新人类”的智慧，什么叫新人类？ 新人类 == ‘贿赂，走关系，乱用职权，公品私用……’ ，咳咳，回到正题，那么新人类到底是怎么解决这个问题的呢？在经历了山顶洞人、半坡人、河姆渡人之后，人们已经深深的被这种问题所痛恶，认识到了模块化的必要性，所以说，模块化目的在于解决以下问题：</p>
+<ul>
+<li>文件的依赖关系</li>
+<li>避免污染全局环境，导致命名冲突</li>
+<li>使编码过程变得优雅</li>
+<li>性能得到提升</li>
+</ul>
+<p>但是人们的确是认识到了模块化的重要行，可真正普及还要归功于nodejs的出现，nodejs是服务器端javascript的实现，如果你使用nodejs你会发现可以使用require()方法加载模块，使用define()定义模块等，实际上nodejs遵循的是Commonjs规范，之所以要有规范是为了统一编码的方式，因为js是一门很灵活的语言，实现模块变成的方式有很多，你写一种我写一种这岂不是就乱套了，目前在javascript中有三种规范，分别是Commonjs规范、AMD规范、CMD规范。三者之间的区别说实话，的确有，但是不大，我们接下来要介绍的就是AMD规范，并且requirejs是AMD规范的一个实现。</p>
+<h3 id="AMD规范"><a href="#AMD规范" class="headerlink" title="AMD规范"></a>AMD规范</h3><p>AMD(Asynchronous Module Definition) 译为“异步模块定义”，为什么是异步模块定义呢？我们知道，nodejs中使用require去加载模块的时候，模块多在内存或磁盘中，而且在浏览器环境中，需要通过网络请求去加载模块，这与从内存或磁盘中加载模块根本就不在一个量级上，假如我们同步加载模块的话，浏览器会停滞在这里出现假死的状态，要等到所有模块全部加载完之后才会继续执行其他操作。所以我们需要一个适用于浏览器端实现模块化的规范，而这也是AMD规范的成因。</p>
+<p>下面我们来看看，AMD规范中我们如何去写代码，其中我们只需要关注如何定义一个模块，和如何使用模块。</p>
+<h4 id="如何定义一个模块"><a href="#如何定义一个模块" class="headerlink" title="如何定义一个模块"></a>如何定义一个模块</h4><p>AMD规范规定使用define()方法定义一个模块，define方法如下：</p>
+<p>define(id?, dependencies?, factory);</p>
+<p>参数说明：<br>    id {String} 模块标识，可以省略。<br>    dependencies {Array} 所依赖的模块数组，可以省略。<br>    factory {Object} | {Function} 模块的实现。</p>
+<p>看下面的代码，定义了一个模块，该模块没有依赖任何其他模块，也没有名字（即没有id这个参数）：</p>
+<pre><code>define(function(){
+    return {
+        a : &#39;1&#39;,
+        b : &#39;2&#39;
+    }
+});
+</code></pre><p>像上面的代码，如果只是简单的返回一个对象，也可以这样写：</p>
+<pre><code>define({
+    a : &#39;1&#39;,
+    b : &#39;2&#39;
+});
+</code></pre><p>上面定义的模块返回了一个对象，AMD规定，返回的对象，即为该模块对象。也可以返回一个函数，如下：</p>
+<pre><code>define(function(){
+    var m = function(){
+
+    };
+
+    return m;
+
+});
+</code></pre><p>如果你编写的模块需要使用其他模块中的方法，那么你就需要依赖那个模块，这个时候你就可以传递第二个参数，第二个参数是一个数组，数组中的每一个元素为你依赖模块的名称：</p>
+<pre><code>define([&#39;A&#39;, &#39;B&#39;], function(A, B){
+
+    A.add();
+
+    return {
+        a : &#39;1&#39;,
+        b : &#39;2&#39;
+    }
+});
+</code></pre><p>上面的代码定义了一个模块，该模块依赖两个模块，分别是模块A和模块B，注意我们在函数中传递了与依赖数组中一一对应的形式参数，以便在模块中使用依赖的模块，而我们也在模块中调用了模块A的add()方法。</p>
+<p>上面我们定义的模块都没有传递id这个参数，我们也可以传递这个参数，这样就像我们给模块去了一个名字，所以带有id这个参数的模块叫做具名模块：</p>
+<pre><code>define(&#39;index&#39;, [&#39;A&#39;], function(A){
+    ...
+});
+</code></pre><p>但是我们一般不会手动的去写，一般我们在使用构建工具优化项目的时候，如我们使用gulp配合rjs合并模块的时候，自动去帮我们填充模块id。</p>
+<p>最后，介绍一下AMD规范兼容Commonjs规范的一个模块定义写法：</p>
+<pre><code>define(function(require, exports, module){
+    var m = require(&#39;m1&#39;);
+
+    exports.A = function(){
+        return m.add();
+    }
+});
+</code></pre><p>我们在函数中显示的传递了三个参数，分别是require，exports和module，这三个变量是全局的，其中require是用来加载其他模块的，exports是用来导出模块接口的，module是模块对象本身。</p>
+<p>接下来我们讲解一下requrie，require是用来引用模块的，及加载模块，上面我们已经看到了require()方法，我们传递了一个字符串，及模块的名称，去加载模块，实际上我们还可以传递依赖数组，如下：</p>
+<pre><code>require([&#39;A&#39;, &#39;B&#39;], function(A, B){
+    // ...
+});
+</code></pre><p>这样，js大概的模块化历史和AMD规范我们就简单介绍完了，由于我们这篇文章综合性比较强，如果想深入了解AMD，点击这里：<a href="https://github.com/amdjs/amdjs-api/blob/master/require.md" target="_blank" rel="external">AMD</a></p>
+<p>这篇文章就到这里，下一章我们结合实际的案例仔细讨论一下requirejs，并相信我，一定有你能学到的东西。</p>
+<p>如果对你有用，感谢捐助。</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201511122.pic.jpg" alt="支付宝二维码"></p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,242 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Ubuntu连接的网络需要登陆认证后才能使用的解决办法 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="公司团队内部继续一台服务器，做一些对内使用的网站的部署工作，于是把旁边的一台windows电脑安装成了双系统—-一个server版本的Ubuntu，但是公司的网络有个问题，就是每天早上来了都要重新登录认证，之后才能正常使用网络，一开始还好，每天早上来了先启动windows系统认证完网络之后再启动Ubuntu，这样就能正常使用，不过后来突然不好使了，于是想了个办法，使用Python写个脚本，再设一">
+<meta name="keywords" content="Ubuntu,python,pycurl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu连接的网络需要登陆认证后才能使用的解决办法">
+<meta property="og:url" content="hcysun.me/2016/01/14/Ubuntu连接的网络需要登陆认证后才能使用的解决办法/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="公司团队内部继续一台服务器，做一些对内使用的网站的部署工作，于是把旁边的一台windows电脑安装成了双系统—-一个server版本的Ubuntu，但是公司的网络有个问题，就是每天早上来了都要重新登录认证，之后才能正常使用网络，一开始还好，每天早上来了先启动windows系统认证完网络之后再启动Ubuntu，这样就能正常使用，不过后来突然不好使了，于是想了个办法，使用Python写个脚本，再设一">
+<meta property="og:updated_time" content="2016-01-14T10:58:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ubuntu连接的网络需要登陆认证后才能使用的解决办法">
+<meta name="twitter:description" content="公司团队内部继续一台服务器，做一些对内使用的网站的部署工作，于是把旁边的一台windows电脑安装成了双系统—-一个server版本的Ubuntu，但是公司的网络有个问题，就是每天早上来了都要重新登录认证，之后才能正常使用网络，一开始还好，每天早上来了先启动windows系统认证完网络之后再启动Ubuntu，这样就能正常使用，不过后来突然不好使了，于是想了个办法，使用Python写个脚本，再设一">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">Ubuntu连接的网络需要登陆认证后才能使用的解决办法</h1>
+    <blockquote>
+<p>公司团队内部继续一台服务器，做一些对内使用的网站的部署工作，于是把旁边的一台windows电脑安装成了双系统—-一个server版本的Ubuntu，但是公司的网络有个问题，就是每天早上来了都要重新登录认证，之后才能正常使用网络，一开始还好，每天早上来了先启动windows系统认证完网络之后再启动Ubuntu，这样就能正常使用，不过后来突然不好使了，于是想了个办法，使用Python写个脚本，再设一个定时任务，每天定时执行一次该脚本，从此告别网络的烦恼了，这篇文章就记了这次网络处理的过程，用到的一些东西。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="Ubuntu下使用U盘"><a href="#Ubuntu下使用U盘" class="headerlink" title="Ubuntu下使用U盘"></a>Ubuntu下使用U盘</h1><p>由于要执行Python脚本，而这台电脑又没有安装Python，有没有网络，所以只能有网络的电脑下载Python以及一个Python库—-pycurl，然后使用U盘拷贝到这台Ubuntu下，下面介绍了Ubuntu下如果使用U盘。</p>
+<p>首先执行下面的命令，查看你的磁盘区块：</p>
+<pre><code class="$">ls /dev/ | grep sd
+</code></pre>
+<p>然后插入U盘，再次执行该命令，再次查看：</p>
+<pre><code class="$">ls /dev/ | grep sd
+</code></pre>
+<p>观察多出来了什么，一般会有两个，其中一个的名字比另一个多一个数字1，比如sdb和sdb1 </p>
+<p>这时候说明U盘被识别了，接下来创建挂载目录：</p>
+<pre><code class="$">sudo mkdir -p /mnt/usb
+</code></pre>
+<p>然后使用mount命令挂载（假设你的U盘为sdb和sdb1）：</p>
+<pre><code class="$">sudo mount /dev/sdb1 /mnt/usb
+</code></pre>
+<p>然后就可以使用 /mnt/usb 目录访问U盘内容了：</p>
+<pre><code class="$">cd /mnt/usb
+ls
+</code></pre>
+<p>处理完你想要做的事情之后，比如我将U盘里下载好的Python和pycurl拷贝到Ubuntu上，拔出U盘之前记得卸载，执行下面的命令：</p>
+<pre><code class="$">sudo amount  /dev/sdb1 /mnt/usb
+</code></pre>
+<p>拔出U盘即可</p>
+<h1 id="Ubuntu编译安装软件"><a href="#Ubuntu编译安装软件" class="headerlink" title="Ubuntu编译安装软件"></a>Ubuntu编译安装软件</h1><p>在使用Linux时，很多时候我们需要编译安装软件，我安装Python也是编译安装的，借着这个就好好把Ubuntu下编译安装的一些事项介绍一下。</p>
+<h2 id="1、获取源码包（tar-gz、tar-gz2、zip、tgz），并解压"><a href="#1、获取源码包（tar-gz、tar-gz2、zip、tgz），并解压" class="headerlink" title="1、获取源码包（tar.gz、tar.gz2、zip、tgz），并解压"></a>1、获取源码包（tar.gz、tar.gz2、zip、tgz），并解压</h2><p>如果有网络，我们可以通过curl下载，如果没有网络，就像我一样，使用U盘，总之，你要获取到源码包，然后解压：</p>
+<pre><code class="$">tar -zxvf Python-3.5.1.tgz    // 我下载的是3.5.1版本的
+</code></pre>
+<h2 id="2、configure"><a href="#2、configure" class="headerlink" title="2、configure"></a>2、configure</h2><p>绝大多数linux上需要源码安装的程序可以通过./configure；make；make install这三步来实现安装，而最困难的一步往往都在./configure这一步，那后面的几步是可以很轻松的完成的。</p>
+<p>configure是用来做下面这些事的一个脚本：</p>
+<blockquote>
+<p>1、用以检查计算机建立包所必须的完整性；<br>2、帮助你根据需要改变默认的路径；<br>3、用以激活/禁用编译程序中的各种选项；<br>4、用以改变程序将要被安装的路径；</p>
+</blockquote>
+<p>你可以通过执行下面的命令来查看特定configure脚本所提供的选项个功能：</p>
+<pre><code class="$">./configure --help | less
+</code></pre>
+<p>例如，默认的configure脚本会指定安装到/usr/local下面，如果你想改变路径，可以执行下面显示的configure脚本命令：</p>
+<pre><code class="$">./configure --PREFIX=/opt
+</code></pre>
+<p>如果你真的想从零开始编译，可以认真研读一下README或者INSTALL文件。你会看到需要什么样的软件碎片，比起在包系统中，在这些文件中他们通常有着不一样的名字。接下来，可以通过使用apt-cache工具来寻找相应的包。如果你已经通过仓库中编译包，那么还有一个诀窍，就是通过下面的命令来安装包的依赖：</p>
+<pre><code class="#">sudo apt-get build-dep &lt;package&gt;
+</code></pre>
+<p>这可以确保所有所需的包以来都可以被安装，以期configure不会由于过旧的依赖包而报错，否则你将不得不继续编译相关的依赖。</p>
+<p>寻找并修复configure的故障</p>
+<p>恰巧在下面这几种情况下，configure可能会失败：</p>
+<blockquote>
+<p>1、编译的时候需要-dev包；<br>2、要编译GNOME应用那么需要相应的gnome-level；而编译KDE应用则需要kde-level；<br>3、C和C++库的名称总是以lib开头，因此，如果./configure报错说丢失了库foo，那么你需要安装libfoo-dev包；<br>4、如果configure说要“X includes”，那么你可能需要安装下面这些包“xlibs-dev,xlibs-static-dev,x-window-system-dev”，注意，有时候，仅仅需要xorg-dev和x-dev就可以了。-Racecar56 Under Jaunty则需要安装xorg-dev和libx11-dev。<br>5、查看哪些包被需要的技巧，可以使用auto-apt工具或者apt-file工具（auto-apt可能更快一些）：</p>
+<pre><code class="$">sudo apt-get install auto-apt
+sudo auto-apt update
+auto-apt search missing-file.h
+</code></pre>
+<p>6、如果编译软件禁用失败的选项，可以使用./configure –disable-FEATURE选项。<br>7、如果你自己没能修复你遇到的问题，你也可以寻求ubuntu官方的帮助哦。</p>
+</blockquote>
+<p>如果根本不存在configure的文件，那么最好查看一下configure.ac文件（有必要认真阅读一下INSTALL和README文件），如果configure.ac文件存在，那就是开发者忘记创建最终configure文件了，你可以自己创建，不过需要autoconf包：</p>
+<pre><code class="$">sudo apt-get install autoconf
+</code></pre>
+<p>安装成功之后，键入：</p>
+<pre><code class="$">autoconf
+</code></pre>
+<p>如果幸运的话，一个可工作的configure文件应该被创建了。</p>
+<h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>可喜可喝，configure步骤已经完成了，真正的编译安装可以开始了。非常简单：</p>
+<pre><code class="$">make
+</code></pre>
+<p>现在如果一切顺利的话，你应该的到了一个可工作的程序copy在你的源目录下，你可以运行下面的命令来试用一下：</p>
+<pre><code>src/program_name
+</code></pre><p>如果程序这一步失败了，那么就有可能是程序的bug，这时候你最好联系一下作者，告诉他程序的问题。</p>
+<p>安装软件包</p>
+<p>如果一切进展顺利的话，你可以键入下面的命令来安装程序：</p>
+<pre><code class="$">sudo checkinstall
+</code></pre>
+<p>使用CheckInstall可以创建一个.deb包，这货稍后可以很容易被移除哦！</p>
+<p>然而，由于某些原因，你不想使用CheckInstall，这是安装的最后方法（不推荐）：</p>
+<pre><code class="$">sudo make install
+</code></pre>
+<h1 id="安装Python"><a href="#安装Python" class="headerlink" title="安装Python"></a>安装Python</h1><p>回到正题，安装Python，前面讲完了Ubuntu下编译安装软件的方法，那么下载安装起来就方便多了：</p>
+<p>首先在这里下载Python包 <a href="https://www.python.org/getit/" target="_blank" rel="external">python.tgz</a>。</p>
+<p>解压安装：</p>
+<pre><code class="$">tar -zvxf Python-3.5.1.tgz
+cd Python-3.5.1
+./configure
+sudo make
+sudo make install
+</code></pre>
+<p>执行python，查看是否安装成功</p>
+<pre><code class="$">python
+</code></pre>
+<h1 id="安装pycurl"><a href="#安装pycurl" class="headerlink" title="安装pycurl"></a>安装pycurl</h1><p>在这里下载资源包：<a href="http://pycurl.sourceforge.net/" target="_blank" rel="external">pycurl.tgz</a> 下载，可能需要翻墙，然后解压安装，注意，他有自己的安装方式：</p>
+<pre><code class="$">tar -zxvf pycurl-$VER.tar.gz
+cd pycurl-$VER
+python setup.py install
+</code></pre>
+<p>经过如上步骤，我们可以在这台Ubuntu上执行自动登录认证网络的Python脚本了：</p>
+<pre><code class="$">python xxx.py
+</code></pre>
+<h1 id="Ubuntu下开启定时任务"><a href="#Ubuntu下开启定时任务" class="headerlink" title="Ubuntu下开启定时任务"></a>Ubuntu下开启定时任务</h1><p>在Ubuntu下开启定时任务，我们要使用到 cron，什么事cron呢？点击下面的连接了解：</p>
+<p><a href="http://wiki.ubuntu.org.cn/UbuntuHelp:CronHowto/zh" target="_blank" rel="external">cron教程</a></p>
+<p>上面的教程并不长，如果你读完了教程，那么看看我是怎么做的吧，首先执行下面的命令编辑crontab文件：</p>
+<pre><code class="$">crontab -e
+</code></pre>
+<p>然后写下一下内容：</p>
+<pre><code>8 8 * * * sh ~/test/test.sh
+</code></pre><p>上面的命令的意思是：每天早上的8点8分时，执行 tesh.sh脚本，之后保存退出（Ctrl + x  -&gt;  y  -&gt;  enter回车），保存退出的方式根据你使用编辑器决定，自己看吧。保存之后，执行下面的命令，启动cron服务：</p>
+<pre><code class="$">sudo service cron start
+</code></pre>
+<p>更多命令：</p>
+<pre><code class="$">sudo service cron stop         // 停止cron服务
+sudo service cron restart     // 重启cron服务
+</code></pre>
+<p>好了，从此无忧了，不用手动XXOO了。</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

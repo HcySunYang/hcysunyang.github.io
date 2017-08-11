@@ -1,0 +1,215 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用npm和node开发命令行工具并使用npm管理你的包 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="对于前端开发者来讲，玩儿js的你们肯定对nodejs已经npm并不陌生，现在npm已经集成到了node里，所以当你安装了node之后也就默认安装了npm，npm的全称是node package manager : node 包管理器，提供一个registry，你只要注册一个npm账号，就可是使用npm进行包管理了，比如发布，安装，更新…等等。最近再做公司内部框架的重构，准备使用npm开发一套命令">
+<meta name="keywords" content="node,npm,命令行工具">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用npm和node开发命令行工具并使用npm管理你的包">
+<meta property="og:url" content="hcysun.me/2016/01/14/使用npm和node开发命令行工具并使用npm管理你的包/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="对于前端开发者来讲，玩儿js的你们肯定对nodejs已经npm并不陌生，现在npm已经集成到了node里，所以当你安装了node之后也就默认安装了npm，npm的全称是node package manager : node 包管理器，提供一个registry，你只要注册一个npm账号，就可是使用npm进行包管理了，比如发布，安装，更新…等等。最近再做公司内部框架的重构，准备使用npm开发一套命令">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201501301.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201501302.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201501303.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201501304.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201501305.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201501306.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201501307.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201501308.pic.jpg">
+<meta property="og:updated_time" content="2016-01-30T07:44:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用npm和node开发命令行工具并使用npm管理你的包">
+<meta name="twitter:description" content="对于前端开发者来讲，玩儿js的你们肯定对nodejs已经npm并不陌生，现在npm已经集成到了node里，所以当你安装了node之后也就默认安装了npm，npm的全称是node package manager : node 包管理器，提供一个registry，你只要注册一个npm账号，就可是使用npm进行包管理了，比如发布，安装，更新…等等。最近再做公司内部框架的重构，准备使用npm开发一套命令">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201501301.pic.jpg">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">使用npm和node开发命令行工具并使用npm管理你的包</h1>
+    <blockquote>
+<p>对于前端开发者来讲，玩儿js的你们肯定对nodejs已经npm并不陌生，现在npm已经集成到了node里，所以当你安装了node之后也就默认安装了npm，npm的全称是node package manager : node 包管理器，提供一个registry，你只要注册一个npm账号，就可是使用npm进行包管理了，比如发布，安装，更新…等等。最近再做公司内部框架的重构，准备使用npm开发一套命令行工具，管理核心代码，只输出业务目录给框架使用者，一方面减轻了项目体积，另一方面给开发者一个更好的开发体验，同时保证了核心代码的安全，这篇文章记录了使用npm进行包管理的事项、已经使用npm和node开发命令行工具的方法。</p>
+</blockquote>
+<a id="more"></a>
+<p>想要使用npm进行包管理，有两种方案，一种是使用npm官方，即<a href="https://www.npmjs.com/" target="_blank" rel="external">https://www.npmjs.com/</a>，注册你自己的账号然后进行管理，但是如果不使用私有包的话，你的代码是暴露的，如果是企业内部的私有包，不想对外暴露，避免潜在的风险，那么就必须使用私有包管理，不过，是要交保护费的，虽然也不多，如果你连保护费都不想交的话，那么也有办法，搭建私有npm服务，国内比如<a href="https://github.com/cnpm/cnpmjs.org" target="_blank" rel="external">cnpm</a>，或者使用npm官方提供的 <a href="https://www.npmjs.com/npm/on-site" target="_blank" rel="external">On-Site</a>，都可以搭建企业内部的私有npm服务，但是我可以在这里给大家提个醒，如果你真的要自己搭建私有npm服务，那么你准备好接受各种折磨，让我偷乐一会儿……</p>
+<p>乐完了，回到正题，为了给大家讲解，我这里就采用npm官方registry进行npm包管理的操作，首先，你要有个女朋友，哦 sorry，是有一个npm账号：</p>
+<h1 id="注册npm账号"><a href="#注册npm账号" class="headerlink" title="注册npm账号"></a>注册npm账号</h1><p>填写你的信息注册账号，然后会给你发一封激活邮件，激活你的账号就ok了，就是一个普通的不能再普通的注册流程了：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201501301.pic.jpg" alt="注册npm账号"></p>
+<p>有了账号，就可以登录，注意，我说的是在终端登录，不是在网站登录，打开你的终端，执行命令：</p>
+<pre><code class="$">npm login
+</code></pre>
+<p>会让你输入你刚才注册的用户名密码已经邮箱，你就实话实说就ok了，它不会为难你的，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201501302.pic.jpg" alt="终端中登录npm"></p>
+<p>如果一切正常，那么不会有任何提示信息，说明你登录成功了。</p>
+<p>我们写一个测试包，测试一下：</p>
+<p>执行：</p>
+<pre><code class="$">mkdir test
+cd test
+npm init
+</code></pre>
+<p>生成package.json文件，这个文件很重要，npm就是依据这个文件进行包管理工作的，然后我们我们新建一个html文件：</p>
+<pre><code class="$">touch index.html
+</code></pre>
+<p>这个html文件是我随便建的，作为我们这个测试包的内容，现在我们已经有了一个最简单的包了，接下来，我们就可以把我们的包，通过npm推送到远程，进行管理，执行：</p>
+<pre><code class="$">npm publish
+</code></pre>
+<p>这条命令的意思是发布我们的包，如果你真的按照我的教程敲代码，你可能会得到如下错误：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201501303.pic.jpg" alt="npm publish发布错误"></p>
+<p>如果你可以确认你已经使用了正确的账号登陆，那么就不要被提示信息所迷惑着，这可能是你所要发布的包的名字，已经有人使用并发布了，编辑你的package.json文件，找到name字段，修改一个独一无二的名字：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201501304.pic.jpg" alt="修改name字段"></p>
+<p>好吧，我承认这个名字99.99999999%可以用了。</p>
+<p>然后再发布，就可以成功了，执行：</p>
+<pre><code class="$">npm publish
+</code></pre>
+<p>如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201501305.pic.jpg" alt="发布成功"></p>
+<p>发布成功后，在npm官网登陆你的账号，你是可以看到你自己的包的：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201501306.pic.jpg" alt="你发布的包"></p>
+<p>发布了包之后，你就可以像安装其他第三方包一下来安装你的包了：</p>
+<pre><code>npm install &lt;you package name&gt;
+</code></pre><p>如果你的本地包有更新，需要再次发布的话，直接执行 npm publish 是不可以的，你还要更新一下包的版本号，然后再执行发布命令才行，也就是修改一下package.json文件的 version 字段，不过，不需要手动修改，执行：</p>
+<pre><code>npm version &lt;update_type&gt;
+</code></pre><p>update_type 可以取三个值：major minor patch</p>
+<p>我们知道，版本号的格式是这样的 1.0.0</p>
+<p>其中 1 是主要版本，只有重大的更新才会修改它的值（major），第二个位置是次要的(minor)，第三个位置是补丁(patch)，根据包修改的程度来定你要修改那个位置的数字，为了测试，我们就执行如下命令：</p>
+<pre><code class="$">npm version patch
+</code></pre>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201501307.pic.jpg" alt="更新版本"></p>
+<p>我们看到，版本由原来的 1.0.0 变成了 1.0.1。这时，我们就可以执行 npm publish 命令更新我们的包了。</p>
+<p>上面描述了最基本的管理命令，npm远不止这些，官方文档写的很详细：<a href="https://docs.npmjs.com/getting-started/what-is-npm" target="_blank" rel="external">npm</a></p>
+<h1 id="如果使用npm和node开发命令行工具"><a href="#如果使用npm和node开发命令行工具" class="headerlink" title="如果使用npm和node开发命令行工具"></a>如果使用npm和node开发命令行工具</h1><p>什么是命令行工具？最通俗的解释就是，敲一串字符，命令行能够识别，并做一些事。比如 ls 查看文件， cd 切换目录等等，都是命令行工具，及可执行的文件。</p>
+<p>其实用npm和node开发命令行工具特别简单，我们还继续使用上面的例子。</p>
+<h2 id="第一步：编写一个nodejs文件"><a href="#第一步：编写一个nodejs文件" class="headerlink" title="第一步：编写一个nodejs文件"></a>第一步：编写一个nodejs文件</h2><p>名字你随便起，这里我们就叫 test.js，在package.json的同级目录新建一个test.js文件，并编辑如下内容：</p>
+<pre><code class="test.js">#! /usr/bin/env node
+
+console.log(&#39;test command line!&#39;);
+</code></pre>
+<p>注意，第一行的 #! /usr/bin/env node 不可以省略，这是告诉机器，这个文件要在node环境下运行，当我们直接执行这个文件的时候，相当于使用node去执行它，即：</p>
+<pre><code>./test.js
+</code></pre><p>相当于</p>
+<pre><code>node ./test.js
+</code></pre><h2 id="第二部：在package-json文件中添加bin字段"><a href="#第二部：在package-json文件中添加bin字段" class="headerlink" title="第二部：在package.json文件中添加bin字段"></a>第二部：在package.json文件中添加bin字段</h2><pre><code class="package.json">&quot;bin&quot;: {
+    &quot;hcy-cmd&quot;: &quot;./test.js&quot;
+}
+</code></pre>
+<p>bin字段是一个json对象，键是命令的名称，即我们可以在终端执行的命令名称，值是该命令对应的可执行文件，在我们这个例子中，就是当前目录下的 test.js 文件，其中，命令的名称你自己随便定义。</p>
+<p>致此，我们还没有结束，如果现在就在终端敲 hcy-cmd 的话，是不行的，还需要最后一步。</p>
+<h2 id="第三部：连接到全局"><a href="#第三部：连接到全局" class="headerlink" title="第三部：连接到全局"></a>第三部：连接到全局</h2><p>如何连接到全局，很简单，只需一条命令，执行：</p>
+<pre><code class="$">npm link
+</code></pre>
+<p>这是在终端敲入我们自定义的命令，查看结果：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201501308.pic.jpg" alt="执行命令"></p>
+<p>这样，我们就可以发挥我们的创造力，利用它做一些有趣的事情，快去实现你的想象吧，另外推荐两个库，配合它们，我们可以开发出很强大的命令行工具：</p>
+<p><a href="https://www.npmjs.com/package/shelljs" target="_blank" rel="external">shelljs - 强大的执行unix系统命令的npm包</a></p>
+<p><a href="https://www.npmjs.com/package/yargs" target="_blank" rel="external">yargs - 命令行参数的处理</a></p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

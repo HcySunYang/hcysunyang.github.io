@@ -1,0 +1,447 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>一篇真正教会你开发移动端页面的文章(二) | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="移动端开发的干货篇 之前写了一篇文章《一篇真正教会你开发移动端一面的文章(一)》。那是本篇文章的基础，如果没有阅读过的同学可以去看看，今天就给大家带来干货，真真正正的讲到如何很好的开发一个移动端的页面">
+<meta name="keywords" content="html,css,移动页面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一篇真正教会你开发移动端页面的文章(二)">
+<meta property="og:url" content="hcysun.me/2015/10/19/一篇真正教会你开发移动端页面的文章-二/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="移动端开发的干货篇 之前写了一篇文章《一篇真正教会你开发移动端一面的文章(一)》。那是本篇文章的基础，如果没有阅读过的同学可以去看看，今天就给大家带来干货，真真正正的讲到如何很好的开发一个移动端的页面">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923mobile.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923psd1.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923psd2.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923ht1.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923ht2.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923psd3.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923ht3.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2015092319a.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923px1.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2015092316b.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923p5.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923p6.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2015092320a.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2015092320b.jpg">
+<meta property="og:updated_time" content="2015-10-20T03:52:52.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一篇真正教会你开发移动端页面的文章(二)">
+<meta name="twitter:description" content="移动端开发的干货篇 之前写了一篇文章《一篇真正教会你开发移动端一面的文章(一)》。那是本篇文章的基础，如果没有阅读过的同学可以去看看，今天就给大家带来干货，真真正正的讲到如何很好的开发一个移动端的页面">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923mobile.jpg">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">一篇真正教会你开发移动端页面的文章(二)</h1>
+    <h1 id="移动端开发的干货篇"><a href="#移动端开发的干货篇" class="headerlink" title="移动端开发的干货篇"></a>移动端开发的干货篇</h1><blockquote>
+<p>之前写了一篇文章<a href="http://hcysun.me/2015/10/16/%E4%B8%80%E7%AF%87%E7%9C%9F%E6%AD%A3%E6%95%99%E4%BC%9A%E4%BD%A0%E5%BC%80%E5%8F%91%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%A1%B5%E9%9D%A2%E7%9A%84%E6%96%87%E7%AB%A0(%E4%B8%80)/">《一篇真正教会你开发移动端一面的文章(一)》</a>。那是本篇文章的基础，如果没有阅读过的同学可以去看看，今天就给大家带来干货，真真正正的讲到如何很好的开发一个移动端的页面</p>
+</blockquote>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923mobile.jpg" alt="移动端"></p>
+<a id="more"></a>
+<p>好了，让我们开始吧，从哪里开始呢？从设计图开始，即PSD稿件：<br>移动端PSD稿件的尺寸肯定较之PC端的PSD稿件不同，具体体现在设计图的尺寸上，现在移动端的设计图尺寸大多以iPhone5和iPhone6的设备像素尺寸作为依据，比如拿到一张PSD设计图，它的总宽度为640px(iPhone5)或者750px(iPhone6)。本例就拿iPhone6的设计图尺寸为标准进行讲解，其它设计图尺寸道理是一样的，这并不影响我们的开发。</p>
+<p>首先我们要有一张设计图才行，看下图，假设我们有一张设计图，它很简单，只有一个红色的方块：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923psd1.jpg" alt="psd稿"></p>
+<p>拿到了设计图，于是你开开心心的开始写代码了，你打开了编辑器，并写下了如下HTML代码：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>HTML代码写好了，你用了一个带有box类的div标签作为ps稿中的红色块，经过尺寸测量，你为上面代码添加了CSS样式，最后你的代码是这样的：</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no&quot; /&gt;
+    &lt;style&gt;
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    .box{
+        width: 200px;
+        height: 200px;
+        background: red;
+    }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>上面的代码中，你只是在原来的基础上增加了CSS样式，首先你清除了body标签上的默认样式，这个没什么好说的，然后你根据设计图中测量的尺寸来给box编写样式，宽200px;高200px;背景红色。看上去并没有什么问题，于是你开开心心的打开浏览器，刷新页面，你的脸色沉了下来，因为你看到了你不想看到的结果，如下图，上图为设计稿的样式，下图为你编写的html文件的样式：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923psd2.jpg" alt="psd原稿"></p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923ht1.jpg" alt="html页面"></p>
+<p>通过对比psd原稿和我们目前所写的html页面，可以看出我们html页面的问题，红色方块与整个页面的比例和psd原稿不一样啊，那么为什么我们明明是按照原稿测量的尺寸写出来的代码却和psd原稿显示的效果不一样呢？别忘了，psd原稿的尺寸是按照设备像素设计的，由于我们所用的设计稿是基于iPhone6设计的，所以我们设计稿的尺寸就是iPhone6的设备像素的尺寸，也就是750px，而我们CSS中的样式是基于布局视口的尺寸计算的，由于我们html页面中由于写入了以下meta标签：</p>
+<pre><code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no&quot; /&gt;
+</code></pre><p>在上一篇我们讲过，<em> width=device-width </em> 这段代码是让布局视口的尺寸等于理想视口。<br>根据公式(缩放比例为1)：<br><b>设备像素比（DPR） = 设备像素个数 / 理想视口像素个数（device-width）</b><br>因为iPhone6的DPR（设备像素比）为2，设备像素为750，所以iPhone6的理想视口尺寸为375px。所以上面代码最终导致的是：使我们布局视口的宽度变成了375px。而我们CSS中编写的样式尺寸又是基于布局视口计算的，所以我们得到的页面看上去比例不对，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923ht2.jpg" alt="布局视口宽度和元素宽度"><br><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923psd3.jpg" alt="psd设计稿宽度和元素宽度"></p>
+<p>如上面两幅图片，我们知道，psd稿的总宽是750px，元素宽200px，而我们真正做页面的时候，布局视口的宽度是375px，正好是设计稿的一半。所以我们不能直接使用设计稿上面测量所得的像素尺寸，根据比例，我们应该将测量所得的尺寸除以2，才是我们CSS中布局所用的尺寸，据此，我们将200px除以2得到100px，于是我们修改代码，将红色方块的宽高都设为100px，刷新页面，看看比例是不是和设计图一样了？答案是肯定的，如下图为修改后的html页面：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923ht3.jpg" alt="修改后的html页面"></p>
+<p>这样，我们就得到了正确的数据，并且正确的写出了页面，你很高兴，可是问题来了，如果你在做页面的时候，测量了一个元素的宽度，宽度是一个奇数，比如111像素，按照我们之前的做法是，将测量到的数据除以2，得到我们真正使用的数据，所以111除以2等于55.5px，我们知道，计算机(手机)没办法显示不到一个像素的像素值，计算机(手机)会自动将其补全为一个像素进行显示，所以最终会将元素显示为56像素，这并不是我们想要的结果。<br>另外，我们的设计稿是基于iphone6设计的，我们调试页面也是在iphone6下调试的。又因为iphone6的设备像素比试2，所以我们才能由设计稿测量的数据除以2后直接使用，并且在iphone6下没有问题，但是你要知道，并不是所有手机的设备像素比都是2，有的手机的设备像素比试2.5或者3。并且不同设备的设备像素又不同，这样就导致理想视口的尺寸不同，从而导致布局视口的尺寸不同，那么我们直接根据iphone6的设计稿尺寸除以2得到的尺寸用来编写CSS是不能在所有设备下完好显示的。</p>
+<p>所以，我们要换一个方法。<br>于是我们想到：如果我们能将布局视口的尺寸设置为和设备像素尺寸相等的话，这样我们就保证了设计图与页面的1:1关系，那么我们就可以直接使用psd中测量的尺寸了，然后在其他尺寸的手机中，我们进行等比缩放就ok了。那么如何才能让布局视口的尺寸等于设备像素尺寸呢？</p>
+<p>我们注意到meta标签中的 width=device-width 这段代码，首先你要明白这句话的意思，前面讲过，这句话最终导致的结果是：让布局视口的尺寸等于理想视口的尺寸。言外之意就是,在代码 width=device-width 中：</p>
+<p>width：是布局视口的width<br>device-width：是理想视口的宽度</p>
+<p>根据公式(缩放比例为1)：</p>
+<p><b>设备像素比（DPR） = 设备像素个数 / 理想视口像素个数（device-width）</b></p>
+<p>以iphone6为例：<br>设备像素比（DPR）：2<br>设备像素个数：750<br>所以在缩放比例为1的情况下，iphone6理想视口的像素个数为 750 / 2 = 375，也就是说，对于iphone6来讲 device-width的值为375</p>
+<p>所以我们通过width=device-width这句话，间接的将布局视口的尺寸设为了375，也就是说，如果我们能改变理想视口的尺寸，也就改变了布局适口的尺寸，如何改变理想视口的尺寸呢？这就要讲到缩放了，上一篇我们讲到过缩放，缩放是缩小或放大CSS像素的过程，以iphone6为例，当我们缩放比例为1:1的时候，由于iphone6的设备像素比为2，所以iphone6的设备像素与CSS像素的关系看起来就像下图这样：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2015092319a.jpg" alt="iphone6下缩放比例为1时，设备像素与CSS像素的关系"></p>
+<p>一个CSS像素宽度等于两个设备像素宽度，所以750px的设备宽度的布局视口为357CSS像素。这是在缩放比例为1的情况下，既然缩放可以放大或缩小CSS像素，所以如果我们将CSS像素的宽度缩放至与设备像素宽度相等了，那么750个设备像素也就能显示750个CSS像素，缩放后的设备像素与CSS像素看起来应该像下图这样：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923px1.jpg" alt="iphone6缩小0.5倍后，设备像素与CSS像素的关系"></p>
+<p>但是，我们的缩放倍数是多少呢？在缩放比例为1的时候，一个CSS像素的宽度 = 两个设备像素的宽度，如果我们想让 一个CSS像素的宽度 = 一个设备像素的宽度，我们就要将CSS像素缩小为原来的0.5倍，实际上，我们缩小的倍数 = 设备像素比的倒数。<br>于是，我们修改上面的HTML代码(修改了meta标签)：</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=0.5,maximum-scale=0.5,user-scalable=no&quot; /&gt;
+    &lt;style&gt;
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    .box{
+        width: 200px;
+        height: 200px;
+        background: red;
+    }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>注意，上面代码中我们给红色方块使用的CSS尺寸直接使用的是psd稿中测量的尺寸，我们刷新页面，怎么样？满意吧：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2015092316b.jpg" alt="修改后的新页面正确输出"></p>
+<p>但是我们这是有个前提的，那就是缩放0.5倍只适用于设备像素比为2的设备（因为缩放值 = 1 / 设备像素比）。所以，为了适应所有的设备，我们应该用javascript代码动态生成meta标签：</p>
+<pre><code>var scale = 1 / window.devicePixelRatio;
+document.querySelector(&#39;meta[name=&quot;viewport&quot;]&#39;).setAttribute(&#39;content&#39;,&#39;width=device-width,initial-scale=&#39; + scale + &#39;, maximum-scale=&#39; + scale + &#39;, minimum-scale=&#39; + scale + &#39;, user-scalable=no&#39;);
+</code></pre><p>其中 <b>window.devicePixelRatio</b> 的值为设备像素比。<br>于是我们的代码变成了这样：</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;&quot; /&gt;
+    &lt;style&gt;
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    .box{
+        width: 200px;
+        height: 200px;
+        background: red;
+    }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+
+    &lt;script&gt;
+    var scale = 1 / window.devicePixelRatio;
+    document.querySelector(&#39;meta[name=&quot;viewport&quot;]&#39;).setAttribute(&#39;content&#39;,&#39;width=device-width,initial-scale=&#39; + scale + &#39;, maximum-scale=&#39; + scale + &#39;, minimum-scale=&#39; + scale + &#39;, user-scalable=no&#39;);
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>上面的代码最终能保证一个问题，那就是无论任何设备，布局视口的宽度总是等于设备像素。<br>这样，我们在设计图中测量为200px的宽度就能直接用在CSS中了，并且在iphone6中显示完好，可是别忘了，我们的设计图就是根据iphone6设计的，如果换做其他设备，还能显示完好么？我们不妨试一下，如下图，是上面代码在iphone5和iphone6下的对比：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923p5.jpg" alt="iphone5中的效果"></p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923p6.jpg" alt="iphone6中的效果"></p>
+<p>我们发现，无论是五还是6，即使设备像素变了，即屏幕宽度变了，可是红色方块的宽度并没有变，这并不是一个好的现象，因为这样页面的元素就不成比例了，会影响到布局，所以我们要想办法让我们页面的元素跟着设备变化而等比缩放，这就是我们要解决的第二个问题，怎么实现呢？这就要讲到rem的知识点了。</p>
+<h2 id="rem"><a href="#rem" class="headerlink" title="rem"></a>rem</h2><p>什么是rem？<br>rem是相对尺寸单位，相对于html标签字体大小的单位，举个例子：<br>如果html的font-size = 18px;<br>那么1rem = 18px，需要记住的是，rem是基于html标签的字体大小的。</p>
+<p>相信你已经明白了，对没错，我们要把之前用px做元素尺寸的单位换成rem，所以，现在的问题就是如果转换，因为rem是根据html标签的font-size值确定的，所以我们只要确定html标签的font-size值就行了，我们首先自己定一个标准，就是让font-size的值等于设备像素的十分之一，即：</p>
+<pre><code>document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + &#39;px&#39;;
+</code></pre><p>以iphone6为例，html标签的font-size的值就等于 750 / 10 = 75px 了，这样 1rem = 75px，所以红色方块200px换算为rem单位就是 200 / 75 = 2.6666667rem。<br>那么在iphone5中呢？因为iphone5的设备像素为640，所以iphone的html标签的font-size的值为 640 / 10 = 64px，所以 1rem = 64px，所以在iphone6中显示为200px的元素在iphone5中会显示为 2.6666667 * 64 像素，这样，在不同设备中就实现了让元素等比缩放从而不影响布局。而上面的方法也是手机淘宝所用的方法。所以，现在你只需要将你测量的尺寸数据除以75就转换成了rem单位，如果是iPhone5就要除以64，即除以你动态设置的font-size的值。</p>
+<p>另外需要注意的是：做页面的时候文字字体大小不要用rem换算，还是使用px做单位。后面会讲到。</p>
+<p>让我们来总结一下我们现在了解的方法：</p>
+<p>1、将布局视口大小设为设备像素尺寸：</p>
+<pre><code>var scale = 1 / window.devicePixelRatio;
+document.querySelector(&#39;meta[name=&quot;viewport&quot;]&#39;).setAttribute(&#39;content&#39;,&#39;width=device-width,initial-scale=&#39; + scale + &#39;, maximum-scale=&#39; + scale + &#39;, minimum-scale=&#39; + scale + &#39;, user-scalable=no&#39;);
+</code></pre><p>2、动态设置html字体大小：</p>
+<pre><code>document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + &#39;px&#39;;
+</code></pre><p>3、将设计图中的尺寸换算成rem</p>
+<p>元素的rem尺寸 = 元素的psd稿测量的像素尺寸 / 动态设置的html标签的font-size值</p>
+<p>说了一大堆，其实我们使用下面的html莫板就可以写页面了，唯一需要你做的就是计算元素的rem尺寸，所以即使你没看懂上面的讲述也不重要，你只要将莫板拿过去用就好了：</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+
+
+    &lt;script&gt;
+    var scale = 1 / window.devicePixelRatio;
+    document.querySelector(&#39;meta[name=&quot;viewport&quot;]&#39;).setAttribute(&#39;content&#39;,&#39;width=device-width,initial-scale=&#39; + scale + &#39;, maximum-scale=&#39; + scale + &#39;, minimum-scale=&#39; + scale + &#39;, user-scalable=no&#39;);
+
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + &#39;px&#39;;
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>现在我们使用上面的方法修改我们的代码如下：</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;&quot; /&gt;
+    &lt;style&gt;
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    .box{
+        width: 2.66666667rem;
+        height: 2.66666667rem;
+        background: red;
+    }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+
+    &lt;script&gt;
+    var scale = 1 / window.devicePixelRatio;
+    document.querySelector(&#39;meta[name=&quot;viewport&quot;]&#39;).setAttribute(&#39;content&#39;,&#39;width=device-width,initial-scale=&#39; + scale + &#39;, maximum-scale=&#39; + scale + &#39;, minimum-scale=&#39; + scale + &#39;, user-scalable=no&#39;);
+
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 10 + &#39;px&#39;;
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>打开浏览器，分别在iPhone6和iPhone5下查看页面，我们会发现，现在的元素可以根据手机的尺寸不同而等比缩放了。</p>
+<p>上面的方法是手机淘宝的方法，有一个缺点，就是转化rem单位的时候，需要除以font-size的值，淘宝用的是iPhone6的设计图，所以淘宝转换尺寸的时候要除以75，这个值可不好算，所以还要借用计算器来完成，影响开发效率，另外，在转还rem单位时遇到除不尽的数时我们会采用很长的近似值比如上面的2.6666667rem，这样可能会使页面元素的尺寸有偏差。</p>
+<p>除了上面的方法比较通用之外，还有一种方式，我们来重新思考一下：</p>
+<p>上面做页面的思路是：拿到设计图，比如iPhone6的设计图，我们就将浏览器设置到iPhone6设备调试，然后使用js动态修改meta标签，使布局视口的尺寸等于设计图尺寸，也就是设备像素尺寸，然后使用rem替代px做尺寸代为，使得页面在不同设备中等比缩放。</p>
+<p>现在假如我们不去修改meta标签，正常使用缩放为1:1的meta标签，即使用如下meta标签：</p>
+<pre><code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no&quot; /&gt;
+</code></pre><p>还以iPhone6为例，我们知道，在缩放为1:1的情况下，根据公式：</p>
+<p><b>设备像素比（DPR） = 设备像素个数 / 理想视口像素个数（device-width）</b></p>
+<p>我们知道：<br>设备像素 = 设计图尺寸 = 750px<br>布局视口 = 375px</p>
+<p>假设我们以iPhone6设计图尺寸为标准，在设计图的尺寸下设置一个font-size值为100px。<br>也就是说：750px宽的页面，我们设置100px的font-size值，那么页面的宽度换算为rem就等于 750 / 100 = 7.5rem。</p>
+<p>我们就以页面总宽为7.5rem为标准，那么在布局视口中，也就是页面总宽为375px下，font-size值应该是多少？很简单：</p>
+<p>font-size = 375 / 7.5 = 50px</p>
+<p>那么在iPhone5下呢？因为iPhone5的布局视口宽为320px，所以如果页面总宽以7.5为标准，那么iPhone5下我们设置的font-size值应该是：</p>
+<p>font-size = 320 / 7.5 =42.666666667px</p>
+<p>也就是说，不管在什么设备下，我们都可以把页面的总宽度设为一个以rem为单位的定值，比如本例就是7.5rem，只不过，我们需要根据布局视口的尺寸动态设置font-size的值：</p>
+<pre><code>document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + &#39;px&#39;;
+</code></pre><p>这样，无论在什么设备下，我们页面的总宽度都是7.5rem，所以我们直接在设计图上测量px单位的尺寸，然后除以100转换成rem单位后直接使用就可以了，比如，在iPhone6设计图中测量一个元素的尺寸为200px，那么转换成rem单位就是 200 / 100 = 2rem，因为在不同设备下我们动态设置了html标签的font-size值，所以不同设备下相同的rem值对应的像素值是不同的，这样就实现了在不同设备下等比缩放。我们修改html代码如下：</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no&quot; /&gt;
+    &lt;style&gt;
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    .box{
+        width: 2rem;
+        height: 2rem;
+        background: red;
+    }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+    &lt;div class=&quot;box&quot;&gt;&lt;/div&gt;
+
+    &lt;script&gt;
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + &#39;px&#39;;
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>刷新页面，分别在iPhone6和iPhone5下调试查看结果，会发现如下图，使我们想要的效果，等比缩放，ok，实际上这种做法也是网易的做法：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2015092320a.jpg" alt="iPhone6下显示效果"></p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2015092320b.jpg" alt="iPhone5下显示效果"></p>
+<p>下面，我们来总结一下第二种做法：</p>
+<p>1、拿到设计图，计算出页面的总宽，为了好计算，取100px的font-size，如果设计图是iPhone6的那么计算出的就是7.5rem，如果页面是iPhone5的那么计算出的结果就是6.4rem。<br>2、动态设置html标签的font-size值：</p>
+<pre><code>  document.documentElement.style.fontSize = document.documentElement.clientWidth / 以rem为单位的页面总宽 + &#39;px&#39;;
+</code></pre><p>  如iPhone6的设计图就是：</p>
+<pre><code>  document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + &#39;px&#39;;
+</code></pre><p>  iPhone5的设计图就是：</p>
+<pre><code>  document.documentElement.style.fontSize = document.documentElement.clientWidth / 6.4 + &#39;px&#39;;
+</code></pre><p>3、做页面是测量设计图的px尺寸除以100得到rem尺寸。<br>4、和淘宝的做法一样，文字字体大小不要使用rem换算。</p>
+<p>下面是这种做法的html莫板：</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;meta charset=&quot;utf-8&quot; /&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no&quot; /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+
+
+    &lt;script&gt;
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + &#39;px&#39;;
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>由于这种做法在开发中换算rem单位的时候只需要将测量的尺寸除以100即可，所以不需要使用计算器我们就可以很快的完成计算转换，所以这也会提升开发效率，本人也比较青睐这种做法。</p>
+<p>另外，无论是第一种做法还是第二种做法，我们都提到了，文字字体大小是不要换算成rem做单位的，而是使用媒体查询来进行动态设置，比如下面的代码就是网易的代码：</p>
+<p>代码片段一：</p>
+<pre><code>@media screen and (max-width: 321px) {
+    body {
+        font-size:16px
+    }
+}
+
+@media screen and (min-width: 321px) and (max-width:400px) {
+    body {
+        font-size:17px
+    }
+}
+
+@media screen and (min-width: 400px) {
+    body {
+        font-size:19px
+    }
+}
+</code></pre><p>代码片段二：</p>
+<pre><code>@media screen and (max-width: 321px) {
+    header,footer {
+        font-size:16px
+    }
+}
+
+@media screen and (min-width: 321px) and (max-width:400px) {
+    header,footer {
+        font-size:17px
+    }
+}
+
+@media screen and (min-width: 400px) {
+    header,footer {
+        font-size:19px
+    }
+}
+</code></pre><p>我们总结一下网易在文字字体大小上的做法，在媒体查询阶段，分为三个等级分别是：<br>321px以下<br>321px - 400px之间<br>400px以上</p>
+<p>具体文字大小要多少个像素这个以设计图为准，但是这三个等级之间是有规律的，仔细观察发现，321px以下的屏幕字体大小比321px - 400px之间的屏幕字体大小要小一个像素，而321px - 400px之间的屏幕字体大小要比400以上屏幕字体大小要小2个像素。依照这个规律，我们根据设计图所在的像素区段先写好该区段的字体大小，然后分别写出另外两个区段的字体大小媒体查询代码就可以了。</p>
+<p>终于码完了这第二篇文章，无力再多说其他的话，望对大家有帮助，有些细节地方没有细说，另外作者水平有限，希望大家指正共同进步，谢谢。</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

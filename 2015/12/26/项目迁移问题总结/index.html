@@ -1,0 +1,236 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>项目迁移问题总结 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="之前在Mac系统下搭建了一套用于自动化构建H5项目的平台，一直用Mac做service服务，现在要将项目迁移到Ubuntu上面，下面是整理了迁移过程中遇到的问题，供以后查阅">
+<meta name="keywords" content="nodejs,Ubuntu,git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="项目迁移问题总结">
+<meta property="og:url" content="hcysun.me/2015/12/26/项目迁移问题总结/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="之前在Mac系统下搭建了一套用于自动化构建H5项目的平台，一直用Mac做service服务，现在要将项目迁移到Ubuntu上面，下面是整理了迁移过程中遇到的问题，供以后查阅">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20151226Ubuntu.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512266.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512264.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512263.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512267.pic_hd.jpg">
+<meta property="og:updated_time" content="2015-12-29T09:42:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="项目迁移问题总结">
+<meta name="twitter:description" content="之前在Mac系统下搭建了一套用于自动化构建H5项目的平台，一直用Mac做service服务，现在要将项目迁移到Ubuntu上面，下面是整理了迁移过程中遇到的问题，供以后查阅">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20151226Ubuntu.jpg">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">项目迁移问题总结</h1>
+    <blockquote>
+<p>之前在Mac系统下搭建了一套用于自动化构建H5项目的平台，一直用Mac做service服务，现在要将项目迁移到Ubuntu上面，下面是整理了迁移过程中遇到的问题，供以后查阅</p>
+</blockquote>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20151226Ubuntu.jpg" alt="Ubuntu"></p>
+<a id="more"></a>
+<h1 id="Ubuntu下安装git和node"><a href="#Ubuntu下安装git和node" class="headerlink" title="Ubuntu下安装git和node"></a>Ubuntu下安装git和node</h1><p>当时在做项目迁移的时候并没有服务器，所以只能用旁边的一台windows安装个双系统，来充当服务器了，安装方法网上很多，不过我推荐一个朋友的博客中的一篇文章，我所安装的Ubuntu的版本是14.04的，并且是server版的，与该博客不符，但是原理相同，贴出<a href="https://xuri.me/2013/04/09/easybcd-install-ubuntu.html" target="_blank" rel="external">博客地址</a>。</p>
+<h2 id="Ubuntu-下安装-git"><a href="#Ubuntu-下安装-git" class="headerlink" title="Ubuntu 下安装 git"></a>Ubuntu 下安装 git</h2><p>Ubuntu的包管理是apt-get，可以使用如下命令安装git:</p>
+<pre><code>sudo apt-get install git
+</code></pre><p>但是这样安装的git版本是比较老的，并不推荐这样安装，如果想安装最新可用版本的可以执行下面的命令：</p>
+<pre><code>sudo add-apt-repository ppa:git-core/ppa
+sudo apt-get update
+sudo apt-get install git
+</code></pre><p>安装完成后可以查看git版本，确定安装是否成功</p>
+<pre><code>git --version
+</code></pre><h2 id="Ubuntu-下安装-node"><a href="#Ubuntu-下安装-node" class="headerlink" title="Ubuntu 下安装 node"></a>Ubuntu 下安装 node</h2><p>我采用的源码编译安装的方式，首先去<a href="https://nodejs.org/dist/" target="_blank" rel="external">node得资源列表</a>找到你要现在的资源包，如我所选择的资源包是：</p>
+<p><a href="https://nodejs.org/dist/v5.0.0/node-v5.0.0.tar.gz" target="_blank" rel="external">https://nodejs.org/dist/v5.0.0/node-v5.0.0.tar.gz</a></p>
+<p>选择好资源包后执行下面的命令即可：</p>
+<pre><code># 下载资源
+wget https://nodejs.org/dist/v5.0.0/node-v5.0.0.tar.gz
+# 解压
+tar zxvf node-v5.0.0.tar.gz
+# 编译安装
+cd node-v5.0.0
+./configure 
+make 
+make install
+cp /usr/local/bin/node /usr/sbin/
+</code></pre><p>查看是否安装成功</p>
+<pre><code>node -v
+</code></pre><p>如果正确输出版本号，那么说明我们安装成功了，也有其他安装方式，大家去网上看看吧</p>
+<h1 id="Ubuntu默认是用dash解析shell脚本"><a href="#Ubuntu默认是用dash解析shell脚本" class="headerlink" title="Ubuntu默认是用dash解析shell脚本"></a>Ubuntu默认是用dash解析shell脚本</h1><p>由于项目中我使用到了shell脚本，所以当项目迁移到Ubuntu的时候报错：</p>
+<pre><code>source xxx.sh时提示 source: not found
+</code></pre><p>原因是当时项目在Mac下跑得，Mac解析shell脚本使用的是bash，而Ubuntu默认是用的dash，我们可以使用下面的命令查看：</p>
+<pre><code>ls -l `which sh`
+</code></pre><p>如下图<br><img src="http://7xlolm.com1.z0.glb.clouddn.com/201512266.pic.jpg" alt="Ubuntu默认使用dash解析shell脚本"></p>
+<p>我们可以修改Ubuntu解析shell的方式：</p>
+<pre><code>sudo dpkg-reconfigure dash
+</code></pre><p>执行该命令后会出现如下图所示的选项，我们只需要选择否即可：<br><img src="http://7xlolm.com1.z0.glb.clouddn.com/201512264.pic.jpg" alt="选择否"></p>
+<p>这时在查看一下Ubuntu解析shell的方式：</p>
+<pre><code>ls -l `which sh`
+</code></pre><p>如下图，已经变为了 bash</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201512263.pic.jpg" alt="bash"></p>
+<h1 id="git的一些小事儿"><a href="#git的一些小事儿" class="headerlink" title="git的一些小事儿"></a>git的一些小事儿</h1><p>另外，总结两点git中的一些东西</p>
+<h2 id="1、让git忽略文件权限"><a href="#1、让git忽略文件权限" class="headerlink" title="1、让git忽略文件权限"></a>1、让git忽略文件权限</h2><p>项目幻想搭建好了之后，我就把代码使用git克隆了下来，由于运行项目的时候报错提示文件权限有问题，于是我就修改了整个项目目录的权限，当我使用git pull拉取项目的时候提示我本地仓库有修改，让我提交后再拉取，我很疑惑因为我刚刚clone下来，毛儿都没动，我改什么了我？后来是用git status查看发现，一大片红色(修改未提交的文件)，后来我猜想应该是git把文件权限也纳入管理的范围内了，后来上网一查，果然，不过可以执行下面的命令，使git忽略对文件权限的管理：</p>
+<pre><code>git config core.filemode false
+</code></pre><p>这是在使用 git status 查看，会发现工作区干净了，搞定。</p>
+<h2 id="2、https方式克隆的项目每次都提示输入用户名和密码"><a href="#2、https方式克隆的项目每次都提示输入用户名和密码" class="headerlink" title="2、https方式克隆的项目每次都提示输入用户名和密码"></a>2、https方式克隆的项目每次都提示输入用户名和密码</h2><p>另外还有一个问题，就是当时克隆项目的时候我使用的是https的方式，并不是ssh的方式，https的好处就是告诉，而ssh的好处是安全，正因如此，使用https克隆的项目每次push、pull等操作都要提示输入用户名密码，所以我们要解决这个问题。</p>
+<p>第一步：切换到家目录 “~”</p>
+<pre><code>cd ~
+</code></pre><p>第二步：创建并编辑 .git-credentials 文件</p>
+<pre><code>touch .git-credentials
+
+vim .git-credentials
+</code></pre><p>第三步：把如下内容写入.git-credentials文件中，报错并退出</p>
+<pre><code># {username} 你的git账户名
+# {password} 你的git密码
+# example.com 你的git仓库域名
+# 例子：https://hcysunyang:12345678@github.com
+
+https://{username}:{password}@example.com
+</code></pre><p>第四步：执行下面的命令</p>
+<pre><code>git config --global credential.helper store
+</code></pre><p>接下来你就可以执行push、pull等操作了，但是还是会提示你输入一次账号密码的，别着急，仅此一次而已，以后就不会再让你输入了，搞定。</p>
+<h1 id="Ubuntu下mongodb启动失败"><a href="#Ubuntu下mongodb启动失败" class="headerlink" title="Ubuntu下mongodb启动失败"></a>Ubuntu下mongodb启动失败</h1><p>如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201512267.pic_hd.jpg" alt="mongodb启动失败"></p>
+<p>造成启动失败的原因有很多，其中最常见的就是非正常退出，下一次再启动的时候就会遇到如上情况，在Mac下或者windows下，一般我们需要把mongod.lock文件删除就可以成功重启了，但是今天在Ubuntu下却不行，在Ubuntu下记得要把mongodb-27017.sock文件也删除掉：</p>
+<pre><code>sudo rm -rf /var/lib/mongodb/mongod.lock
+sudo rm -rf /tmp/mongodb-27017.sock
+</code></pre><p>之后重启：</p>
+<pre><code>sudo service mongod start
+</code></pre><p>就可以正常启动了</p>
+<h1 id="nohup-命令让进程在后台运行"><a href="#nohup-命令让进程在后台运行" class="headerlink" title="nohup 命令让进程在后台运行"></a>nohup 命令让进程在后台运行</h1><p>当时我是使用ssh远程登录的，又不想多开窗口，所以希望node服务在后台运行，这时候可以使用nohup命令，该命令能够让进程在后台运行，nohup命令的格式如下：</p>
+<pre><code>nohup Command [ Arg ... ] [　&amp; ]
+</code></pre><p>例如我想要node的web服务在后台运行，在我的项目中可以执行下面的代码带到目的：</p>
+<pre><code>nohup node admin.js &amp;
+</code></pre><h1 id="Ubuntu下添加用户并赋予root权限"><a href="#Ubuntu下添加用户并赋予root权限" class="headerlink" title="Ubuntu下添加用户并赋予root权限"></a>Ubuntu下添加用户并赋予root权限</h1><p>在Ubuntu下可以使用 adduser 命令添加一个用户：</p>
+<pre><code>adduser &lt;username&gt;
+</code></pre><p>执行该命令之后会让你为该用户设置密码，但是这样添加的用户是没有使用root权限的用户，我们需要一些配置来赋予该用户使用root权限的能力，修改配置需要编辑 /etc/sudoers 文件，这个文件默认是只读的，所以第一步修改文件为可写：</p>
+<pre><code>chmod u+w /etc/sudoers
+</code></pre><p>然后编辑该文件：</p>
+<pre><code>sudo vim /etc/sudoers
+</code></pre><p>找到下面这句话：</p>
+<pre><code># Allow members of group sudo to execute any command
+%sudo   ALL=(ALL:ALL) ALL
+</code></pre><p>在其 %sudo   ALL=(ALL:ALL) ALL 下面再添加一行：</p>
+<pre><code>%username   ALL=(ALL:ALL) ALL
+</code></pre><p>username为你创建用户的用户名，之后保存退出，并还原 sudoers 文件只读的权限：</p>
+<pre><code>chmod u-w /etc/sudoers
+</code></pre><p>接下来新用户就可以登录并使用root权限了。</p>
+<h1 id="安装完Ubuntu后乱码"><a href="#安装完Ubuntu后乱码" class="headerlink" title="安装完Ubuntu后乱码"></a>安装完Ubuntu后乱码</h1><p>修改/etc/default/locale</p>
+<pre><code>sudo vim /etc/default/locale
+</code></pre><p>将：</p>
+<pre><code>LANG=zh_CN.UTF-8
+LANGUAGE=zh_CN:zh
+</code></pre><p>修改为：</p>
+<pre><code>LANG=&quot;en_US.UTF-8&quot;
+LANGUAGE=&quot;en_US:en&quot;
+</code></pre><p>最后reboot一下就可以了：</p>
+<pre><code>sudo reboot
+</code></pre>
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,322 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>不用Express脚手架-自己搭建程序骨架 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="初识ExpressExpress的官网上是这样介绍的：“精简的、灵活的Node.js Web程序框架”。express的哲学是“少即是多”，express是可扩展的，他只充当你和服务器之间薄薄的一层，这并不是说它不健壮，而是尽量少干预你，让你能够充分表达自己的思想。">
+<meta name="keywords" content="express,nodejs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不用Express脚手架-自己搭建程序骨架">
+<meta property="og:url" content="hcysun.me/2015/09/23/不用Express脚手架-自己搭建程序骨架/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="初识ExpressExpress的官网上是这样介绍的：“精简的、灵活的Node.js Web程序框架”。express的哲学是“少即是多”，express是可扩展的，他只充当你和服务器之间薄薄的一层，这并不是说它不健壮，而是尽量少干预你，让你能够充分表达自己的思想。">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923a.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923b.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923c.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923d.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923e.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923f.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923g.png">
+<meta property="og:updated_time" content="2015-11-28T10:45:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="不用Express脚手架-自己搭建程序骨架">
+<meta name="twitter:description" content="初识ExpressExpress的官网上是这样介绍的：“精简的、灵活的Node.js Web程序框架”。express的哲学是“少即是多”，express是可扩展的，他只充当你和服务器之间薄薄的一层，这并不是说它不健壮，而是尽量少干预你，让你能够充分表达自己的思想。">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/20150923a.png">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">不用Express脚手架-自己搭建程序骨架</h1>
+    <h1 id="初识Express"><a href="#初识Express" class="headerlink" title="初识Express"></a>初识Express</h1><p><a href="http://expressjs.com/" target="_blank" rel="external">Express</a>的官网上是这样介绍的：“精简的、灵活的Node.js Web程序框架”。<br>express的哲学是“少即是多”，express是可扩展的，他只充当你和服务器之间薄薄的一层，这并不是说它不健壮，而是尽量少干预你，让你能够充分表达自己的思想。</p>
+<a id="more"></a>
+<p>在开始之前，首先要确认你对node有一定的了解，以及你的电脑上已经安装了node，接下来我们就开始吧。<br>既然是使用express从零搭建项目，那么第一步我们应该创建自己的项目文件夹也叫根目录或者项目目录（一下统称为项目目录）：</p>
+<pre><code>mkdir learnexpress
+cd learnexpress
+</code></pre><p>npm(包管理工具)是基于package.json文件管理项目的依赖以及项目的元数据的，所以我们要创建package.json这个文件，最简单的办法就是先项目目录中执行</p>
+<pre><code>npm init
+</code></pre><p>执行上面的命令后，终端会提出一些列问题，来帮助你完成这个文件：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923a.png" alt="npm init"> </p>
+<p>不过我们可以一路回车，不需要填写任何信息，这样就会生成一个包含默认信息的package.json文件，打开该文件，内容如下：</p>
+<pre><code>{
+  &quot;name&quot;: &quot;learnexp&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;&quot;,
+  &quot;main&quot;: &quot;index.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+  },
+  &quot;author&quot;: &quot;&quot;,
+  &quot;license&quot;: &quot;ISC&quot;
+}
+</code></pre><p>package.json文件创建好了，我们就可以开始安装express了，执行：</p>
+<pre><code>npm install --save express
+</code></pre><p>运行npm install会把指定名称的包安装到node_modules目录下，如果你使用了 –save 选项，他还会更新package.json文件，将包的依赖写入package.json，打开项目目录，你会发现多了一个node_modules目录，此时再次打开package.json文件，会发现文件被更新了：</p>
+<pre><code>{
+  &quot;name&quot;: &quot;learnexp&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;&quot;,
+  &quot;main&quot;: &quot;index.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+  },
+  &quot;author&quot;: &quot;&quot;,
+  &quot;license&quot;: &quot;ISC&quot;,
+  &quot;dependencies&quot;: {
+    &quot;express&quot;: &quot;^4.13.3&quot;
+  }
+}
+</code></pre><p>express也安装好了，接下来，我们就可以开始写项目了，那么我们第一步需要做的事情是什么呢？不管任何一个项目都需要一个入口文件，所以我们接下来要做的就是写入口文件，在我们的项目目录下面创建一个js文件，文件名称自定义，但是最好以你的项目名称去命名，这里我们就叫app.js作为我们的项目入口文件，并写入以下代码</p>
+<pre><code>// 引入express模块
+var express = require(&#39;express&#39;);
+
+// 调用express()方法创建一个对象
+var app = express();
+
+// 设置端口
+app.set(&#39;port&#39;, process.env.PORT || 3000);
+
+// 中间件 定制404页面
+app.use(function(req, res){
+    res.type(&#39;text/plain&#39;);
+    res.status(404);
+    res.send(&#39;404 - Not Found&#39;);
+});
+
+// 中间件 定制500页面
+app.use(function(req, res){
+    res.type(&#39;text/plain&#39;);
+    res.status(500);
+    res.send(&#39;500 - Server Error&#39;);
+});
+
+app.listen(app.get(&#39;port&#39;), function(){
+    console.log(&#39;express启动并监听&#39; + app.get(&#39;port&#39;) + &#39;端口，按 Ctrl + C 终止&#39;);
+});
+</code></pre><p>入口文件写好后，我们保存文件，在项目目录下执行：</p>
+<pre><code>node app.js
+</code></pre><p>这样，我们的程序就跑起来了，打开你的浏览器，输入 <em> localhost:3000 </em>，会看到如下界面：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923b.png" alt="404"></p>
+<p>为什么是404界面呢？很简单我们并没有设置任何路由，我们的入口文件（app.js）中只设置了404、500的处理。<br>在我们给应用程序加上路由之前我们来说一些问题，首先通过执行 <em> npm init </em> 创建的package.json中main属性的默认值是index.js，而我们的项目入口文件是app.js，所以我们要手动修改package.json文件的main属性为app.js：</p>
+<pre><code>{
+  &quot;name&quot;: &quot;learnexp&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;&quot;,
+  &quot;main&quot;: &quot;app.js&quot;,
+  &quot;scripts&quot;: {
+    &quot;test&quot;: &quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;
+  },
+  &quot;author&quot;: &quot;&quot;,
+  &quot;license&quot;: &quot;ISC&quot;,
+  &quot;dependencies&quot;: {
+    &quot;express&quot;: &quot;^4.13.3&quot;
+  }
+}
+</code></pre><p>接下来，我们给首页和关于页面加上路由，注意：路由应该放在404和500处理器前面：</p>
+<pre><code>// 首页路由
+app.get(&#39;/&#39; ,function(req, res){
+    res.type(&#39;text/plain&#39;);
+    res.send(&#39;home&#39;);
+})
+
+// 关于页面路由
+app.get(&#39;/about&#39; ,function(req, res){
+    res.type(&#39;text/plain&#39;);
+    res.send(&#39;about&#39;);
+})
+
+// 中间件 定制404页面
+app.use(function(req, res){
+    res.type(&#39;text/plain&#39;);
+    res.status(404);
+    res.send(&#39;404 - Not Found&#39;);
+});
+
+........
+</code></pre><p>app.get 是我们添加的路由方法(常见的还有 app.post )，这个方法有两个参数：第一个参数是路径，第二个参数是一个回调函数<br>重启我们的node服务</p>
+<pre><code>node app.js
+</code></pre><p>打开浏览器分别输入 <em> localhost:3000 </em> 和 <em> localhost:3000/about </em> 怎么样，是否如下图所示：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923c.png" alt="首页"> <img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923d.png" alt="关于页面"></p>
+<h1 id="莫板引擎"><a href="#莫板引擎" class="headerlink" title="莫板引擎"></a>莫板引擎</h1><p>那么问题来了，我们的界面不可能总是一堆文字吧，是不是应该有漂亮的样式，开发过程中是不是应该有模板引擎，我相信很多同学对莫板引擎是不陌生的。express支持很多种莫板引擎，例如Jade，ejs等，而我们今天要介绍的是 Handlebars，为了支持handlebars，我们首先要安装 express3-handlebars 包：</p>
+<pre><code>npm install --save express3-handlebars
+</code></pre><p>然后在我们的项目入口文件中<em> 创建app的代码 </em>之后加入以下代码：</p>
+<pre><code>var app = express();
+
+// 设置handlebars莫板引擎
+var handlebars = require(&#39;express3-handlebars&#39;).create({defaultLayout : &#39;main&#39;});
+app.engine(&#39;handlebars&#39;, handlebars.engine);
+app.set(&#39;view engine&#39;, &#39;handlebars&#39;);
+</code></pre><p>以上代码中，我们执行了 <em> {defaultLayout : ‘main’} </em> ，这就意味着除非我们特别声明，否则所有视图都将使用main.handlebars作为默认布局，布局文件默认在 <em> views/layouts/ </em> 目录下，接下来我们想项目目录下创建views目录，并在views目录中创建layouts目录，在layouts目录中创建main.handlebars文件：</p>
+<pre><code>&lt;!dpcument html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;默认布局&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;默认布局哦哦哦哦&lt;/h1&gt;
+    {{{body}}}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>编写好默认布局好，我们来分别创建首页页面，views/home.handlebars</p>
+<pre><code>&lt;h1&gt;这是首页&lt;/h1&gt;
+</code></pre><p>关于我们页面，views/about.handlebars</p>
+<pre><code>&lt;h1&gt;这是关于我们页面&lt;/h1&gt;
+</code></pre><p>404页面，views/404.handlebars</p>
+<pre><code>&lt;h1&gt;这是404页面&lt;/h1&gt;
+</code></pre><p>500页面，500.handlebars</p>
+<pre><code>&lt;h1&gt;这是500页面&lt;/h1&gt;
+</code></pre><p>现在视图也编写好了，接下来我们修改项目入口文件中的路由已经404和500处理器：</p>
+<pre><code>// 首页路由
+app.get(&#39;/&#39; ,function(req, res){
+    res.render(&#39;home&#39;);
+})
+
+// 关于页面路由
+app.get(&#39;/about&#39; ,function(req, res){
+    res.render(&#39;about&#39;);
+})
+
+// 中间件 定制404页面
+app.use(function(req, res){
+    res.status(404);
+    res.render(&#39;404&#39;);
+});
+
+// 中间件 定制500页面
+app.use(function(req, res){
+    res.status(500);
+    res.render(&#39;500&#39;);
+});
+</code></pre><p>注意我们已经不用res.type指定内容类型了，视图引擎默认会返回 text/html 内容类型，也不用 res.status 指定状态码了，视图引擎会默认返回200状态码(对于404和500页面必须指定状态码)<br>下面，我们再次重启服务器</p>
+<pre><code>node app.js
+</code></pre><p>怎么样，是不是如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923e.png" alt="使用莫板引擎的首页"> <img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923f.png" alt="使用莫板引擎的关于页面"></p>
+<h1 id="视图和静态资源"><a href="#视图和静态资源" class="headerlink" title="视图和静态资源"></a>视图和静态资源</h1><p>我们在做视图的时候，总是会使用带静态资源，比如图片、css、javascript文件等，express是靠static中间件管理静态资源的，它可以把一个或多个目录指派成包含静态资源的目录，其中的资源不经过任何处理直接发给客户端。</p>
+<p>在项目目录下创建 <em> public </em> 目录，接下来，在所有路由以及中间件之前加入static中间件：</p>
+<pre><code>app.use(express.static(__dirname + &#39;/public&#39;));
+</code></pre><p>接下来，在public目录下面创建一个img子目录，并照一张图片放入该目录下（如：logo.png），之后修改main.handlebars布局文件</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;默认布局&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;img src=&quot;/img/logo.png&quot; alt=&quot;LOGO&quot; /&gt;
+    &lt;h1&gt;默认布局哦哦哦哦&lt;/h1&gt;
+    {{{body}}}
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>重启node服务</p>
+<pre><code>node app.js
+</code></pre><p>访问主页面，是不是看到了静态资源图片：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923g.png" alt="静态资源图片"></p>
+<p>好啦，这就是express搭建项目的基本使用，你还可以在public目录下面创建类似于css，js这样的子目录，存放对应的静态资源文件，更多有关于express的内容，可以继续关注我的博客，或者<a href="http://expressjs.com/" target="_blank" rel="external">express</a>官网</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

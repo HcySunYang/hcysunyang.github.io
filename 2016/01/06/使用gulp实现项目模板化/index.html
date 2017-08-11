@@ -1,0 +1,280 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>使用gulp实现项目模板化 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="当一个大项目逐渐成型，或者一个框架又或者一个开发方式逐渐成型的时候，总会有一个所谓的“套路”，我们在工作中往往遵循着这个套路走。所以更换一家公司或者一个部门团队的时候，上手项目并不难，你只需要掌握这个团队管用的“套路”就ok了，关键是：要想办法优化这个“套路”。">
+<meta name="keywords" content="nodejs,自动化,gulp,插件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用gulp实现项目模板化">
+<meta property="og:url" content="hcysun.me/2016/01/06/使用gulp实现项目模板化/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="当一个大项目逐渐成型，或者一个框架又或者一个开发方式逐渐成型的时候，总会有一个所谓的“套路”，我们在工作中往往遵循着这个套路走。所以更换一家公司或者一个部门团队的时候，上手项目并不难，你只需要掌握这个团队管用的“套路”就ok了，关键是：要想办法优化这个“套路”。">
+<meta property="og:updated_time" content="2016-01-06T11:24:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用gulp实现项目模板化">
+<meta name="twitter:description" content="当一个大项目逐渐成型，或者一个框架又或者一个开发方式逐渐成型的时候，总会有一个所谓的“套路”，我们在工作中往往遵循着这个套路走。所以更换一家公司或者一个部门团队的时候，上手项目并不难，你只需要掌握这个团队管用的“套路”就ok了，关键是：要想办法优化这个“套路”。">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">使用gulp实现项目模板化</h1>
+    <blockquote>
+<p>当一个大项目逐渐成型，或者一个框架又或者一个开发方式逐渐成型的时候，总会有一个所谓的“套路”，我们在工作中往往遵循着这个套路走。所以更换一家公司或者一个部门团队的时候，上手项目并不难，你只需要掌握这个团队管用的“套路”就ok了，关键是：要想办法优化这个“套路”。</p>
+</blockquote>
+<a id="more"></a>
+<p>之前一直在做内部框架的跨平台和自动化构建的事，加上开发业务逻辑的页面已经完成，就没去优化这个开发套路，什么套路呢？当项目中需要一个新的H5页面的时候，就需要手动去copy之前的一个页面代码，然后逐个修改，改成另外一个页面。去掉代码中的业务逻辑，会发现除了名称不同，其余的代码全部相同，秉承着“上级命令一定要完成”总宗旨，非也，是秉承着“我是一个程序员”的宗旨，就应该将一切需要手工完成的工作变成自动化的。所以……所以就不吹NB了，好好写……</p>
+<p>一个古老的思路是，你应该有一套模板，当有新的页面需要开发的时候，只需一条命令或者一个按钮就可以自动帮你基于这套模板创建一个可直接用于开发的环境。为了达成这个目的，我是用到了：</p>
+<p>1.gulp</p>
+<p>gulp的教程这里就不写了，这里讲的很清楚 <a href="http://www.gulpjs.com.cn/docs/api/" target="_blank" rel="external">gulp教程</a></p>
+<p>2.该功能主要使用到的gulp插件</p>
+<p><a href="https://www.npmjs.com/package/gulp-load-plugins" target="_blank" rel="external">gulp-load-plugins</a> 加载gulp插件的插件</p>
+<p><a href="https://www.npmjs.com/package/gulp-file-include" target="_blank" rel="external">gulp-file-include</a> 文件包含插件</p>
+<p><a href="https://www.npmjs.com/package/gulp-data" target="_blank" rel="external">gulp-data</a> 提供数据，该数据可被其他gulp插件使用</p>
+<p><a href="https://www.npmjs.com/package/gulp-rename" target="_blank" rel="external">gulp-rename</a> 重命名文件</p>
+<p><a href="https://www.npmjs.com/package/gulp-template" target="_blank" rel="external">gulp-template</a> 渲染模板</p>
+<p>上面的插件连接，点击进去就是文档。</p>
+<p>笔者认为最好的学习方式就是有一个能运行起来的项目，然后看着代码一步步走，所以我把模板化从公司的项目中抽离出来，并做了删减，提炼出一个完整的可运行的项目，并放在我的git仓库，可以运行一下命令查看效果，调试并学习：</p>
+<pre><code>git clone git@github.com:HcySunYang/modapp.git
+
+npm install
+
+gulp createapp --name=aaa
+</code></pre><p>下面是gulpfile.js文件和package.json文件</p>
+<h1 id="gulpfile-js"><a href="#gulpfile-js" class="headerlink" title="gulpfile.js"></a>gulpfile.js</h1><pre><code>var gulp = require(&#39;gulp&#39;);
+var gulpLoadPlugins = require(&quot;gulp-load-plugins&quot;);
+var plugins = gulpLoadPlugins();
+var util     = require(&quot;gulp-util&quot;);
+var devPath = &#39;./html&#39;;
+var appData = {};
+
+/*
+ * @desc 组装模板
+ * @src  devPath 
+ * @deps 
+ * @dest devPath + &#39;/tmod/app/dest&#39;
+ */
+gulp.task(&#39;includeTpl&#39;,function () {
+    // 获取 gulp 命令的 --name参数的值 （gulp createapp --name=aaa）
+    var appName = util.env.name || &#39;special&#39;;
+
+    // 首字母大写
+    var appNameBig = appName.replace((/\w/), function(char){
+        return char.toUpperCase();
+    });
+
+    appData={
+        app: appName,
+        appapi: appNameBig,
+        appDo: appName + &quot;Do&quot;,
+        title: appName
+    }
+    return gulp.src([
+            devPath + &#39;/tmod/app/app.tpl&#39;,
+            devPath + &#39;/tmod/app/appDo.tpl&#39;,
+            devPath + &#39;/tmod/app/app.html&#39;,
+            devPath + &#39;/tmod/app/appApi.tpl&#39;,
+            devPath + &#39;/tmod/app/appapiInterFace.tpl&#39;
+        ])
+        .pipe(plugins.fileInclude({
+            prefix: &#39;@@&#39;,
+            basepath: &#39;@file&#39;
+        }))
+        .pipe(gulp.dest(devPath + &#39;/tmod/app/dest&#39;));
+});
+
+/*
+ * @desc 解析模板
+ * @src  devPath 
+ * @deps includeTpl
+ * @dest devPath + &#39;/tmod/app/dest&#39;
+ */
+gulp.task(&#39;resolveTpl&#39;,[&quot;includeTpl&quot;],function () {
+    return gulp.src([
+            devPath + &#39;/tmod/app/dest/app.tpl&#39;,
+            devPath + &#39;/tmod/app/dest/appDo.tpl&#39;,
+            devPath + &#39;/tmod/app/dest/app.html&#39;,
+            devPath + &#39;/tmod/app/dest/appApi.tpl&#39;,
+            devPath + &#39;/tmod/app/dest/appapiInterFace.tpl&#39;
+        ])
+        .pipe(plugins.data(function () {
+            return {app: appData.app, appDo:appData.appDo,title:appData.title, appapi : appData.appapi};
+        }))
+        .pipe(plugins.template())
+        .pipe(gulp.dest(devPath + &#39;/tmod/app/dest&#39;));
+});
+
+/*
+ * @desc 创建部署
+ * @src  devPath + &#39;/tmod/app/dest 
+ * @deps resolveTpl
+ * @dest devPath + &#39;/modules/&#39;
+ */
+gulp.task(&#39;createapp&#39;, [&quot;resolveTpl&quot;], function () {
+    // 创建部署入口js文件，如 index.js
+    gulp.src(devPath + &#39;/tmod/app/dest/app.tpl&#39;)
+        .pipe(plugins.rename({
+            basename: appData.app,
+            extname: &quot;.js&quot;
+        }))
+        .pipe(gulp.dest(devPath + &#39;/target/&#39;+appData.app));
+
+    // 创建部署业务逻辑js文件，如 indexDo.js
+    gulp.src(devPath + &#39;/tmod/app/dest/appDo.tpl&#39;)
+        .pipe(plugins.rename({
+            basename: appData.appDo,
+            extname: &quot;.js&quot;
+        }))
+        .pipe(gulp.dest(devPath + &#39;/target/&#39;+appData.app));
+
+    // 创建部署html页面文件，如 index.html
+    gulp.src([devPath + &#39;/tmod/app/dest/*.html&#39;])
+        .pipe(plugins.rename({
+            basename: appData.app,
+            extname: &quot;.html&quot;
+        }))
+        .pipe(gulp.dest(devPath + &#39;/target/&#39;+appData.app));
+
+    // 创建部署api接口js文件，如 indexApi.js
+    gulp.src(devPath + &#39;/tmod/app/dest/appApi.tpl&#39;)
+        .pipe(plugins.rename({
+            basename: appData.app + &#39;Api&#39;,
+            extname: &quot;.js&quot;
+        }))
+        .pipe(gulp.dest(devPath + &#39;/target/clientApi&#39;));
+
+    // 创建部署跨平台接口js文件，如 indexapiInterFace.js
+    gulp.src(devPath + &#39;/tmod/app/dest/appapiInterFace.tpl&#39;)
+        .pipe(plugins.rename({
+            basename: appData.app + &#39;apiInterFace&#39;,
+            extname: &quot;.js&quot;
+        }))
+        .pipe(gulp.dest(devPath + &#39;/target/clientApi&#39;));
+});
+</code></pre><h1 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h1><pre><code>{
+  &quot;name&quot;: &quot;app&quot;,
+  &quot;project&quot;: &quot;app&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;host&quot;: &quot;http://10.0.69.79&quot;,
+  &quot;path&quot;: &quot;/home/huangjian/workstation/bridge/newssdk/bin&quot;,
+  &quot;devDependencies&quot;: {
+    &quot;gulp&quot;: &quot;^3.9.0&quot;,
+    &quot;gulp-data&quot;: &quot;^1.2.0&quot;,
+    &quot;gulp-file-include&quot;: &quot;^0.13.7&quot;,
+    &quot;gulp-load-plugins&quot;: &quot;^0.10.0&quot;,
+    &quot;gulp-rename&quot;: &quot;^1.2.0&quot;,
+    &quot;gulp-template&quot;: &quot;^2.1.0&quot;,
+    &quot;gulp-util&quot;: &quot;^3.0.6&quot;
+  }
+}
+</code></pre><p>大家重在研究代码的思路和各个组件的用法及配合，不要去研究代码的细节，比如这个构建出来的项目有什么用啊？当然对于你来说没什么用，因为这个是应用在公司项目中的，这个是为了给大家方便，抽离出来的，所以大家把握好重点。</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

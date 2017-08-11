@@ -1,0 +1,227 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Mac下使用brew安装mongodb | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Homebrew是Mac下得套件管理器，类似于Linux系统中的 yum 或者 apt-get ，它能让你的Mac更完美。mongodb则是NOSQL数据库，一种文档数据库，不同于传统的关系型数据库(mysql,orcal等)，这篇文章对brew做了基本介绍并使用brew在Mac下安装mongoddb以及其中的问题和注意事项（笔者笔记）">
+<meta name="keywords" content="mongodb,数据库,brew">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac下使用brew安装mongodb">
+<meta property="og:url" content="hcysun.me/2015/11/21/Mac下使用brew安装mongodb/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="Homebrew是Mac下得套件管理器，类似于Linux系统中的 yum 或者 apt-get ，它能让你的Mac更完美。mongodb则是NOSQL数据库，一种文档数据库，不同于传统的关系型数据库(mysql,orcal等)，这篇文章对brew做了基本介绍并使用brew在Mac下安装mongoddb以及其中的问题和注意事项（笔者笔记）">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511211.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511212.pic_hd.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511213.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511214.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201512031.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511215.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511216.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511217.pic.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511218.pic.jpg">
+<meta property="og:updated_time" content="2015-12-03T10:12:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mac下使用brew安装mongodb">
+<meta name="twitter:description" content="Homebrew是Mac下得套件管理器，类似于Linux系统中的 yum 或者 apt-get ，它能让你的Mac更完美。mongodb则是NOSQL数据库，一种文档数据库，不同于传统的关系型数据库(mysql,orcal等)，这篇文章对brew做了基本介绍并使用brew在Mac下安装mongoddb以及其中的问题和注意事项（笔者笔记）">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/201511211.pic.jpg">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">Mac下使用brew安装mongodb</h1>
+    <blockquote>
+<p>Homebrew是Mac下得套件管理器，类似于Linux系统中的 yum 或者 apt-get ，它能让你的Mac更完美。mongodb则是NOSQL数据库，一种文档数据库，不同于传统的关系型数据库(mysql,orcal等)，这篇文章对brew做了基本介绍并使用brew在Mac下安装mongoddb以及其中的问题和注意事项（笔者笔记）</p>
+</blockquote>
+<a id="more"></a>
+<p>最近工作需要完成的任务比较多，所以前一篇系列博客（基于gulp requirejs rjs的前端自动化构建系列文章）还没完成，先在此插一篇博客，记录一些东西，由于最近在工作中需要针对我们的现有前端框架搭建一套配合输出的后台系统，用来完成前端构建，输出项目等工作，于是准备使用node + express做项目估价，mongodb做持久化，而本篇文章，记录了Mac下使用brew安装mongodb的有关东西。</p>
+<h1 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h1><p><a href="http://brew.sh/index_zh-cn.html" target="_blank" rel="external">Homebrew</a> 是Mac下得软件包管理工具，我们可以用它在我们的Mac下安装软件，卸载软件等。要是用Homebrew，首先我们要在我们的Mac下安装Homebrew，执行下面的命令进行安装：</p>
+<pre><code>ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+</code></pre><p>Homebrew的安装很简单，使用一条ruby命令，我们的Mac电脑自带ruby，你可以在终端中试一下：</p>
+<pre><code>ruby -v
+</code></pre><p>如下，输出ruby的版本：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201511211.pic.jpg" alt="Mac终端下查看ruby版本"></p>
+<p>执行安装命令，安装brew，安装完成后，我们就可以使用brew安装Mac下得软件了，在安装mongodb之前，我们再了解了解brew，首先如何卸载brew?如果你不知道怎么去卸载的话，你可以再次执行一次brew的安装命令，如果你已经安装了brew再次执行安装命令的话，会给你一个提示，告诉你你的系统已经安装过brew了，如果想要重复安装就执行卸载命令，这样，你根据终端的提示执行以下卸载命令就可以了，另外我也把brew的卸载命令贴出来：</p>
+<pre><code>ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/uninstall)&quot;
+</code></pre><p>其实就是把安装命令中的install改成uninstall就ok了。</p>
+<p>下面列出一些brew的常用命令：</p>
+<p>1、跟新brew本身</p>
+<pre><code>brew update
+</code></pre><p>2、使用brew安装软件</p>
+<pre><code>brew install soft_name
+// soft_name为你所要安装软件的标志，如使用brew安装git
+brew install git
+</code></pre><p>3、使用brew卸载软件</p>
+<pre><code>brew uninstall soft_name
+// soft_name为你所要卸载软件的标志，如使用brew卸载git
+brew uninstall git
+</code></pre><p>4、显示使用brew安装的软件列表</p>
+<pre><code>brew list
+</code></pre><p>5、更新软件</p>
+<pre><code>brew upgrade        // 更新所有使用brew安装的软件
+brew upgrade git    // 更新某个使用brew安装的软件
+</code></pre><p>6、查看哪些软件需要更新</p>
+<pre><code>brew outdated
+</code></pre><p>7、查找软件</p>
+<pre><code>// 当你记不清软件的名字的时候，你可以使用search，只需要写去几个字母，他就会帮你联想，并把所有可能的结果输出给你
+brew search
+</code></pre><p>下图为使用brew search gi的输出结果：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201511212.pic_hd.jpg" alt="使用brew search gi"></p>
+<p>8、查看使用brew安装的东西，安装在哪里</p>
+<pre><code>brew --cache
+</code></pre><p><a href="https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/FAQ.md" target="_blank" rel="external">更多命令</a></p>
+<h1 id="使用brew安装mongodb"><a href="#使用brew安装mongodb" class="headerlink" title="使用brew安装mongodb"></a>使用brew安装mongodb</h1><p>1、有了brew，我们安装mongodb就变得很简单了：</p>
+<pre><code>brew install mongodb
+</code></pre><p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201511213.pic.jpg" alt="安装完成"></p>
+<p>2、之后将我们的mongodb升级一下，确保版本最新的</p>
+<pre><code>brew upgrade mongodb
+</code></pre><p>如果你现在就启动mongo你并不会成功，如下：</p>
+<pre><code>Failed to connect to 127.0.0.1:27017, reason: errno:61 Connection refused
+
+Error: couldn&#39;t connect to server 127.0.0.1:27017 (127.0.0.1), connection attempt failed at src/mongo/shell/mongo.js:146
+
+exception: connect failed
+</code></pre><p>3、在启动mongo之前，我们需要创建一个目录，为mongo默认的数据写入目录</p>
+<pre><code>mkdir -p /data/db
+</code></pre><p>4、然后给刚刚创建的目录以可读可写的权限</p>
+<pre><code>chown `id -u` /data/db
+</code></pre><p>5、修改目录</p>
+<pre><code>// /data/db 目录是mongo的默认目录，如果你想使用其他目录，可以使 --dbpath 参数
+mongo --dbpath dir_name
+// dir_name 为你的目录名字
+</code></pre><p>现在，你可以放心的启动mongodb了，执行下面的命令：</p>
+<pre><code>mongod
+</code></pre><p>假如依然包上面那个错误的话，或许你可以试试下面的命令：</p>
+<pre><code>brew services start mongodb
+</code></pre><p>不过，brew services 已经将要废除了，并且已经没有人维护了，具体查看<a href="https://github.com/Homebrew/homebrew/issues/30628" target="_blank" rel="external">点击这里</a></p>
+<p>现在如果一切顺利的话应该像下面这样：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201511214.pic.jpg" alt="启动mongodb成功"></p>
+<p>如果有一天你发现你的数据库突然启动不了了，可能是你为正常关闭导致的，你可以删除掉mongod.lock文件，然后重新启动，如果还是不可以，你可以查看一下进程，然后杀掉：</p>
+<pre><code>ps -aef | grep mongo
+</code></pre><p>如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201512031.pic.jpg" alt="进程"></p>
+<p>然后根据进程ID杀掉进程：</p>
+<pre><code>sudo kill 6955
+</code></pre><p>重新启动mongodb服务，即可：</p>
+<pre><code>mongod
+</code></pre><p>我们可以新开一个终端窗口连接数据库并试着查看所有的数据库：</p>
+<pre><code>mongo
+
+show dbs
+</code></pre><p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201511215.pic.jpg" alt="查看数据库"></p>
+<p>最后，像大家推荐一个连接mongo的客户端可视化工具 <a href="http://www.robomongo.org/" target="_blank" rel="external">robomongodb</a>，它是跨平台的工具，我们可以下载Mac版的，安装后打开，界面是这个样子：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201511216.pic.jpg" alt="robomongodb界面"></p>
+<p>点击create按钮，创建新的连接，会弹出一个连接的配置框，里面有一些默认的参数，我们保持默认，直接点击save，再点击connect按钮就好了：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201511217.pic.jpg" alt="点击create创建连接"></p>
+<p>下图是点击connect连接数据库成功后的界面</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/201511218.pic.jpg" alt="点击connect连接数据库"></p>
+<p>好了，其他的作者还要继续捣鼓捣鼓，大家共勉，努力学习吧骚年。</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

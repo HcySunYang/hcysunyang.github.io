@@ -1,0 +1,254 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>策略模式在表单验证中的应用 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="在任何一个系统里面，几乎都缺少不了提交表单的过程，比如注册、登陆、下订单等等。这篇文章就阐述了如何编写看着舒服的表单验证代码。">
+<meta name="keywords" content="设计模式,表单验证">
+<meta property="og:type" content="article">
+<meta property="og:title" content="策略模式在表单验证中的应用">
+<meta property="og:url" content="hcysun.me/2016/02/21/策略模式在表单验证中的应用/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="在任何一个系统里面，几乎都缺少不了提交表单的过程，比如注册、登陆、下订单等等。这篇文章就阐述了如何编写看着舒服的表单验证代码。">
+<meta property="og:updated_time" content="2016-02-22T02:22:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="策略模式在表单验证中的应用">
+<meta name="twitter:description" content="在任何一个系统里面，几乎都缺少不了提交表单的过程，比如注册、登陆、下订单等等。这篇文章就阐述了如何编写看着舒服的表单验证代码。">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">策略模式在表单验证中的应用</h1>
+    <blockquote>
+<p>在任何一个系统里面，几乎都缺少不了提交表单的过程，比如注册、登陆、下订单等等。这篇文章就阐述了如何编写看着舒服的表单验证代码。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="1、问题"><a href="#1、问题" class="headerlink" title="1、问题"></a>1、问题</h1><p>相信大家平时再做表单验证的时候基本与如下代码相同：</p>
+<pre><code class="js">if(input1.value === &#39;&#39;){
+    alert(&#39;xxx不能为空&#39;);
+    return false;
+}else if(input2.length &lt; 6){
+    alert(&#39;xxx最少6个字符&#39;);
+    return false;
+}else if(...){
+    ...
+    return false;
+}
+</code></pre>
+<p>这样编写代码，的确能够完成业务的需求，能够完成表单的验证，但是存在很多问题，比如：</p>
+<blockquote>
+<p>1、代码中包含太多的 if - else 语句，如果验证规则较多的话，看上去太过于恶心……</p>
+<p>2、验证规则不可复用，如果我们另外一个页面也需要验证相似的表单，我们唯一的做法就是，复制一份，粘贴过去……</p>
+<p>3、代码不易维护，不需要解释了吧……</p>
+</blockquote>
+<h1 id="2、解决办法"><a href="#2、解决办法" class="headerlink" title="2、解决办法"></a>2、解决办法</h1><p>所谓办法总比问题多，办法是有的，比如马上要讲解的使用 策略模式 使表单验证更优雅更完美，我相信很多人很抵触设计模式，一听设计模式就觉得很遥远，觉得自己在工作中很少用到设计模式，那么你就错了，特别是js这种灵活的语言，有的时候你已经在你的代码中使用了设计模式，只是你不知道而已。更多关于设计模式的东西，以后会陆续写博客描述，这里只希望大家抛弃设计模式神秘的感觉，通俗的讲，它无非就是完成一件事情通用的办法而已。</p>
+<h1 id="3、畅想"><a href="#3、畅想" class="headerlink" title="3、畅想"></a>3、畅想</h1><p>回到正题，假如我们不想使用过多的 if - else 语句，那么我们心中比较理想的代码编写方式是什么呢？我们能不能像编写配置一样的去做表单验证呢？再来一个”一键验证“的功能，是不是很爽？答案是肯定的，所以我们心中理想的编写代码的方式如下：</p>
+<pre><code class="js">
+// 获取表单form元素
+var form = document.getElementById(&#39;f1&#39;);
+
+// 创建表单校验实例
+var validation = new Formvalidation(VerifiPolicy);
+// 编写校验配置
+validation.add(form.username, &#39;isNoEmpty&#39;, &#39;用户名不能为空&#39;);
+validation.add(form.password, &#39;minLength: 6&#39;, &#39;密码长度不能小于6个字符&#39;);
+validation.add(form.code, &#39;isMobile&#39;, &#39;请填写正确的手机号&#39;);
+
+// 开始校验，并接收错误信息
+var errorMsg = validation.start();
+
+// 如果有错误信息输出，说明校验未通过
+if(errorMsg){
+    // 做一些其他的事
+    return false;
+}
+</code></pre>
+<p>怎么样？感受感受，是不是看上去优雅多了？好了，有了心中的畅想，我们就可以向目标迈进了，下一步就要了解了解什么事策略模式了。</p>
+<h1 id="4、策略模式"><a href="#4、策略模式" class="headerlink" title="4、策略模式"></a>4、策略模式</h1><p>策略模式，单纯的看它的名字”策略“，指的是做事情的方法，比如你从北京到哈尔滨（为什么到哈尔滨呢？因为我老家是哈尔滨的[偷笑]），你可以有几种策略供选择：</p>
+<p>1、飞机，嗖嗖嗖直接就到了，节省时间。<br>2、火车，可以选择高铁出行，专为飞机恐惧症者提供。<br>3、徒步，不失为一个锻炼身体的选择。<br>4、other method……</p>
+<p>所以，做一件事你会有很多方法，也就是所谓的策略，而我们今天要讲的策略模式也就是这个意思，它的核心思想是，将做什么和谁去做相分离。所以，一个完整的策略模式要有两个类，一个是策略类，一个是环境类(主要类)，环境类接收请求，但不处理请求，它会把请求委托给策略类，让策略类去处理，而策略类的扩展是很容易的，这样，使得我们的代码易于扩展。</p>
+<p>在表单验证的例子中，各种验证的方法组成了策略类，比如：判断是否为空的方法(如：isNoEmpty)，判断最小长度的方法(如：minLength)，判断是否为手机号的方法(isMobule)等等，他们组成了策略类，供给环境类去委托请求。下面，我们就来实战一下。</p>
+<h1 id="5、编写策略类"><a href="#5、编写策略类" class="headerlink" title="5、编写策略类"></a>5、编写策略类</h1><p>策略类很简单，它是由一组验证方法组成的对象，即策略对象</p>
+<pre><code class="js">// 策略对象
+var VerifiPolicy = {
+    // 判断是否为空
+    isNoEmpty : function(value, errorMsg){
+        if(value == &#39;&#39;){
+            return errorMsg;
+        }
+    },
+    // 判断最小长度
+    minLength : function(value, length, errorMsg){
+        if(value.length &lt; length){
+            return errorMsg;
+        }
+    },
+    // 判断是否为手机号
+    isMobile : function(value, errorMsg){
+        if(!/(^1[3|5|8][0-9]{9}$)/.test(value)){
+            return errorMsg;
+        }
+    }
+    // 其他
+}
+</code></pre>
+<h1 id="6、编写环境类"><a href="#6、编写环境类" class="headerlink" title="6、编写环境类"></a>6、编写环境类</h1><p>根据我们的畅想，我们使用add方法添加验证配置，如下：</p>
+<pre><code class="js">validation.add(form.username, &#39;isNoEmpty&#39;, &#39;用户名不能为空&#39;);
+</code></pre>
+<p>add方法接受三个参数，第一个参数是表单字段，第二个参数是策略对象中策略方法的名字，第三个参数是验证未通过的错误信息。</p>
+<p>然后使用 start 方法开始验证，若验证未通过，返回验证错误信息，如下：</p>
+<pre><code class="js">var errorMsg = validation.start();
+</code></pre>
+<p>另外，再解释一下下面这句代码：</p>
+<pre><code>validation.add(form.password, &#39;minLength: 6&#39;, &#39;密码长度不能小于6个字符&#39;);
+</code></pre><p>add方法第一个参数我们说过了，是要验证的表单元素，第二个参数是一个字符串，使用 冒号(:) 分割，前面是策略方法名称，后面是传给这个方法的参数，第三个参数仍然是错误信息，我们希望完成这样的代码，废话不多说，直接上代码，如下：</p>
+<pre><code>// 构造函数
+var Formvalidation = function(VerifiPolicy){
+    // 保存策略对象
+    this.strategies = VerifiPolicy;
+    // 验证缓存
+    this.validationFns = [];
+}
+
+// add 方法
+Formvalidation.prototype.add = function(dom, rule, errorMsg){
+
+    var ary = rule.split(&#39;:&#39;);
+    var arg = [];
+    var self = this;
+    this.validationFns.push(function(){
+        arg = [];    // 重置参数
+        var ruleName = ary[0];    // 策略对象方法名
+
+        // 组装参数
+        arg.push(dom.value);
+        if(ary[1]){
+            arg.push(ary[1]);
+        }
+        arg.push(errorMsg);
+
+        // 调用策略函数
+        return self.strategies[ruleName].apply(dom, arg);
+    });
+}
+
+// 开始验证
+Formvalidation.prototype.start = function(){
+    for(var i = 0; ; i++){
+        var msg = this.validationFns[i]();
+        if(msg){
+            return msg;
+        }
+    }
+}
+</code></pre><p>至此，一个最简单的应用就完成了，另外你还可以对这个环境类进行扩展，比如支持复选框、单选框等表单的验证，还可以支持一个表单多规则的验证方式，总之，只要你觉得可以，就ok。程序世界从来都欢迎创造，去发挥你的想象吧。</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

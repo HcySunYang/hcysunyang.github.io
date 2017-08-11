@@ -1,0 +1,366 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>移动端页面开发资源总结 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="移动端页面开发资源总结及技巧工作了有一段时间，基本上都在搞移动端的前端开发，工作的过程中遇到过很多问题，bug的解决方案，记录下来，以便后用！！！内容并不是很全，以后每遇到一个问题都会总结在这里，分享给大家！">
+<meta name="keywords" content="html,css,移动页面">
+<meta property="og:type" content="article">
+<meta property="og:title" content="移动端页面开发资源总结">
+<meta property="og:url" content="hcysun.me/2015/09/25/移动端页面开发资源总结/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="移动端页面开发资源总结及技巧工作了有一段时间，基本上都在搞移动端的前端开发，工作的过程中遇到过很多问题，bug的解决方案，记录下来，以便后用！！！内容并不是很全，以后每遇到一个问题都会总结在这里，分享给大家！">
+<meta property="og:updated_time" content="2017-03-08T08:24:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="移动端页面开发资源总结">
+<meta name="twitter:description" content="移动端页面开发资源总结及技巧工作了有一段时间，基本上都在搞移动端的前端开发，工作的过程中遇到过很多问题，bug的解决方案，记录下来，以便后用！！！内容并不是很全，以后每遇到一个问题都会总结在这里，分享给大家！">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">移动端页面开发资源总结</h1>
+    <h1 id="移动端页面开发资源总结及技巧"><a href="#移动端页面开发资源总结及技巧" class="headerlink" title="移动端页面开发资源总结及技巧"></a>移动端页面开发资源总结及技巧</h1><p>工作了有一段时间，基本上都在搞移动端的前端开发，工作的过程中遇到过很多问题，bug的解决方案，记录下来，以便后用！！！内容并不是很全，以后每遇到一个问题都会总结在这里，分享给大家！</p>
+<a id="more"></a>
+<h1 id="一、meta标签相关知识"><a href="#一、meta标签相关知识" class="headerlink" title="一、meta标签相关知识"></a>一、meta标签相关知识</h1><p>1、移动端页面设置视口宽度等于设备宽度，并禁止缩放。</p>
+<pre><code>&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no&quot; /&gt;
+</code></pre><p>2、移动端页面设置视口宽度等于定宽（如640px），并禁止缩放，常用于微信浏览器页面。</p>
+<pre><code>&lt;meta name=&quot;viewport&quot; content=&quot;width=640,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no&quot; /&gt;
+</code></pre><p>3、禁止将页面中的数字识别为电话号码</p>
+<pre><code>&lt;meta name=&quot;format-detection&quot; content=&quot;telephone=no&quot; /&gt;
+</code></pre><p>4、忽略Android平台中对邮箱地址的识别</p>
+<pre><code>&lt;meta name=&quot;format-detection&quot; content=&quot;email=no&quot; /&gt;
+</code></pre><p>5、当网站添加到主屏幕快速启动方式，可隐藏地址栏，仅针对ios的safari</p>
+<pre><code>&lt;meta name=&quot;apple-mobile-web-app-capable&quot; content=&quot;yes&quot; /&gt;
+&lt;!-- ios7.0版本以后，safari上已看不到效果 --&gt;
+</code></pre><p>6、将网站添加到主屏幕快速启动方式，仅针对ios的safari顶端状态条的样式</p>
+<pre><code>&lt;meta name=&quot;apple-mobile-web-app-status-bar-style&quot; content=&quot;black&quot; /&gt;
+&lt;!-- 可选default、black、black-translucent --&gt;
+</code></pre><h2 id="viewport莫板"><a href="#viewport莫板" class="headerlink" title="viewport莫板"></a>viewport莫板</h2><pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta content=&quot;width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no&quot; name=&quot;viewport&quot;&gt;
+&lt;meta content=&quot;yes&quot; name=&quot;apple-mobile-web-app-capable&quot;&gt;
+&lt;meta content=&quot;black&quot; name=&quot;apple-mobile-web-app-status-bar-style&quot;&gt;
+&lt;meta content=&quot;telephone=no&quot; name=&quot;format-detection&quot;&gt;
+&lt;meta content=&quot;email=no&quot; name=&quot;format-detection&quot;&gt;
+&lt;title&gt;title&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;index.css&quot;&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    content...
+&lt;/body&gt;
+
+&lt;/html&gt;
+</code></pre><h1 id="二、CSS样式技巧"><a href="#二、CSS样式技巧" class="headerlink" title="二、CSS样式技巧"></a>二、CSS样式技巧</h1><p>1、禁止ios和android用户选中文字</p>
+<pre><code>.css{-webkit-user-select:none}
+</code></pre><p>2、禁止ios长按时触发系统的菜单，禁止ios&amp;android长按时下载图片</p>
+<pre><code>.css{-webkit-touch-callout: none}
+</code></pre><p>3、webkit去除表单元素的默认样式</p>
+<pre><code>.css{-webkit-appearance:none;}
+</code></pre><p>4、修改webkit表单输入框placeholder的样式</p>
+<pre><code>input::-webkit-input-placeholder{color:#AAAAAA;}
+input:focus::-webkit-input-placeholder{color:#EEEEEE;}
+</code></pre><p>5、去除android a/button/input标签被点击时产生的边框 &amp; 去除ios a标签被点击时产生的半透明灰色背景</p>
+<pre><code>a,button,input{-webkit-tap-highlight-color:rgba(255,0,0,0);}
+</code></pre><p>6、ios使用-webkit-text-size-adjust禁止调整字体大小</p>
+<pre><code>body{-webkit-text-size-adjust: 100%!important;}
+</code></pre><p>7、android 上去掉语音输入按钮</p>
+<pre><code>input::-webkit-input-speech-button {display: none}
+</code></pre><p>8、移动端定义字体，移动端没有微软雅黑字体</p>
+<pre><code>/* 移动端定义字体的代码 */
+body{font-family:Helvetica;}
+</code></pre><p>9、禁用Webkit内核浏览器的文字大小调整功能。</p>
+<pre><code>-webkit-text-size-adjust: none;
+</code></pre><h1 id="三、其他技巧"><a href="#三、其他技巧" class="headerlink" title="三、其他技巧"></a>三、其他技巧</h1><p>1、手机拍照和上传图片</p>
+<pre><code>&lt;!-- 选择照片 --&gt;
+&lt;input type=file accept=&quot;image/*&quot;&gt;
+&lt;!-- 选择视频 --&gt;
+&lt;input type=file accept=&quot;video/*&quot;&gt;
+</code></pre><p>2、取消input在ios下，输入的时候英文首字母的默认大写</p>
+<pre><code>&lt;input autocapitalize=&quot;off&quot; autocorrect=&quot;off&quot; /&gt;
+</code></pre><p>3、打电话和发短信</p>
+<pre><code>&lt;a href=&quot;tel:0755-10086&quot;&gt;打电话给:0755-10086&lt;/a&gt;
+&lt;a href=&quot;sms:10086&quot;&gt;发短信给: 10086&lt;/a&gt;
+</code></pre><h1 id="四、CSS-reset"><a href="#四、CSS-reset" class="headerlink" title="四、CSS reset"></a>四、CSS reset</h1><pre><code>/* hcysun  */
+@charset &quot;utf-8&quot;;
+/* reset */
+html{
+    -webkit-text-size-adjust:none;
+    -webkit-user-select:none;
+    -webkit-touch-callout: none
+    font-family: Helvetica;
+}
+body{font-size:12px;}
+body,h1,h2,h3,h4,h5,h6,p,dl,dd,ul,ol,pre,form,input,textarea,th,td,select{margin:0; padding:0; font-weight: normal;text-indent: 0;}
+a,button,input,textarea,select{ background: none; -webkit-tap-highlight-color:rgba(255,0,0,0); outline:none; -webkit-appearance:none;}
+em{font-style:normal}
+li{list-style:none}
+a{text-decoration:none;}
+img{border:none; vertical-align:top;}
+table{border-collapse:collapse;}
+textarea{ resize:none; overflow:auto;}
+/* end reset */
+</code></pre><h1 id="五、常用公用CSS-style"><a href="#五、常用公用CSS-style" class="headerlink" title="五、常用公用CSS style"></a>五、常用公用CSS style</h1><pre><code>/* public */
+
+/* 清除浮动 */
+.clear { zoom:1; }
+.clear:after { content:&#39;&#39;; display:block; clear:both; }
+
+/* 定义盒模型为怪异和模型（宽高不受边框影响） */
+.boxSiz{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+/* 强制换行 */
+.toWrap{
+    word-break: break-all;       /* 只对英文起作用，以字母作为换行依据。 */
+    word-wrap: break-word;       /* 只对英文起作用，以单词作为换行依据。*/
+    white-space: pre-wrap;     /* 只对中文起作用，强制换行。*/
+}
+
+/* 禁止换行 */
+.noWrap{
+    white-space:nowrap;
+}
+
+/* 禁止换行,超出省略号 */
+.noWrapEllipsis{
+     white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+
+/* 多行显示省略号，less写法，@line是行数 */
+.ellipsisLn(@line) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: @line;
+}
+
+/* 1px 边框解决方案，示例中设置上边框，可以调整 top、right、bottom、left 的值分别设置上下左右边框 */
+#box2:after{
+    content: &quot; &quot;;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    height: 1px;
+    border-top: 1px solid #000;
+    color: #C7C7C7;
+    transform-origin: 0 0;
+    transform: scaleY(0.5);
+}
+
+/* 文字两端对齐 */
+.text-justify{
+    text-align:justify; 
+    text-justify:inter-ideograph;
+}
+
+/* 定义盒模型为 flex布局兼容写法并让内容水平垂直居中 */
+.flex-center{
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -o-box;
+    display: box;
+
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -ms-flex-pack: center;
+    -o-box-pack: center;
+    box-pack: center;
+
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-flex-align: center;
+    -o-box-align: center;
+    box-align: center;
+}
+
+/* public end */
+</code></pre><h1 id="六、flex布局"><a href="#六、flex布局" class="headerlink" title="六、flex布局"></a>六、flex布局</h1><p>1、定义弹性盒模型兼容写法</p>
+<pre><code>
+/*
+    box
+    inline-box
+*/
+display: -webkit-box;
+display: -moz-box;
+display: -ms-flexbox;
+display: -o-box;
+display: box;
+</code></pre><p>2、box-orient 定义盒模型内伸缩项目的布局方向</p>
+<pre><code>/**
+ * vertical column    垂直
+ * horizontal row    水平 默认值
+ */
+-webkit-box-orient: horizontal;
+-moz-box-orient: horizontal;
+-ms-flex-direction: row;
+-o-box-orient: horizontal;
+box-orient: horizontal;
+</code></pre><p>3、box-direction 定义盒模型内伸缩项目的正序(normal默认值)、倒叙(reverse)</p>
+<pre><code>/* Firefox */
+display:-moz-box;
+-moz-box-direction:reverse;
+/* Safari、Opera 以及 Chrome */
+display:-webkit-box;
+-webkit-box-direction:reverse;
+</code></pre><p>4、box-pack 对盒子水平富裕空间的管理</p>
+<pre><code>/*
+    start
+    end
+    center
+    justify
+*/
+-webkit-box-pack: center;
+-moz-box-pack: center;
+-ms-flex-pack: center;
+-o-box-pack: center;
+box-pack: center;
+</code></pre><p>5、box-pack 对盒子垂直方向富裕空间的管理</p>
+<pre><code>/*
+    start
+    end
+    center
+*/
+/* box-align */
+-webkit-box-align: center;
+-moz-box-align: center;
+-ms-flex-align: center;
+-o-box-align: center;
+box-align: center;
+</code></pre><p>6、定义伸缩项目的具体位置</p>
+<pre><code>/*-moz-box-ordinal-group:1;*/ /* Firefox */
+/*-webkit-box-ordinal-group:1;*/ /* Safari 和 Chrome */
+.box div:nth-of-type(1){-webkit-box-ordinal-group:1;}
+.box div:nth-of-type(2){-webkit-box-ordinal-group:2;}
+.box div:nth-of-type(3){-webkit-box-ordinal-group:3;}
+.box div:nth-of-type(4){-webkit-box-ordinal-group:4;}
+.box div:nth-of-type(5){-webkit-box-ordinal-group:5;}
+</code></pre><p>7、定义伸缩项目占空间的份数</p>
+<pre><code>-moz-box-flex:2.0; /* Firefox */
+-webkit-box-flex:2.0; /* Safari 和 Chrome */
+
+.box div:nth-of-type(1){-webkit-box-flex:1;}
+.box div:nth-of-type(2){-webkit-box-flex:2;}
+.box div:nth-of-type(3){-webkit-box-flex:3;}
+.box div:nth-of-type(4){-webkit-box-flex:4;}
+.box div:nth-of-type(5){-webkit-box-flex:5;}
+</code></pre>
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

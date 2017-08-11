@@ -1,0 +1,1212 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Vue2.1.7源码学习 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="原本文章的名字叫做《源码解析》，不过后来想想，还是用“源码学习”来的合适一点，在没有彻底掌握源码中的每一个字母之前，“解析”就有点标题党了。建议在看这篇文章之前，最好打开2.1.7的源码对照着看，这样可能更容易理解。另外本人水平有限，文中有错误或不妥的地方望大家多多指正共同成长。 补充：Vue 2.2 刚刚发布，作为一个系列文章的第一篇，本篇文章主要从Vue代码的组织，Vue构造函数的还原，原型的">
+<meta name="keywords" content="源码,Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue2.1.7源码学习">
+<meta property="og:url" content="hcysun.me/2017/03/03/Vue源码学习/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="原本文章的名字叫做《源码解析》，不过后来想想，还是用“源码学习”来的合适一点，在没有彻底掌握源码中的每一个字母之前，“解析”就有点标题党了。建议在看这篇文章之前，最好打开2.1.7的源码对照着看，这样可能更容易理解。另外本人水平有限，文中有错误或不妥的地方望大家多多指正共同成长。 补充：Vue 2.2 刚刚发布，作为一个系列文章的第一篇，本篇文章主要从Vue代码的组织，Vue构造函数的还原，原型的">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/vueimg2BD0DCC6-D689-4809-93D3-2F979E8F8C0C.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/vueimgdep.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/all.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/vueimgmount.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/vueimgr2.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/vueimgr3.png">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/vueimgdetail.png">
+<meta property="og:updated_time" content="2017-05-09T10:54:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue2.1.7源码学习">
+<meta name="twitter:description" content="原本文章的名字叫做《源码解析》，不过后来想想，还是用“源码学习”来的合适一点，在没有彻底掌握源码中的每一个字母之前，“解析”就有点标题党了。建议在看这篇文章之前，最好打开2.1.7的源码对照着看，这样可能更容易理解。另外本人水平有限，文中有错误或不妥的地方望大家多多指正共同成长。 补充：Vue 2.2 刚刚发布，作为一个系列文章的第一篇，本篇文章主要从Vue代码的组织，Vue构造函数的还原，原型的">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/vueimg2BD0DCC6-D689-4809-93D3-2F979E8F8C0C.png">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.png">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/About">About</a>
+      
+        <a href="/Donate">Donate</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/About">About</a>
+    
+      <a href="/Donate">Donate</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          <section id="main"><div class="main clear">
+  <div class="post-content">
+    <h1 class="post-page-title">Vue2.1.7源码学习</h1>
+    <p>原本文章的名字叫做《源码解析》，不过后来想想，还是用“源码学习”来的合适一点，在没有彻底掌握源码中的每一个字母之前，“解析”就有点标题党了。建议在看这篇文章之前，最好打开2.1.7的源码对照着看，这样可能更容易理解。另外本人水平有限，文中有错误或不妥的地方望大家多多指正共同成长。</p>
+<p>补充：Vue 2.2 刚刚发布，作为一个系列文章的第一篇，本篇文章主要从Vue代码的组织，Vue构造函数的还原，原型的设计，以及参数选项的处理和已经被写烂了的数据绑定与如何使用 Virtual DOM 更新视图入手。从整体的大方向观察框架，这么看来 <code>V2.1.7</code> 对于理解 <code>V2.2</code> 的代码不会有太大的影响。该系列文章的后续文章，都会从最新的源码入手，并对改动的地方做相应的提示。</p>
+<a id="more"></a>
+<p>很久之前写过一篇文章：<a href="http://hcysun.me/2016/04/28/JavaScript%E5%AE%9E%E7%8E%B0MVVM%E4%B9%8B%E6%88%91%E5%B0%B1%E6%98%AF%E6%83%B3%E7%9B%91%E6%B5%8B%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8F%98%E5%8C%96/">JavaScript实现MVVM之我就是想监测一个普通对象的变化</a>，文章开头提到了我写博客的风格，还是那句话，只写努力让小白，甚至是小学生都能看明白的文章。这不免会导致对于某些同学来说这篇文章有些墨迹，所以大家根据自己的喜好，可以详细的看，也可以跳跃着看。</p>
+<h2 id="一、从了解一个开源项目入手"><a href="#一、从了解一个开源项目入手" class="headerlink" title="一、从了解一个开源项目入手"></a><span style="color: #ff6600;">一、从了解一个开源项目入手<span></span></span></h2><p>要看一个项目的源码，不要一上来就看，先去了解一下项目本身的元数据和依赖，除此之外最好也了解一下 PR 规则，Issue Reporting 规则等等。特别是“前端”开源项目，我们在看源码之前第一个想到的应该是：<code>package.json</code>文件。</p>
+<p>在 <code>package.json</code> 文件中，我们最应该关注的就是 <code>scripts</code> 字段和 <code>devDependencies</code> 以及 <code>dependencies</code> 字段，通过 <code>scripts</code> 字段我们可以知道项目中定义的脚本命令，通过 <code>devDependencies</code> 和 <code>dependencies</code> 字段我们可以了解项目的依赖情况。</p>
+<p>了解了这些之后，如果有依赖我们就 <code>npm install</code> 安装依赖就ok了。</p>
+<p>除了 <code>package.json</code> 之外，我们还要阅读项目的贡献规则文档，了解如何开始，一个好的开源项目肯定会包含这部分内容的，Vue也不例外：<a href="https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md" target="_blank" rel="external">https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md</a>，在这个文档里说明了一些行为准则，PR指南，Issue Reporting 指南，Development Setup 以及 项目结构。通过阅读这些内容，我们可以了解项目如何开始，如何开发以及目录的说明，下面是对重要目录和文件的简单介绍，这些内容你都可以去自己阅读获取：</p>
+<pre><code>├── build --------------------------------- 构建相关的文件，一般情况下我们不需要动
+├── dist ---------------------------------- 构建后文件的输出目录
+├── examples ------------------------------ 存放一些使用Vue开发的应用案例
+├── flow ---------------------------------- 类型声明，使用开源项目 [Flow](https://flowtype.org/)
+├── package.json -------------------------- 不解释
+├── test ---------------------------------- 包含所有测试文件
+├── src ----------------------------------- 这个是我们最应该关注的目录，包含了源码
+│   ├── entries --------------------------- 包含了不同的构建或包的入口文件
+│   │   ├── web-runtime.js ---------------- 运行时构建的入口，输出 dist/vue.common.js 文件，不包含模板(template)到render函数的编译器，所以不支持 `template` 选项，我们使用vue默认导出的就是这个运行时的版本。大家使用的时候要注意
+│   │   ├── web-runtime-with-compiler.js -- 独立构建版本的入口，输出 dist/vue.js，它包含模板(template)到render函数的编译器
+│   │   ├── web-compiler.js --------------- vue-template-compiler 包的入口文件
+│   │   ├── web-server-renderer.js -------- vue-server-renderer 包的入口文件
+│   ├── compiler -------------------------- 编译器代码的存放目录，将 template 编译为 render 函数
+│   │   ├── parser ------------------------ 存放将模板字符串转换成元素抽象语法树的代码
+│   │   ├── codegen ----------------------- 存放从抽象语法树(AST)生成render函数的代码
+│   │   ├── optimizer.js ------------------ 分析静态树，优化vdom渲染
+│   ├── core ------------------------------ 存放通用的，平台无关的代码
+│   │   ├── observer ---------------------- 反应系统，包含数据观测的核心代码
+│   │   ├── vdom -------------------------- 包含虚拟DOM创建(creation)和打补丁(patching)的代码
+│   │   ├── instance ---------------------- 包含Vue构造函数设计相关的代码
+│   │   ├── global-api -------------------- 包含给Vue构造函数挂载全局方法(静态方法)或属性的代码
+│   │   ├── components -------------------- 包含抽象出来的通用组件
+│   ├── server ---------------------------- 包含服务端渲染(server-side rendering)的相关代码
+│   ├── platforms ------------------------- 包含平台特有的相关代码
+│   ├── sfc ------------------------------- 包含单文件组件(.vue文件)的解析逻辑，用于vue-template-compiler包
+│   ├── shared ---------------------------- 包含整个代码库通用的代码
+</code></pre><p>大概了解了重要目录和文件之后，我们就可以查看 <a href="https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md#development-setup" target="_blank" rel="external">Development Setup</a> 中的常用命令部分，来了解如何开始这个项目了，我们可以看到这样的介绍：</p>
+<pre><code># watch and auto re-build dist/vue.js
+$ npm run dev
+
+# watch and auto re-run unit tests in Chrome
+$ npm run dev:test
+</code></pre><p>现在，我们只需要运行 <code>npm run dev</code> 即可监测文件变化并自动重新构建输出 dist/vue.js，然后运行 <code>npm run dev:test</code> 来测试。不过为了方便，我会在 <code>examples</code> 目录新建一个例子，然后引用 dist/vue.js 这样，我们可以直接拿这个例子一边改Vue源码一边看自己写的代码想怎么玩怎么玩。</p>
+<h2 id="二、看源码的小提示"><a href="#二、看源码的小提示" class="headerlink" title="二、看源码的小提示"></a><span style="color: #ff6600;">二、看源码的小提示</span></h2><p>在真正步入源码世界之前，我想简单说一说看源码的技巧：</p>
+<h3 id="注重大体框架，从宏观到微观"><a href="#注重大体框架，从宏观到微观" class="headerlink" title="注重大体框架，从宏观到微观"></a><em>注重大体框架，从宏观到微观</em></h3><p>当你看一个项目代码的时候，最好是能找到一条主线，先把大体流程结构摸清楚，再深入到细节，逐项击破，拿Vue举个栗子：假如你已经知道Vue中数据状态改变后会采用virtual DOM的方式更新DOM，这个时候，如果你不了解virtual DOM，那么听我一句“暂且不要去研究内部具体实现，因为这会是你丧失主线”，而你仅仅需要知道virtual DOM分为三个步骤：</p>
+<blockquote>
+<p>一、createElement(): 用 JavaScript对象(虚拟树) 描述 真实DOM对象(真实树)<br>二、diff(oldNode, newNode) : 对比新旧两个虚拟树的区别，收集差异<br>三、patch() : 将差异应用到真实DOM树</p>
+</blockquote>
+<p>有的时候 第二步 可能与 第三步 合并成一步(Vue 中的patch就是这样)，除此之外，还比如 <code>src/compiler/codegen</code> 内的代码，可能你不知道他写了什么，直接去看它会让你很痛苦，但是你只需要知道 codegen 是用来将抽象语法树(AST)生成render函数的就OK了，也就是生成类似下面这样的代码：</p>
+<pre><code class="js">function anonymous() {
+    with(this){return _c(&#39;p&#39;,{attrs:{&quot;id&quot;:&quot;app&quot;}},[_v(&quot;\n      &quot;+_s(a)+&quot;\n      &quot;),_c(&#39;my-com&#39;)])}
+}
+</code></pre>
+<p>当我们知道了一个东西存在，且知道它存在的目的，那么我们就很容易抓住这条主线，这个系列的第一篇文章就是围绕大体主线展开的。了解大体之后，我们就知道了每部分内容都是做什么的，比如 codegen 是生成类似上面贴出的代码所示的函数的，那么再去看codegen下的代码时，目的性就会更强，就更容易理解。</p>
+<h2 id="三、Vue-的构造函数是什么样的"><a href="#三、Vue-的构造函数是什么样的" class="headerlink" title="三、Vue 的构造函数是什么样的"></a><span style="color: #ff6600;">三、Vue 的构造函数是什么样的<span></span></span></h2><p>balabala一大堆，开始来干货吧。我们要做的第一件事就是搞清楚 Vue 构造函数到底是什么样子的。</p>
+<p>我们知道，我们要使用 <code>new</code> 操作符来调用 <code>Vue</code>，那么也就是说 <code>Vue</code> 应该是一个构造函数，所以我们第一件要做的事儿就是把构造函数先扒的一清二楚，如何寻找 <code>Vue</code> 构造函数呢？当然是从 entry 开始啦，还记的我们运行 <code>npm run dev</code> 命令后，会输出 <code>dist/vue.js</code> 吗，那么我们就去看看 <code>npm run dev</code> 干了什么：</p>
+<pre><code>&quot;dev&quot;: &quot;TARGET=web-full-dev rollup -w -c build/config.js&quot;,
+</code></pre><p>首先将 TARGET 得值设置为 ‘web-full-dev’，然后，然后，然后如果你不了解 rollup 就应该简单去看一下啦……，简单的说就是一个JavaScript模块打包器，你可以把它简单的理解为和 webpack 一样，只不过它有他的优势，比如 Tree-shaking (webpack2也有)，但同样，在某些场景它也有他的劣势。。。废话不多说，其中 <code>-w</code> 就是watch，<code>-c</code> 就是指定配置文件为 <code>build/config.js</code> ，我们打开这个配置文件看一看：</p>
+<pre><code class="js">// 引入依赖，定义 banner
+...
+
+// builds 对象
+const builds = {
+    ...
+    // Runtime+compiler development build (Browser)
+    &#39;web-full-dev&#39;: {
+        entry: path.resolve(__dirname, &#39;../src/entries/web-runtime-with-compiler.js&#39;),
+        dest: path.resolve(__dirname, &#39;../dist/vue.js&#39;),
+        format: &#39;umd&#39;,
+        env: &#39;development&#39;,
+        alias: { he: &#39;./entity-decoder&#39; },
+        banner
+    },
+    ...
+}
+
+// 生成配置的方法
+function genConfig(opts){
+    ...
+}
+
+if (process.env.TARGET) {
+  module.exports = genConfig(builds[process.env.TARGET])
+} else {
+  exports.getBuild = name =&gt; genConfig(builds[name])
+  exports.getAllBuilds = () =&gt; Object.keys(builds).map(name =&gt; genConfig(builds[name]))
+}
+</code></pre>
+<p>上面的代码是简化过的，当我们运行 <code>npm run dev</code> 的时候 <code>process.env.TARGET</code> 的值等于 ‘web-full-dev’，所以</p>
+<pre><code class="js">module.exports = genConfig(builds[process.env.TARGET])
+</code></pre>
+<p>这句代码相当于：</p>
+<pre><code class="js">module.exports = genConfig({
+    entry: path.resolve(__dirname, &#39;../src/entries/web-runtime-with-compiler.js&#39;),
+    dest: path.resolve(__dirname, &#39;../dist/vue.js&#39;),
+    format: &#39;umd&#39;,
+    env: &#39;development&#39;,
+    alias: { he: &#39;./entity-decoder&#39; },
+    banner
+})
+</code></pre>
+<p>最终，genConfig 函数返回一个 config 对象，这个config对象就是Rollup的配置对象。那么我们就不难看到，入口文件是：</p>
+<pre><code>src/entries/web-runtime-with-compiler.js
+</code></pre><p>我们打开这个文件，不要忘了我们的主题，我们在寻找Vue构造函数，所以当我们看到这个文件的第一行代码是：</p>
+<pre><code class="js">import Vue from &#39;./web-runtime&#39;
+</code></pre>
+<p>这个时候，你就应该知道，这个文件暂时与你无缘，你应该打开 <code>web-runtime.js</code> 文件，不过当你打开这个文件时，你发现第一行是这样的：</p>
+<pre><code class="js">import Vue from &#39;core/index&#39;
+</code></pre>
+<p>依照此思路，最终我们寻找到Vue构造函数的位置应该是在 <code>src/core/instance/index.js</code> 文件中，其实我们猜也猜得到，上面介绍目录的时候说过：instance 是存放Vue构造函数设计相关代码的目录。总结一下，我们寻找的过程是这样的：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/vueimg2BD0DCC6-D689-4809-93D3-2F979E8F8C0C.png" alt="寻找 Vue 构造函数路线"></p>
+<p>我们回头看一看 <code>src/core/instance/index.js</code> 文件，很简单：</p>
+<pre><code class="js">import { initMixin } from &#39;./init&#39;
+import { stateMixin } from &#39;./state&#39;
+import { renderMixin } from &#39;./render&#39;
+import { eventsMixin } from &#39;./events&#39;
+import { lifecycleMixin } from &#39;./lifecycle&#39;
+import { warn } from &#39;../util/index&#39;
+
+function Vue (options) {
+  if (process.env.NODE_ENV !== &#39;production&#39; &amp;&amp;
+    !(this instanceof Vue)) {
+    warn(&#39;Vue is a constructor and should be called with the `new` keyword&#39;)
+  }
+  this._init(options)
+}
+
+initMixin(Vue)
+stateMixin(Vue)
+eventsMixin(Vue)
+lifecycleMixin(Vue)
+renderMixin(Vue)
+
+export default Vue
+</code></pre>
+<p>引入依赖，定义 Vue 构造函数，然后以Vue构造函数为参数，调用了五个方法，最后导出 Vue。这五个方法分别来自五个文件：<code>init.js</code> <code>state.js</code> <code>render.js</code> <code>events.js</code> 以及 <code>lifecycle.js</code>。</p>
+<p>打开这五个文件，找到相应的方法，你会发现，这些方法的作用，就是在 Vue 的原型 prototype 上挂载方法或属性，经历了这五个方法后的Vue会变成这样：</p>
+<pre><code class="js">// initMixin(Vue)    src/core/instance/init.js **************************************************
+Vue.prototype._init = function (options?: Object) {}
+
+// stateMixin(Vue)    src/core/instance/state.js **************************************************
+Vue.prototype.$data
+Vue.prototype.$set = set
+Vue.prototype.$delete = del
+Vue.prototype.$watch = function(){}
+
+// renderMixin(Vue)    src/core/instance/render.js **************************************************
+Vue.prototype.$nextTick = function (fn: Function) {}
+Vue.prototype._render = function (): VNode {}
+Vue.prototype._s = _toString
+Vue.prototype._v = createTextVNode
+Vue.prototype._n = toNumber
+Vue.prototype._e = createEmptyVNode
+Vue.prototype._q = looseEqual
+Vue.prototype._i = looseIndexOf
+Vue.prototype._m = function(){}
+Vue.prototype._o = function(){}
+Vue.prototype._f = function resolveFilter (id) {}
+Vue.prototype._l = function(){}
+Vue.prototype._t = function(){}
+Vue.prototype._b = function(){}
+Vue.prototype._k = function(){}
+
+// eventsMixin(Vue)    src/core/instance/events.js **************************************************
+Vue.prototype.$on = function (event: string, fn: Function): Component {}
+Vue.prototype.$once = function (event: string, fn: Function): Component {}
+Vue.prototype.$off = function (event?: string, fn?: Function): Component {}
+Vue.prototype.$emit = function (event: string): Component {}
+
+// lifecycleMixin(Vue)    src/core/instance/lifecycle.js **************************************************
+Vue.prototype._mount = function(){}
+Vue.prototype._update = function (vnode: VNode, hydrating?: boolean) {}
+Vue.prototype._updateFromParent = function(){}
+Vue.prototype.$forceUpdate = function () {}
+Vue.prototype.$destroy = function () {}
+</code></pre>
+<p>这样就结束了吗？并没有，根据我们之前寻找 Vue 的路线，这只是刚刚开始，我们追溯路线往回走，那么下一个处理 Vue 构造函数的应该是 <code>src/core/index.js</code> 文件，我们打开它：</p>
+<pre><code class="js">import Vue from &#39;./instance/index&#39;
+import { initGlobalAPI } from &#39;./global-api/index&#39;
+import { isServerRendering } from &#39;core/util/env&#39;
+
+initGlobalAPI(Vue)
+
+Object.defineProperty(Vue.prototype, &#39;$isServer&#39;, {
+  get: isServerRendering
+})
+
+Vue.version = &#39;__VERSION__&#39;
+
+export default Vue
+</code></pre>
+<p>这个文件也很简单，从 instance/index 中导入已经在原型上挂载了方法和属性后的 Vue，然后导入 <code>initGlobalAPI</code> 和 <code>isServerRendering</code>，之后将Vue作为参数传给  <code>initGlobalAPI</code> ，最后又在 <code>Vue.prototype</code> 上挂载了 <code>$isServer</code> ，在 <code>Vue</code> 上挂载了 <code>version</code> 属性。</p>
+<p><code>initGlobalAPI</code> 的作用是在 <code>Vue</code> 构造函数上挂载静态属性和方法，<code>Vue</code> 在经过 <code>initGlobalAPI</code> 之后，会变成这样：</p>
+<pre><code class="js">// src/core/index.js / src/core/global-api/index.js
+Vue.config
+Vue.util = util
+Vue.set = set
+Vue.delete = del
+Vue.nextTick = util.nextTick
+Vue.options = {
+    components: {
+        KeepAlive
+    },
+    directives: {},
+    filters: {},
+    _base: Vue
+}
+Vue.use
+Vue.mixin
+Vue.cid = 0
+Vue.extend
+Vue.component = function(){}
+Vue.directive = function(){}
+Vue.filter = function(){}
+
+Vue.prototype.$isServer
+Vue.version = &#39;__VERSION__&#39;
+</code></pre>
+<p>其中，稍微复杂一点的就是 <code>Vue.options</code>，大家稍微分析分析就会知道他的确长成那个样子。下一个就是 <code>web-runtime.js</code> 文件了，<code>web-runtime.js</code> 文件主要做了三件事儿：</p>
+<blockquote>
+<p>1、覆盖 <code>Vue.config</code> 的属性，将其设置为平台特有的一些方法<br>2、<code>Vue.options.directives</code> 和 <code>Vue.options.components</code> 安装平台特有的指令和组件<br>3、在 <code>Vue.prototype</code> 上定义 <code>__patch__</code> 和 <code>$mount</code></p>
+</blockquote>
+<p>经过 <code>web-runtime.js</code> 文件之后，<code>Vue</code> 变成下面这个样子：</p>
+<pre><code class="js">// 安装平台特定的utils
+Vue.config.isUnknownElement = isUnknownElement
+Vue.config.isReservedTag = isReservedTag
+Vue.config.getTagNamespace = getTagNamespace
+Vue.config.mustUseProp = mustUseProp
+// 安装平台特定的 指令 和 组件
+Vue.options = {
+    components: {
+        KeepAlive,
+        Transition,
+        TransitionGroup
+    },
+    directives: {
+        model,
+        show
+    },
+    filters: {},
+    _base: Vue
+}
+Vue.prototype.__patch__
+Vue.prototype.$mount
+</code></pre>
+<p>这里大家要注意的是 <code>Vue.options</code> 的变化。另外这里的 <code>$mount</code> 方法很简单：</p>
+<pre><code class="js">Vue.prototype.$mount = function (
+  el?: string | Element,
+  hydrating?: boolean
+): Component {
+  el = el &amp;&amp; inBrowser ? query(el) : undefined
+  return this._mount(el, hydrating)
+}
+</code></pre>
+<p>首先根据是否是浏览器环境决定要不要 <code>query(el)</code> 获取元素，然后将 <code>el</code> 作为参数传递给 <code>this._mount()</code>。</p>
+<p>最后一个处理 Vue 的文件就是入口文件 <code>web-runtime-with-compiler.js</code> 了，该文件做了两件事：</p>
+<p>1、缓存来自 <code>web-runtime.js</code> 文件的 <code>$mount</code> 函数</p>
+<pre><code class="js">const mount = Vue.prototype.$mount
+</code></pre>
+<p>然后覆盖覆盖了 <code>Vue.prototype.$mount</code></p>
+<p>2、在 Vue 上挂载 <code>compile</code></p>
+<pre><code class="js">Vue.compile = compileToFunctions
+</code></pre>
+<p>compileToFunctions 函数的作用，就是将模板 <code>template</code> 编译为render函数。</p>
+<p>至此，我们算是还原了 Vue 构造函数，总结一下：</p>
+<blockquote>
+<p>1、<code>Vue.prototype</code> 下的属性和方法的挂载主要是在 <code>src/core/instance</code> 目录中的代码处理的</p>
+<p>2、<code>Vue</code> 下的静态属性和方法的挂载主要是在 <code>src/core/global-api</code> 目录下的代码处理的</p>
+<p>3、<code>web-runtime.js</code> 主要是添加web平台特有的配置、组件和指令，<code>web-runtime-with-compiler.js</code> 给Vue的 <code>$mount</code> 方法添加 <code>compiler</code> 编译器，支持 <code>template</code>。</p>
+</blockquote>
+<h2 id="四、一个贯穿始终的例子"><a href="#四、一个贯穿始终的例子" class="headerlink" title="四、一个贯穿始终的例子"></a><span style="color: #ff6600;">四、一个贯穿始终的例子</span></h2><p>在了解了 <code>Vue</code> 构造函数的设计之后，接下来，我们一个贯穿始终的例子就要登场了，掌声有请：</p>
+<pre><code class="js">let v = new Vue({
+    el: &#39;#app&#39;,
+    data: {
+        a: 1,
+        b: [1, 2, 3]
+    }
+})
+</code></pre>
+<p>好吧，我承认这段代码你家没满月的孩子都会写了。这段代码就是我们贯穿始终的例子，它就是这篇文章的主线，在后续的讲解中，都会以这段代码为例，当讲到必要的地方，会为其添加选项，比如讲计算属性的时候当然要加上一个 <code>computed</code> 属性了。不过在最开始，我只传递了两个选项 <code>el</code> 以及 <code>data</code>，“我们看看接下来会发生什么，让我们拭目以待“ —- NBA球星在接受采访时最喜欢说这句话。</p>
+<p><em>当我们按照例子那样编码使用Vue的时候，Vue都做了什么？</em></p>
+<p>想要知道Vue都干了什么，我们就要找到 Vue 初始化程序，查看 Vue 构造函数：</p>
+<pre><code class="js">function Vue (options) {
+  if (process.env.NODE_ENV !== &#39;production&#39; &amp;&amp;
+    !(this instanceof Vue)) {
+    warn(&#39;Vue is a constructor and should be called with the `new` keyword&#39;)
+  }
+  this._init(options)
+}
+</code></pre>
+<p>我们发现，<code>_init()</code> 方法就是Vue调用的第一个方法，然后将我们的参数 <code>options</code> 透传了过去。在调用 <code>_init()</code> 之前，还做了一个安全模式的处理，告诉开发者必须使用 <code>new</code> 操作符调用 Vue。根据之前我们的整理，<code>_init()</code> 方法应该是在 <code>src/core/instance/init.js</code> 文件中定义的，我们打开这个文件查看 <code>_init()</code> 方法：</p>
+<pre><code class="js">  Vue.prototype._init = function (options?: Object) {
+    const vm: Component = this
+    // a uid
+    vm._uid = uid++
+    // a flag to avoid this being observed
+    vm._isVue = true
+    // merge options
+    if (options &amp;&amp; options._isComponent) {
+      // optimize internal component instantiation
+      // since dynamic options merging is pretty slow, and none of the
+      // internal component options needs special treatment.
+      initInternalComponent(vm, options)
+    } else {
+      vm.$options = mergeOptions(
+        resolveConstructorOptions(vm.constructor),
+        options || {},
+        vm
+      )
+    }
+    /* istanbul ignore else */
+    if (process.env.NODE_ENV !== &#39;production&#39;) {
+      initProxy(vm)
+    } else {
+      vm._renderProxy = vm
+    }
+
+    // expose real self
+    vm._self = vm
+    initLifecycle(vm)
+    initEvents(vm)
+    callHook(vm, &#39;beforeCreate&#39;)
+    initState(vm)
+    callHook(vm, &#39;created&#39;)
+    initRender(vm)
+  }
+</code></pre>
+<p><code>_init()</code> 方法在一开始的时候，在 <code>this</code> 对象上定义了两个属性：<code>_uid</code> 和 <code>_isVue</code>，然后判断有没有定义 <code>options._isComponent</code>，在使用 Vue 开发项目的时候，我们是不会使用 <code>_isComponent</code> 选项的，这个选项是 Vue 内部使用的，按照本节开头的例子，这里会走 <code>else</code> 分支，也就是这段代码：</p>
+<pre><code class="js">  vm.$options = mergeOptions(
+    resolveConstructorOptions(vm.constructor),
+    options || {},
+    vm
+  )
+</code></pre>
+<p>这样 <code>Vue</code> 第一步所做的事情就来了：<span style="color: red;"><em>使用策略对象合并参数选项</em></span></p>
+<p>可以发现，Vue使用 <code>mergeOptions</code> 来处理我们调用Vue时传入的参数选项(options)，然后将返回值赋值给 <code>this.$options</code> (vm === this)，传给 <code>mergeOptions</code> 方法三个参数，我们分别来看一看，首先是：<code>resolveConstructorOptions(vm.constructor)</code>，我们查看一下这个方法：</p>
+<pre><code class="js">export function resolveConstructorOptions (Ctor: Class&lt;Component&gt;) {
+  let options = Ctor.options
+  if (Ctor.super) {
+    const superOptions = Ctor.super.options
+    const cachedSuperOptions = Ctor.superOptions
+    const extendOptions = Ctor.extendOptions
+    if (superOptions !== cachedSuperOptions) {
+      // super option changed
+      Ctor.superOptions = superOptions
+      extendOptions.render = options.render
+      extendOptions.staticRenderFns = options.staticRenderFns
+      extendOptions._scopeId = options._scopeId
+      options = Ctor.options = mergeOptions(superOptions, extendOptions)
+      if (options.name) {
+        options.components[options.name] = Ctor
+      }
+    }
+  }
+  return options
+}
+</code></pre>
+<p>这个方法接收一个参数 <code>Ctor</code>，通过传入的 <code>vm.constructor</code> 我们可以知道，其实就是 <code>Vue</code> 构造函数本身。所以下面这句代码：</p>
+<pre><code class="js">let options = Ctor.options
+</code></pre>
+<p>相当于：</p>
+<pre><code class="js">let options = Vue.options
+</code></pre>
+<p>大家还记得 <code>Vue.options</code> 吗？在寻找Vue构造函数一节里，我们整理了 <code>Vue.options</code> 应该长成下面这个样子：</p>
+<pre><code class="js">Vue.options = {
+    components: {
+        KeepAlive,
+        Transition,
+        TransitionGroup
+    },
+    directives: {
+        model,
+        show
+    },
+    filters: {},
+    _base: Vue
+}
+</code></pre>
+<p>之后判断是否定义了 <code>Vue.super</code> ，这个是用来处理继承的，我们后续再讲，在本例中，<code>resolveConstructorOptions</code> 方法直接返回了 <code>Vue.options</code>。也就是说，传递给 <code>mergeOptions</code> 方法的第一个参数就是 <code>Vue.options</code>。</p>
+<p>传给 <code>mergeOptions</code> 方法的第二个参数是我们调用Vue构造函数时的参数选项，第三个参数是 <code>vm</code> 也就是 <code>this</code> 对象，按照本节开头的例子那样使用 Vue，最终运行的代码应该如下：</p>
+<pre><code class="js">  vm.$options = mergeOptions(
+      // Vue.options
+    {
+        components: {
+            KeepAlive,
+            Transition,
+            TransitionGroup
+        },
+        directives: {
+            model,
+            show
+        },
+        filters: {},
+        _base: Vue
+    },
+    // 调用Vue构造函数时传入的参数选项 options
+    {
+        el: &#39;#app&#39;,
+        data: {
+            a: 1,
+            b: [1, 2, 3]
+        }
+    },
+    // this
+    vm
+  )
+</code></pre>
+<p>了解了这些，我们就可以看看 <code>mergeOptions</code> 到底做了些什么了，根据引用寻找到 <code>mergeOptions</code> 应该是在 <code>src/core/util/options.js</code> 文件中定义的。这个文件第一次看可能会头大，下面是我处理后的简略展示，大家看上去应该更容易理解了：</p>
+<pre><code class="js">// 1、引用依赖
+import Vue from &#39;../instance/index&#39;
+其他引用...
+
+// 2、合并父子选项值为最终值的策略对象，此时 strats 是一个空对象，因为 config.optionMergeStrategies = Object.create(null)
+const strats = config.optionMergeStrategies
+// 3、在 strats 对象上定义与参数选项名称相同的方法
+strats.el = 
+strats.propsData = function (parent, child, vm, key){}
+strats.data = function (parentVal, childVal, vm)
+
+config._lifecycleHooks.forEach(hook =&gt; {
+  strats[hook] = mergeHook
+})
+
+config._assetTypes.forEach(function (type) {
+  strats[type + &#39;s&#39;] = mergeAssets
+})
+
+strats.watch = function (parentVal, childVal)
+
+strats.props =
+strats.methods =
+strats.computed = function (parentVal: ?Object, childVal: ?Object)
+// 默认的合并策略，如果有 `childVal` 则返回 `childVal` 没有则返回 `parentVal`
+const defaultStrat = function (parentVal: any, childVal: any): any {
+  return childVal === undefined
+    ? parentVal
+    : childVal
+}
+
+// 4、mergeOptions 中根据参数选项调用同名的策略方法进行合并处理
+export function mergeOptions (
+  parent: Object,
+  child: Object,
+  vm?: Component
+): Object {
+
+  // 其他代码
+  ...
+
+  const options = {}
+  let key
+  for (key in parent) {
+    mergeField(key)
+  }
+  for (key in child) {
+    if (!hasOwn(parent, key)) {
+      mergeField(key)
+    }
+  }
+  function mergeField (key) {
+    const strat = strats[key] || defaultStrat
+    options[key] = strat(parent[key], child[key], vm, key)
+  }
+  return options
+
+}
+</code></pre>
+<p>上面的代码中，我省略了一些工具函数，例如 <code>mergeHook</code> 和 <code>mergeAssets</code> 等等，唯一需要注意的是这段代码：</p>
+<pre><code class="js">config._lifecycleHooks.forEach(hook =&gt; {
+  strats[hook] = mergeHook
+})
+
+config._assetTypes.forEach(function (type) {
+  strats[type + &#39;s&#39;] = mergeAssets
+})
+</code></pre>
+<p><code>config</code> 对象引用自 <code>src/core/config.js</code> 文件，最终的结果就是在 <code>strats</code> 下添加了相应的生命周期选项的合并策略函数为 <code>mergeHook</code>，添加指令(directives)、组件(components)、过滤器(filters)等选项的合并策略函数为 <code>mergeAssets</code>。</p>
+<p>这样看来就清晰多了，拿我们贯穿本文的例子来说：</p>
+<pre><code class="js">let v = new Vue({
+    el: &#39;#app&#39;,
+    data: {
+        a: 1,
+        b: [1, 2, 3]
+    }
+})
+</code></pre>
+<p>其中 <code>el</code> 选项会使用 <code>defaultStrat</code> 默认策略函数处理，<code>data</code> 选项则会使用 <code>strats.data</code> 策略函数处理，并且根据 <code>strats.data</code> 中的逻辑，<code>strats.data</code> 方法最终会返回一个函数：<code>mergedInstanceDataFn</code>。</p>
+<p>这里就不详细的讲解每一个策略函数的内容了，后续都会讲到，这里我们还是抓住主线理清思路为主，只需要知道Vue在处理选项的时候，使用了一个策略对象对父子选项进行合并。并将最终的值赋值给实例下的 <code>$options</code> 属性即：<code>this.$options</code>，那么我们继续查看 <code>_init()</code> 方法在合并完选项之后，又做了什么：</p>
+<p>合并完选项之后，Vue 第二部做的事情就来了：<span style="color: red;"><em>初始化工作与Vue实例对象的设计</em></span></p>
+<p>前面讲了 Vue 构造函数的设计，并且整理了 <em>Vue原型属性与方法</em> 和 <em>Vue静态属性与方法</em>，而 Vue 实例对象就是通过构造函数创造出来的，让我们来看一看 Vue 实例对象是如何设计的，下面的代码是 <code>_init()</code> 方法合并完选项之后的代码：</p>
+<pre><code class="js">    /* istanbul ignore else */
+    if (process.env.NODE_ENV !== &#39;production&#39;) {
+      initProxy(vm)
+    } else {
+      vm._renderProxy = vm
+    }
+
+    // expose real self
+    vm._self = vm
+    initLifecycle(vm)
+    initEvents(vm)
+    callHook(vm, &#39;beforeCreate&#39;)
+    initState(vm)
+    callHook(vm, &#39;created&#39;)
+    initRender(vm)
+</code></pre>
+<p>根据上面的代码，在生产环境下会为实例添加两个属性，并且属性值都为实例本身：</p>
+<pre><code class="js">vm._renderProxy = vm
+vm._self = vm
+</code></pre>
+<p>然后，调用了四个 <code>init*</code> 方法分别为：<code>initLifecycle</code>、<code>initEvents</code>、<code>initState</code>、<code>initRender</code>，且在 <code>initState</code> 前后分别回调了生命周期钩子 <code>beforeCreate</code> 和 <code>created</code>，而 <code>initRender</code> 是在 <code>created</code> 钩子执行之后执行的，看到这里，也就明白了为什么 created 的时候不能操作DOM了。因为这个时候还没有渲染真正的DOM元素到文档中。<code>created</code> 仅仅代表数据状态的初始化完成。</p>
+<p>根据四个 <code>init*</code> 方法的引用关系打开对应的文件查看对应的方法，我们发现，这些方法是在处理Vue实例对象，以及做一些初始化的工作，类似整理Vue构造函数一样，我同样针对Vue实例做了属性和方法的整理，如下：</p>
+<pre><code class="js">// 在 Vue.prototype._init 中添加的属性         **********************************************************
+this._uid = uid++
+this._isVue = true
+this.$options = {
+    components,
+    directives,
+    filters,
+    _base,
+    el,
+    data: mergedInstanceDataFn()
+}
+this._renderProxy = this
+this._self = this
+
+// 在 initLifecycle 中添加的属性        **********************************************************
+this.$parent = parent
+this.$root = parent ? parent.$root : this
+
+this.$children = []
+this.$refs = {}
+
+this._watcher = null
+this._inactive = false
+this._isMounted = false
+this._isDestroyed = false
+this._isBeingDestroyed = false
+
+// 在 initEvents     中添加的属性         **********************************************************
+this._events = {}
+this._updateListeners = function(){}
+
+// 在 initState 中添加的属性        **********************************************************
+this._watchers = []
+    // initData
+    this._data
+
+// 在 initRender     中添加的属性     **********************************************************
+this.$vnode = null // the placeholder node in parent tree
+this._vnode = null // the root of the child tree
+this._staticTrees = null
+this.$slots
+this.$scopedSlots
+this._c
+this.$createElement
+</code></pre>
+<p>以上就是一个Vue实例所包含的属性和方法，除此之外要注意的是，在 <code>initEvents</code> 中除了添加属性之外，如果有 <code>vm.$options._parentListeners</code> 还要调用 <code>vm._updateListeners()</code> 方法，在 <code>initState</code> 中又调用了一些其他init方法，如下：</p>
+<pre><code class="js">export function initState (vm: Component) {
+  vm._watchers = []
+  initProps(vm)
+  initMethods(vm)
+  initData(vm)
+  initComputed(vm)
+  initWatch(vm)
+}
+</code></pre>
+<p>最后在 <code>initRender</code> 中如果有 <code>vm.$options.el</code> 还要调用 <code>vm.$mount(vm.$options.el)</code>，如下：</p>
+<pre><code class="js">  if (vm.$options.el) {
+    vm.$mount(vm.$options.el)
+  }
+</code></pre>
+<p>这就是为什么如果不传递 <code>el</code> 选项就需要手动 mount 的原因了。</p>
+<p>那么我们依照我们本节开头的的例子，以及初始化的先后顺序来逐一看一看都发生了什么。我们将 <code>initState</code> 中的 <code>init*</code> 方法展开来看，执行顺序应该是这样的（从上到下的顺序执行）：</p>
+<pre><code>initLifecycle(vm)
+initEvents(vm)
+callHook(vm, &#39;beforeCreate&#39;)
+initProps(vm)
+initMethods(vm)
+initData(vm)
+initComputed(vm)
+initWatch(vm)
+callHook(vm, &#39;created&#39;)
+initRender(vm)
+</code></pre><p>首先是 <code>initLifecycle</code>，这个函数的作用就是在实例上添加一些属性，然后是 <code>initEvents</code>，由于 <code>vm.$options._parentListeners</code> 的值为 <code>undefined</code> 所以也仅仅是在实例上添加属性， <code>vm._updateListeners(listeners)</code> 并不会执行，由于我们只传递了 <code>el</code> 和 <code>data</code>，所以 <code>initProps</code>、<code>initMethods</code>、<code>initComputed</code>、<code>initWatch</code> 这四个方法什么都不会做，只有 <code>initData</code> 会执行。最后是 <code>initRender</code>，除了在实例上添加一些属性外，由于我们传递了 <code>el</code> 选项，所以会执行 <code>vm.$mount(vm.$options.el)</code>。</p>
+<p>综上所述：按照我们的例子那样写，初始化工作只包含两个主要内容即：<code>initData</code> 和 <code>initRender</code>。</p>
+<h2 id="五、通过initData看Vue的数据响应系统"><a href="#五、通过initData看Vue的数据响应系统" class="headerlink" title="五、通过initData看Vue的数据响应系统"></a><span style="color: #ff6600;">五、通过<code>initData</code>看Vue的数据响应系统</span></h2><p>Vue的数据响应系统包含三个部分：<code>Observer</code>、<code>Dep</code>、<code>Watcher</code>。关于数据响应系统的内容真的已经被文章讲烂了，所以我就简单的说一下，力求大家能理解就ok，我们还是先看一下 <code>initData</code> 中的代码：</p>
+<pre><code>function initData (vm: Component) {
+  let data = vm.$options.data
+  data = vm._data = typeof data === &#39;function&#39;
+    ? data.call(vm)
+    : data || {}
+  if (!isPlainObject(data)) {
+    data = {}
+    process.env.NODE_ENV !== &#39;production&#39; &amp;&amp; warn(
+      &#39;data functions should return an object:\n&#39; +
+      &#39;https://vuejs.org/v2/guide/components.html#data-Must-Be-a-Function&#39;,
+      vm
+    )
+  }
+  // proxy data on instance
+  const keys = Object.keys(data)
+  const props = vm.$options.props
+  let i = keys.length
+  while (i--) {
+    if (props &amp;&amp; hasOwn(props, keys[i])) {
+      process.env.NODE_ENV !== &#39;production&#39; &amp;&amp; warn(
+        `The data property &quot;${keys[i]}&quot; is already declared as a prop. ` +
+        `Use prop default value instead.`,
+        vm
+      )
+    } else {
+      proxy(vm, keys[i])
+    }
+  }
+  // observe data
+  observe(data)
+  data.__ob__ &amp;&amp; data.__ob__.vmCount++
+}
+</code></pre><p>首先，先拿到 data 数据：<code>let data = vm.$options.data</code>，大家还记得此时 <code>vm.$options.data</code> 的值应该是通过 <code>mergeOptions</code> 合并处理后的 <code>mergedInstanceDataFn</code> 函数吗？所以在得到 data 后，它又判断了 data 的数据类型是不是 ‘function’，最终的结果是：data 还是我们传入的数据选项的 data，即：</p>
+<pre><code>data: {
+    a: 1,
+    b: [1, 2, 3]
+}
+</code></pre><p>然后在实例对象上定义 <code>_data</code> 属性，该属性与 <code>data</code> 是相同的引用。</p>
+<p>然后是一个 <code>while</code> 循环，循环的目的是在实例对象上对数据进行代理，这样我们就能通过 <code>this.a</code> 来访问 <code>data.a</code> 了，代码的处理是在 <code>proxy</code> 函数中，该函数非常简单，仅仅是在实例对象上设置与 <code>data</code> 属性同名的访问器属性，然后使用 <code>_data</code> 做数据劫持，如下：</p>
+<pre><code>function proxy (vm: Component, key: string) {
+  if (!isReserved(key)) {
+    Object.defineProperty(vm, key, {
+      configurable: true,
+      enumerable: true,
+      get: function proxyGetter () {
+        return vm._data[key]
+      },
+      set: function proxySetter (val) {
+        vm._data[key] = val
+      }
+    })
+  }
+}
+</code></pre><p>做完数据的代理，就正式进入响应系统，</p>
+<pre><code>observe(data)
+</code></pre><p>我们说过，数据响应系统主要包含三部分：<code>Observer</code>、<code>Dep</code>、<code>Watcher</code>，代码分别存放在：<code>observer/index.js</code>、<code>observer/dep.js</code> 以及 <code>observer/watcher.js</code> 文件中，这回我们换一种方式，我们先不看其源码，大家先跟着我的思路来思考，最后回头再去看代码，你会有一种：”奥，不过如此“的感觉。</p>
+<p>假如，我们有如下代码：</p>
+<pre><code class="js">var data = {
+    a: 1,
+    b: {
+        c: 2
+    }
+}
+
+observer(data)
+
+new Watch(&#39;a&#39;, () =&gt; {
+    alert(9)
+})
+new Watch(&#39;a&#39;, () =&gt; {
+    alert(90)
+})
+new Watch(&#39;b.c&#39;, () =&gt; {
+    alert(80)
+})
+</code></pre>
+<p>这段代码目的是，首先定义一个数据对象 <code>data</code>，然后通过 observer 对其进行观测，之后定义了三个观察者，当数据有变化时，执行相应的方法，这个功能使用Vue的实现原来要如何去实现？其实就是在问 <code>observer</code> 怎么写？<code>Watch</code> 构造函数又怎么写？接下来我们逐一实现。</p>
+<p>首先，observer 的作用是：将数据对象data的属性转换为访问器属性：</p>
+<pre><code>class Observer {
+    constructor (data) {
+        this.walk(data)
+    }
+    walk (data) {
+        // 遍历 data 对象属性，调用 defineReactive 方法
+        let keys = Object.keys(data)
+        for(let i = 0; i &lt; keys.length; i++){
+            defineReactive(data, keys[i], data[keys[i]])
+        }
+    }
+}
+
+// defineReactive方法仅仅将data的属性转换为访问器属性
+function defineReactive (data, key, val) {
+    // 递归观测子属性
+    observer(val)
+
+    Object.defineProperty(data, key, {
+        enumerable: true,
+        configurable: true,
+        get: function () {
+            return val
+        },
+        set: function (newVal) {
+            if(val === newVal){
+                return
+            }
+            // 对新值进行观测
+            observer(newVal)
+        }
+    })
+}
+
+// observer 方法首先判断data是不是纯JavaScript对象，如果是，调用 Observer 类进行观测
+function observer (data) {
+    if(Object.prototype.toString.call(data) !== &#39;[object Object]&#39;) {
+        return
+    }
+    new Observer(data)
+}
+</code></pre><p>上面的代码中，我们定义了 observer 方法，该方法检测了数据data是不是纯JavaScript对象，如果是就调用 <code>Observer</code> 类，并将 <code>data</code> 作为参数透传。在 <code>Observer</code> 类中，我们使用 <code>walk</code> 方法对数据data的属性循环调用 <code>defineReactive</code> 方法，<code>defineReactive</code> 方法很简单，仅仅是将数据data的属性转为访问器属性，并对数据进行递归观测，否则只能观测数据data的直属子属性。这样我们的第一步工作就完成了，当我们修改或者获取data属性值的时候，通过 <code>get</code> 和 <code>set</code> 即能获取到通知。</p>
+<p>我们继续往下看，来看一下 <code>Watch</code>：</p>
+<pre><code>new Watch(&#39;a&#39;, () =&gt; {
+    alert(9)
+})
+</code></pre><p>现在的问题是，<code>Watch</code> 要怎么和 <code>observer</code> 关联？？？？？？？我们看看 <code>Watch</code> 它知道些什么，通过上面调用 <code>Watch</code> 的方式，传递给 <code>Watch</code> 两个参数，一个是 ‘a’ 我们可以称其为表达式，另外一个是回调函数。所以我们目前只能写出这样的代码：</p>
+<pre><code>class Watch {
+    constructor (exp, fn) {
+        this.exp = exp
+        this.fn = fn
+    }
+}
+</code></pre><p>那么要怎么关联呢，大家看下面的代码会发生什么：</p>
+<pre><code>class Watch {
+    constructor (exp, fn) {
+        this.exp = exp
+        this.fn = fn
+        data[exp]
+    }
+}
+</code></pre><p>多了一句 <code>data[exp]</code>，这句话是在干什么？是不是在获取 <code>data</code> 下某个属性的值，比如 exp 为 ‘a’ 的话，那么 <code>data[exp]</code> 就相当于在获取 <code>data.a</code> 的值，那这会放生什么？大家不要忘了，此时数据 <code>data</code> 下的属性已经是访问器属性了，所以这么做的结果会直接触发对应属性的 <code>get</code> 函数，这样我们就成功的和 <code>observer</code> 产生了关联，但这样还不够，我们还是没有达到目的，不过我们已经无限接近了，我们继续思考看一下可不可以这样：</p>
+<blockquote>
+<p>既然在 <code>Watch</code> 中对表达式求值，能够触发 <code>observer</code> 的 <code>get</code>，那么可不可以在 <code>get</code> 中收集 <code>Watch</code> 中函数呢？</p>
+</blockquote>
+<p>答案是可以的，不过这个时候我们就需要 <code>Dep</code> 出场了，它是一个依赖收集器。我们的思路是：<code>data</code> 下的每一个属性都有一个唯一的 <code>Dep</code> 对象，在 <code>get</code> 中收集仅针对该属性的依赖，然后在 <code>set</code> 方法中触发所有收集的依赖，这样就搞定了，看如下代码：</p>
+<pre><code>class Dep {
+    constructor () {
+        this.subs = []
+    }
+    addSub () {
+        this.subs.push(Dep.target)
+    }
+    notify () {
+        for(let i = 0; i &lt; this.subs.length; i++){
+            this.subs[i].fn()
+        }
+    }
+}
+Dep.target = null
+function pushTarget(watch){
+    Dep.target = watch
+}
+
+class Watch {
+    constructor (exp, fn) {
+        this.exp = exp
+        this.fn = fn
+        pushTarget(this)
+        data[exp]
+    }
+}
+</code></pre><p>上面的代码中，我们在 <code>Watch</code> 中增加了 <code>pushTarget(this)</code>，可以发现，这句代码的作用是将 <code>Dep.target</code> 的值设置为该Watch对象。在 <code>pushTarget</code> 之后我们才对表达式进行求值，接着，我们修改 <code>defineReactive</code> 代码如下</p>
+<pre><code>function defineReactive (data, key, val) {
+    observer(val)
+    let dep = new Dep()        // 新增
+    Object.defineProperty(data, key, {
+        enumerable: true,
+        configurable: true,
+        get: function () {
+            dep.addSub()    // 新增
+            return val
+        },
+        set: function (newVal) {
+            if(val === newVal){
+                return
+            }
+            observer(newVal)
+            dep.notify()    // 新增
+        }
+    })
+}
+</code></pre><p>如标注，新增了三句代码，我们知道，<code>Watch</code> 中对表达式求值会触发 <code>get</code> 方法，我们在 <code>get</code> 方法中调用了 <code>dep.addSub</code>，也就执行了这句代码：<code>this.subs.push(Dep.target)</code>，由于在这句代码执行之前，<code>Dep.target</code> 的值已经被设置为一个 <code>Watch</code> 对象了，所以最终结果就是收集了一个 <code>Watch</code> 对象，然后在 <code>set</code> 方法中我们调用了 <code>dep.notify</code>，所以当data属性值变化的时候，就会通过 <code>dep.notify</code> 循环调用所有收集的Watch对象中的回调函数：</p>
+<pre><code>notify () {
+    for(let i = 0; i &lt; this.subs.length; i++){
+        this.subs[i].fn()
+    }
+}
+</code></pre><p>这样 <code>observer</code>、<code>Dep</code>、<code>Watch</code> 三者就联系成为一个有机的整体，实现了我们最初的目标，完整的代码可以戳这里：<a href="https://github.com/HcySunYang/observer-dep-watch" target="_blank" rel="external">observer-dep-watch</a>。这里还给大家挖了个坑，因为我们没有处理对数组的观测，由于比较复杂并且这又不是我们讨论的重点，如果大家想了解可以戳我的这篇文章：<a href="http://hcysun.me/2016/04/28/JavaScript%E5%AE%9E%E7%8E%B0MVVM%E4%B9%8B%E6%88%91%E5%B0%B1%E6%98%AF%E6%83%B3%E7%9B%91%E6%B5%8B%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8F%98%E5%8C%96/">JavaScript实现MVVM之我就是想监测一个普通对象的变化</a>，另外，在 Watch 中对表达式求值的时候也只做了直接子属性的求值，所以如果 exp 的值为 ‘a.b’ 的时候，就不可以用了，Vue的做法是使用 <code>.</code> 分割表达式字符串为数组，然后遍历一下对其进行求值，大家可以查看其源码。如下：</p>
+<pre><code>/**
+ * Parse simple path.
+ */
+const bailRE = /[^\w.$]/
+export function parsePath (path: string): any {
+  if (bailRE.test(path)) {
+    return
+  } else {
+    const segments = path.split(&#39;.&#39;)
+    return function (obj) {
+      for (let i = 0; i &lt; segments.length; i++) {
+        if (!obj) return
+        obj = obj[segments[i]]
+      }
+      return obj
+    }
+  }
+}
+</code></pre><p>Vue 的求值代码是在 <code>src/core/util/lang.js</code> 文件中 <code>parsePath</code> 函数中实现的。总结一下Vue的依赖收集过程应该是这样的：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/vueimgdep.png" alt="Vue的依赖收集过程"></p>
+<p>实际上，Vue并没有直接在 <code>get</code> 中调用 <code>addSub</code>，而是调用的 <code>dep.depend</code>，目的是将当前的 dep 对象收集到 watch 对象中，如果要完整的流程，应该是这样的：（大家注意数据的每一个字段都拥有自己的 <code>dep</code> 对象和 <code>get</code> 方法。）</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/all.png" alt="Vue完整的收集依赖的流程"></p>
+<p>这样 Vue 就建立了一套数据响应系统，之前我们说过，按照我们的例子那样写，初始化工作只包含两个主要内容即：<code>initData</code> 和 <code>initRender</code>。现在 <code>initData</code> 我们分析完了，接下来看一看 <code>initRender</code></p>
+<h2 id="六、通过initRender看Vue的-render-渲染-与-re-render-重新渲染"><a href="#六、通过initRender看Vue的-render-渲染-与-re-render-重新渲染" class="headerlink" title="六、通过initRender看Vue的 render(渲染) 与 re-render(重新渲染)"></a><span style="color: #ff6600;">六、通过<code>initRender</code>看Vue的 render(渲染) 与 re-render(重新渲染)</span></h2><p>在 <code>initRender</code> 方法中，因为我们的例子中传递了 <code>el</code> 选项，所以下面的代码会执行：</p>
+<pre><code>  if (vm.$options.el) {
+    vm.$mount(vm.$options.el)
+  }
+</code></pre><p>这里，调用了 <code>$mount</code> 方法，在还原Vue构造函数的时候，我们整理过所有的方法，其中 <code>$mount</code> 方法在两个地方出现过：</p>
+<p>1、在 <code>web-runtime.js</code> 文件中：</p>
+<pre><code>Vue.prototype.$mount = function (
+  el?: string | Element,
+  hydrating?: boolean
+): Component {
+  el = el &amp;&amp; inBrowser ? query(el) : undefined
+  return this._mount(el, hydrating)
+}
+</code></pre><p>它的作用是通过 <code>el</code> 获取相应的DOM元素，然后调用 <code>lifecycle.js</code> 文件中的 <code>_mount</code> 方法。</p>
+<p>2、在 <code>web-runtime-with-compiler.js</code> 文件中：</p>
+<pre><code>// 缓存了来自 web-runtime.js 的 $mount 方法
+const mount = Vue.prototype.$mount
+// 重写 $mount 方法
+Vue.prototype.$mount = function (
+  el?: string | Element,
+  hydrating?: boolean
+): Component {
+  // 根据 el 获取相应的DOM元素
+  el = el &amp;&amp; query(el)
+  // 不允许你将 el 挂载到 html 标签或者 body 标签
+  if (el === document.body || el === document.documentElement) {
+    process.env.NODE_ENV !== &#39;production&#39; &amp;&amp; warn(
+      `Do not mount Vue to &lt;html&gt; or &lt;body&gt; - mount to normal elements instead.`
+    )
+    return this
+  }
+
+  const options = this.$options
+  // 如果我们没有写 render 选项，那么就尝试将 template 或者 el 转化为 render 函数
+  if (!options.render) {
+    let template = options.template
+    if (template) {
+      if (typeof template === &#39;string&#39;) {
+        if (template.charAt(0) === &#39;#&#39;) {
+          template = idToTemplate(template)
+          /* istanbul ignore if */
+          if (process.env.NODE_ENV !== &#39;production&#39; &amp;&amp; !template) {
+            warn(
+              `Template element not found or is empty: ${options.template}`,
+              this
+            )
+          }
+        }
+      } else if (template.nodeType) {
+        template = template.innerHTML
+      } else {
+        if (process.env.NODE_ENV !== &#39;production&#39;) {
+          warn(&#39;invalid template option:&#39; + template, this)
+        }
+        return this
+      }
+    } else if (el) {
+      template = getOuterHTML(el)
+    }
+    if (template) {
+      const { render, staticRenderFns } = compileToFunctions(template, {
+        warn,
+        shouldDecodeNewlines,
+        delimiters: options.delimiters
+      }, this)
+      options.render = render
+      options.staticRenderFns = staticRenderFns
+    }
+  }
+  // 调用已经缓存下来的 web-runtime.js 文件中的 $mount 方法
+  return mount.call(this, el, hydrating)
+}
+</code></pre><p>分析一下可知 <code>web-runtime-with-compiler.js</code> 的逻辑如下：</p>
+<p>1、缓存来自 <code>web-runtime.js</code> 文件的 <code>$mount</code> 方法</p>
+<p>2、判断有没有传递 <code>render</code> 选项，如果有直接调用来自 <code>web-runtime.js</code> 文件的 $mount 方法</p>
+<p>3、如果没有传递 <code>render</code> 选项，那么查看有没有 <code>template</code> 选项，如果有就使用 <code>compileToFunctions</code> 函数根据其内容编译成 <code>render</code> 函数</p>
+<p>4、如果没有 <code>template</code> 选项，那么查看有没有 <code>el</code> 选项，如果有就使用 <code>compileToFunctions</code> 函数将其内容(template = getOuterHTML(el))编译成 <code>render</code> 函数</p>
+<p>5、将编译成的 <code>render</code> 函数挂载到 <code>this.$options</code> 属性下，并调用缓存下来的 <code>web-runtime.js</code> 文件中的 $mount 方法</p>
+<p>简单的用一张图表示 <code>mount</code> 方法的调用关系，从上至下调用：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/vueimgmount.png" alt="mount调用关系"></p>
+<p>不过不管怎样，我们发现这些步骤的最终目的是生成 <code>render</code> 函数，然后再调用 <code>lifecycle.js</code> 文件中的 <code>_mount</code> 方法，我们看看这个方法做了什么事情，查看 <code>_mount</code> 方法的代码，这是简化过得：</p>
+<pre><code>  Vue.prototype._mount = function (
+    el?: Element | void,
+    hydrating?: boolean
+  ): Component {
+    const vm: Component = this
+
+    // 在Vue实例对象上添加 $el 属性，指向挂载点元素
+    vm.$el = el
+
+    // 触发 beforeMount 生命周期钩子
+    callHook(vm, &#39;beforeMount&#39;)
+
+    vm._watcher = new Watcher(vm, () =&gt; {
+      vm._update(vm._render(), hydrating)
+    }, noop)
+
+    // 如果是第一次mount则触发 mounted 生命周期钩子
+    if (vm.$vnode == null) {
+      vm._isMounted = true
+      callHook(vm, &#39;mounted&#39;)
+    }
+    return vm
+  }
+</code></pre><p>上面的代码很简单，该注释的都注释了，唯一需要看的就是这段代码：</p>
+<pre><code>vm._watcher = new Watcher(vm, () =&gt; {
+  vm._update(vm._render(), hydrating)
+}, noop)
+</code></pre><p>看上去很眼熟有没有？我们平时使用Vue都是这样使用 watch的：</p>
+<pre><code>this.$watch(&#39;a&#39;, (newVal, oldVal) =&gt; {
+
+})
+// 或者
+this.$watch(function(){
+    return this.a + this.b
+}, (newVal, oldVal) =&gt; {
+
+})
+</code></pre><p>第一个参数是 表达式或者函数，第二个参数是回调函数，第三个参数是可选的选项。原理是 <code>Watch</code> 内部对表达式求值或者对函数求值从而触发数据的 <code>get</code> 方法收集依赖。可是 <code>_mount</code> 方法中使用 <code>Watcher</code> 的时候第一个参数 <code>vm</code> 是什么鬼。我们不妨去看看源码中 <code>$watch</code> 函数是如何实现的，根据之前还原Vue构造函数中所整理的内容可知：<code>$warch</code> 方法是在 <code>src/core/instance/state.js</code> 文件中的 <code>stateMixin</code> 方法中定义的，源码如下：</p>
+<pre><code>  Vue.prototype.$watch = function (
+    expOrFn: string | Function,
+    cb: Function,
+    options?: Object
+  ): Function {
+    const vm: Component = this
+    options = options || {}
+    options.user = true
+    const watcher = new Watcher(vm, expOrFn, cb, options)
+    if (options.immediate) {
+      cb.call(vm, watcher.value)
+    }
+    return function unwatchFn () {
+      watcher.teardown()
+    }
+  }
+</code></pre><p>我们可以发现，<code>$warch</code> 其实是对 <code>Watcher</code> 的一个封装，内部的 <code>Watcher</code> 的第一个参数实际上也是 <code>vm</code> 即：Vue实例对象，这一点我们可以在 <code>Watcher</code> 的源码中得到验证，代开 <code>observer/watcher.js</code> 文件查看：</p>
+<pre><code class="js">export default class Watcher {
+
+  constructor (
+    vm: Component,
+    expOrFn: string | Function,
+    cb: Function,
+    options?: Object = {}
+  ) {
+
+  }
+}
+</code></pre>
+<p>可以发现真正的 <code>Watcher</code> 第一个参数实际上就是 <code>vm</code>。第二个参数是表达式或者函数，然后以此类推，所以现在再来看 <code>_mount</code> 中的这段代码：</p>
+<pre><code>vm._watcher = new Watcher(vm, () =&gt; {
+  vm._update(vm._render(), hydrating)
+}, noop)
+</code></pre><p>忽略第一个参数 <code>vm</code>，也就说，<code>Watcher</code> 内部应该对第二个参数求值，也就是运行这个函数：</p>
+<pre><code>() =&gt; {
+  vm._update(vm._render(), hydrating)
+}
+</code></pre><p>所以 <code>vm._render()</code> 函数被第一个执行，该函数在 <code>src/core/instance/render.js</code> 中，该方法中的代码很多，下面是简化过的：</p>
+<pre><code>  Vue.prototype._render = function (): VNode {
+    const vm: Component = this
+    // 解构出 $options 中的 render 函数
+    const {
+      render,
+      staticRenderFns,
+      _parentVnode
+    } = vm.$options
+    ...
+
+    let vnode
+    try {
+      // 运行 render 函数
+      vnode = render.call(vm._renderProxy, vm.$createElement)
+    } catch (e) {
+      ...
+    }
+
+    // set parent
+    vnode.parent = _parentVnode
+    return vnode
+  }
+</code></pre><p><code>_render</code> 方法首先从 <code>vm.$options</code> 中解构出 <code>render</code> 函数，大家应该记得：<code>vm.$options.render</code> 方法是在 <code>web-runtime-with-compiler.js</code> 文件中通过 <code>compileToFunctions</code> 方法将 <code>template</code> 或 <code>el</code> 编译而来的。解构出 <code>render</code> 函数后，接下来便执行了该方法：</p>
+<pre><code>vnode = render.call(vm._renderProxy, vm.$createElement)
+</code></pre><p>其中使用 <code>call</code> 指定了 <code>render</code> 函数的作用域环境为 <code>vm._renderProxy</code>，这个属性在我们整理实例对象的时候知道，他是在 <code>Vue.prototype._init</code> 方法中被添加的，即：<code>vm._renderProxy = vm</code>，其实就是Vue实例对象本身，然后传递了一个参数：<code>vm.$createElement</code>。那么 <code>render</code> 函数到底是干什么的呢？让我们根据上面那句代码猜一猜，我们已经知道 <code>render</code> 函数是从 <code>template</code> 或 <code>el</code> 编译而来的，如果没错的话应该是返回一个虚拟DOM对象。我们不妨使用 <code>console.log</code> 打印一下 <code>render</code> 函数，当我们的模板这样编写时：</p>
+<pre><code>&lt;ul id=&quot;app&quot;&gt;
+  &lt;li&gt;{{a}}&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre><p>打印的 <code>render</code> 函数如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/vueimgr2.png" alt="render函数1"></p>
+<p>我们修改模板为：</p>
+<pre><code>&lt;ul id=&quot;app&quot;&gt;
+  &lt;li v-for=&quot;i in b&quot;&gt;{{a}}&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre><p>打印出来的 <code>render</code> 函数如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/vueimgr3.png" alt="render函数2"></p>
+<p>其实了解Vue2.x版本的同学都知道，Vue提供了 <code>render</code> 选项，作为 <code>template</code> 的代替方案，同时为JavaScript提供了完全编程的能力，下面两种编写模板的方式实际是等价的：</p>
+<pre><code class="js">// 方案一：
+new Vue({
+    el: &#39;#app&#39;,
+    data: {
+        a: 1
+    },
+    template: &#39;&lt;ul&gt;&lt;li&gt;{{a}}&lt;/li&gt;&lt;li&gt;{{a}}&lt;/li&gt;&lt;/ul&gt;&#39;
+})
+
+// 方案二：
+new Vue({
+    el: &#39;#app&#39;,
+    render: function (createElement) {
+        createElement(&#39;ul&#39;, [
+            createElement(&#39;li&#39;, this.a),
+            createElement(&#39;li&#39;, this.a)
+        ])
+    }
+})
+</code></pre>
+<p>现在我们再来看我们打印的 <code>render</code> 函数：</p>
+<pre><code>function anonymous() {
+    with(this){
+        return _c(&#39;ul&#39;, { 
+            attrs: {&quot;id&quot;: &quot;app&quot;}
+        },[
+            _c(&#39;li&#39;, [_v(_s(a))])
+        ])
+    }
+}
+</code></pre><p>是不是与我们自己写 <code>render</code> 函数很像？因为 render 函数的作用域被绑定到了Vue实例，即：<code>render.call(vm._renderProxy, vm.$createElement)</code>，所以上面代码中 <code>_c</code>、<code>_v</code>、<code>_s</code> 以及变量 <code>a</code>相当于Vue实例下的方法和变量。大家还记得诸如 <code>_c</code>、<code>_v</code>、<code>_s</code> 这样的方法在哪里定义的吗？我们在整理Vue构造函数的时候知道，他们在 <code>src/core/instance/render.js</code> 文件中的 <code>renderMixin</code> 方法中定义，除了这些之外还有诸如：<code>_l</code>、 <code>_m</code>、 <code>_o</code> 等等。其中 <code>_l</code> 就在我们使用 <code>v-for</code> 指令的时候出现了。所以现在大家知道为什么这些方法都被定义在 <code>render.js</code> 文件中了吧，因为他们就是为了构造出 <code>render</code> 函数而存在的。</p>
+<p>现在我们已经知道了 <code>render</code> 函数的长相，也知道了 <code>render</code> 函数的作用域是Vue实例本身即：<code>this</code>(或<code>vm</code>)。那么当我们执行 <code>render</code> 函数时，其中的变量如：<code>a</code>，就相当于：<code>this.a</code>，我们知道这是在求值，所以 <code>_mount</code> 中的这段代码：</p>
+<pre><code>vm._watcher = new Watcher(vm, () =&gt; {
+  vm._update(vm._render(), hydrating)
+}, noop)
+</code></pre><p>当 <code>vm._render</code> 执行的时候，所依赖的变量就会被求值，并被收集为依赖。按照Vue中 <code>watcher.js</code> 的逻辑，当依赖的变量有变化时不仅仅回调函数被执行，实际上还要重新求值，即还要执行一遍：</p>
+<pre><code>() =&gt; {
+  vm._update(vm._render(), hydrating)
+}
+</code></pre><p>这实际上就做到了 <code>re-render</code>，因为 <code>vm._update</code> 就是文章开头所说的虚拟DOM中的最后一步：<code>patch</code></p>
+<p><code>vm_render</code> 方法最终返回一个 <code>vnode</code> 对象，即虚拟DOM，然后作为 <code>vm_update</code> 的第一个参数传递了过去，我们看一下 <code>vm_update</code> 的逻辑，在 <code>src/core/instance/lifecycle.js</code> 文件中有这么一段代码：</p>
+<pre><code class="js">    if (!prevVnode) {
+      // initial render
+      vm.$el = vm.__patch__(
+        vm.$el, vnode, hydrating, false /* removeOnly */,
+        vm.$options._parentElm,
+        vm.$options._refElm
+      )
+    } else {
+      // updates
+      vm.$el = vm.__patch__(prevVnode, vnode)
+    }
+</code></pre>
+<p>如果还没有 <code>prevVnode</code> 说明是首次渲染，直接创建真实DOM。如果已经有了 <code>prevVnode</code> 说明不是首次渲染，那么就采用 <code>patch</code> 算法进行必要的DOM操作。这就是Vue更新DOM的逻辑。只不过我们没有将 virtual DOM 内部的实现。</p>
+<p>现在我们来好好理理思路，当我们写如下代码时：</p>
+<pre><code>new Vue({
+    el: &#39;#app&#39;,
+    data: {
+        a: 1,
+        b: [1, 2, 3]
+    }
+})
+</code></pre><p>Vue 所做的事：</p>
+<blockquote>
+<p>1、构建数据响应系统，使用 <code>Observer</code> 将数据data转换为访问器属性；将 <code>el</code> 编译为 <code>render</code> 函数，<code>render</code> 函数返回值为虚拟DOM</p>
+<p>2、在 <code>_mount</code> 中对 <code>_update</code> 求值，而 <code>_update</code> 又会对 <code>render</code> 求值，<code>render</code> 内部又会对依赖的变量求值，收集为被求值的变量的依赖，当变量改变时，<code>_update</code> 又会重新执行一遍，从而做到 <code>re-render</code>。</p>
+</blockquote>
+<p>用一张详细一点的图表示就是这样的：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/vueimgdetail.png" alt="详细流程"></p>
+<p>到此，我们从大体流程，挑着重点的走了一遍Vue，但是还有很多细节我们没有提及，比如：</p>
+<p>1、将模板转为 <code>render</code> 函数的时候，实际是先生成的抽象语法树（AST），再将抽象语法树转成的 <code>render</code> 函数，而且这一整套的代码我们也没有提及，因为他在复杂了，其实这部分内容就是在完正则。</p>
+<p>2、我们也没有详细的讲 Virtual DOM 的实现原理，网上已经有文章讲了，大家可以搜一搜</p>
+<p>3、我们的例子中仅仅传递了 <code>el</code> ，<code>data</code> 选项，大家知道 Vue 支持的选项很多，比如我们都没有讲到，但都是触类旁通的，比如你搞清楚了 <code>data</code> 选项再去看 <code>computed</code> 选项或者 <code>props</code> 选项就会很容易，比如你知道了 <code>Watcher</code> 的工作机制再去看 <code>watch</code> 选项就会很容易。</p>
+<p>本篇文章作为Vue源码的启蒙文章，也许还有很多缺陷，全当抛砖引玉了。</p>
+
+  </div>
+  <div id="disqus_thread"></div>
+  <script>
+
+  /**
+  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+  /*
+  var disqus_config = function () {
+  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+  };
+  */
+  (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://hcysunyang.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+</div></section>
+          <div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  
+  
+</div>
+
+        </div>
+      </div>
+      <!--  -->
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2017 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>

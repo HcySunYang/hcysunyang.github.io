@@ -1,0 +1,14 @@
+.search-mark {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 900;
+  transition: 0.5s;
+}
+.search-mark.active {
+  display: block;
+  background-color: rgba(127, 116, 213, 0.5);
+}
