@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/vueimgr2.png">
 <meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/vueimgr3.png">
 <meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/vueimgdetail.png">
-<meta property="og:updated_time" content="2017-05-09T10:54:35.000Z">
+<meta property="og:updated_time" content="2017-08-12T14:04:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Vue2.1.7源码学习">
 <meta name="twitter:description" content="原本文章的名字叫做《源码解析》，不过后来想想，还是用“源码学习”来的合适一点，在没有彻底掌握源码中的每一个字母之前，“解析”就有点标题党了。建议在看这篇文章之前，最好打开2.1.7的源码对照着看，这样可能更容易理解。另外本人水平有限，文中有错误或不妥的地方望大家多多指正共同成长。 补充：Vue 2.2 刚刚发布，作为一个系列文章的第一篇，本篇文章主要从Vue代码的组织，Vue构造函数的还原，原型的">
@@ -82,7 +82,7 @@
 <p>补充：Vue 2.2 刚刚发布，作为一个系列文章的第一篇，本篇文章主要从Vue代码的组织，Vue构造函数的还原，原型的设计，以及参数选项的处理和已经被写烂了的数据绑定与如何使用 Virtual DOM 更新视图入手。从整体的大方向观察框架，这么看来 <code>V2.1.7</code> 对于理解 <code>V2.2</code> 的代码不会有太大的影响。该系列文章的后续文章，都会从最新的源码入手，并对改动的地方做相应的提示。</p>
 <a id="more"></a>
 <p>很久之前写过一篇文章：<a href="http://hcysun.me/2016/04/28/JavaScript%E5%AE%9E%E7%8E%B0MVVM%E4%B9%8B%E6%88%91%E5%B0%B1%E6%98%AF%E6%83%B3%E7%9B%91%E6%B5%8B%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8F%98%E5%8C%96/">JavaScript实现MVVM之我就是想监测一个普通对象的变化</a>，文章开头提到了我写博客的风格，还是那句话，只写努力让小白，甚至是小学生都能看明白的文章。这不免会导致对于某些同学来说这篇文章有些墨迹，所以大家根据自己的喜好，可以详细的看，也可以跳跃着看。</p>
-<h2 id="一、从了解一个开源项目入手"><a href="#一、从了解一个开源项目入手" class="headerlink" title="一、从了解一个开源项目入手"></a><span style="color: #ff6600;">一、从了解一个开源项目入手<span></span></span></h2><p>要看一个项目的源码，不要一上来就看，先去了解一下项目本身的元数据和依赖，除此之外最好也了解一下 PR 规则，Issue Reporting 规则等等。特别是“前端”开源项目，我们在看源码之前第一个想到的应该是：<code>package.json</code>文件。</p>
+<h2 id="一、从了解一个开源项目入手"><a href="#一、从了解一个开源项目入手" class="headerlink" title="一、从了解一个开源项目入手"></a>一、从了解一个开源项目入手</h2><p>要看一个项目的源码，不要一上来就看，先去了解一下项目本身的元数据和依赖，除此之外最好也了解一下 PR 规则，Issue Reporting 规则等等。特别是“前端”开源项目，我们在看源码之前第一个想到的应该是：<code>package.json</code>文件。</p>
 <p>在 <code>package.json</code> 文件中，我们最应该关注的就是 <code>scripts</code> 字段和 <code>devDependencies</code> 以及 <code>dependencies</code> 字段，通过 <code>scripts</code> 字段我们可以知道项目中定义的脚本命令，通过 <code>devDependencies</code> 和 <code>dependencies</code> 字段我们可以了解项目的依赖情况。</p>
 <p>了解了这些之后，如果有依赖我们就 <code>npm install</code> 安装依赖就ok了。</p>
 <p>除了 <code>package.json</code> 之外，我们还要阅读项目的贡献规则文档，了解如何开始，一个好的开源项目肯定会包含这部分内容的，Vue也不例外：<a href="https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md" target="_blank" rel="external">https://github.com/vuejs/vue/blob/dev/.github/CONTRIBUTING.md</a>，在这个文档里说明了一些行为准则，PR指南，Issue Reporting 指南，Development Setup 以及 项目结构。通过阅读这些内容，我们可以了解项目如何开始，如何开发以及目录的说明，下面是对重要目录和文件的简单介绍，这些内容你都可以去自己阅读获取：</p>
@@ -119,7 +119,7 @@ $ npm run dev
 # watch and auto re-run unit tests in Chrome
 $ npm run dev:test
 </code></pre><p>现在，我们只需要运行 <code>npm run dev</code> 即可监测文件变化并自动重新构建输出 dist/vue.js，然后运行 <code>npm run dev:test</code> 来测试。不过为了方便，我会在 <code>examples</code> 目录新建一个例子，然后引用 dist/vue.js 这样，我们可以直接拿这个例子一边改Vue源码一边看自己写的代码想怎么玩怎么玩。</p>
-<h2 id="二、看源码的小提示"><a href="#二、看源码的小提示" class="headerlink" title="二、看源码的小提示"></a><span style="color: #ff6600;">二、看源码的小提示</span></h2><p>在真正步入源码世界之前，我想简单说一说看源码的技巧：</p>
+<h2 id="二、看源码的小提示"><a href="#二、看源码的小提示" class="headerlink" title="二、看源码的小提示"></a>二、看源码的小提示</h2><p>在真正步入源码世界之前，我想简单说一说看源码的技巧：</p>
 <h3 id="注重大体框架，从宏观到微观"><a href="#注重大体框架，从宏观到微观" class="headerlink" title="注重大体框架，从宏观到微观"></a><em>注重大体框架，从宏观到微观</em></h3><p>当你看一个项目代码的时候，最好是能找到一条主线，先把大体流程结构摸清楚，再深入到细节，逐项击破，拿Vue举个栗子：假如你已经知道Vue中数据状态改变后会采用virtual DOM的方式更新DOM，这个时候，如果你不了解virtual DOM，那么听我一句“暂且不要去研究内部具体实现，因为这会是你丧失主线”，而你仅仅需要知道virtual DOM分为三个步骤：</p>
 <blockquote>
 <p>一、createElement(): 用 JavaScript对象(虚拟树) 描述 真实DOM对象(真实树)<br>二、diff(oldNode, newNode) : 对比新旧两个虚拟树的区别，收集差异<br>三、patch() : 将差异应用到真实DOM树</p>
@@ -130,7 +130,7 @@ $ npm run dev:test
 }
 </code></pre>
 <p>当我们知道了一个东西存在，且知道它存在的目的，那么我们就很容易抓住这条主线，这个系列的第一篇文章就是围绕大体主线展开的。了解大体之后，我们就知道了每部分内容都是做什么的，比如 codegen 是生成类似上面贴出的代码所示的函数的，那么再去看codegen下的代码时，目的性就会更强，就更容易理解。</p>
-<h2 id="三、Vue-的构造函数是什么样的"><a href="#三、Vue-的构造函数是什么样的" class="headerlink" title="三、Vue 的构造函数是什么样的"></a><span style="color: #ff6600;">三、Vue 的构造函数是什么样的<span></span></span></h2><p>balabala一大堆，开始来干货吧。我们要做的第一件事就是搞清楚 Vue 构造函数到底是什么样子的。</p>
+<h2 id="三、Vue-的构造函数是什么样的"><a href="#三、Vue-的构造函数是什么样的" class="headerlink" title="三、Vue 的构造函数是什么样的"></a>三、Vue 的构造函数是什么样的</h2><p>balabala一大堆，开始来干货吧。我们要做的第一件事就是搞清楚 Vue 构造函数到底是什么样子的。</p>
 <p>我们知道，我们要使用 <code>new</code> 操作符来调用 <code>Vue</code>，那么也就是说 <code>Vue</code> 应该是一个构造函数，所以我们第一件要做的事儿就是把构造函数先扒的一清二楚，如何寻找 <code>Vue</code> 构造函数呢？当然是从 entry 开始啦，还记的我们运行 <code>npm run dev</code> 命令后，会输出 <code>dist/vue.js</code> 吗，那么我们就去看看 <code>npm run dev</code> 干了什么：</p>
 <pre><code>&quot;dev&quot;: &quot;TARGET=web-full-dev rollup -w -c build/config.js&quot;,
 </code></pre><p>首先将 TARGET 得值设置为 ‘web-full-dev’，然后，然后，然后如果你不了解 rollup 就应该简单去看一下啦……，简单的说就是一个JavaScript模块打包器，你可以把它简单的理解为和 webpack 一样，只不过它有他的优势，比如 Tree-shaking (webpack2也有)，但同样，在某些场景它也有他的劣势。。。废话不多说，其中 <code>-w</code> 就是watch，<code>-c</code> 就是指定配置文件为 <code>build/config.js</code> ，我们打开这个配置文件看一看：</p>
@@ -346,7 +346,7 @@ Vue.prototype.$mount
 <p>2、<code>Vue</code> 下的静态属性和方法的挂载主要是在 <code>src/core/global-api</code> 目录下的代码处理的</p>
 <p>3、<code>web-runtime.js</code> 主要是添加web平台特有的配置、组件和指令，<code>web-runtime-with-compiler.js</code> 给Vue的 <code>$mount</code> 方法添加 <code>compiler</code> 编译器，支持 <code>template</code>。</p>
 </blockquote>
-<h2 id="四、一个贯穿始终的例子"><a href="#四、一个贯穿始终的例子" class="headerlink" title="四、一个贯穿始终的例子"></a><span style="color: #ff6600;">四、一个贯穿始终的例子</span></h2><p>在了解了 <code>Vue</code> 构造函数的设计之后，接下来，我们一个贯穿始终的例子就要登场了，掌声有请：</p>
+<h2 id="四、一个贯穿始终的例子"><a href="#四、一个贯穿始终的例子" class="headerlink" title="四、一个贯穿始终的例子"></a>四、一个贯穿始终的例子</h2><p>在了解了 <code>Vue</code> 构造函数的设计之后，接下来，我们一个贯穿始终的例子就要登场了，掌声有请：</p>
 <pre><code class="js">let v = new Vue({
     el: &#39;#app&#39;,
     data: {
@@ -662,7 +662,7 @@ callHook(vm, &#39;created&#39;)
 initRender(vm)
 </code></pre><p>首先是 <code>initLifecycle</code>，这个函数的作用就是在实例上添加一些属性，然后是 <code>initEvents</code>，由于 <code>vm.$options._parentListeners</code> 的值为 <code>undefined</code> 所以也仅仅是在实例上添加属性， <code>vm._updateListeners(listeners)</code> 并不会执行，由于我们只传递了 <code>el</code> 和 <code>data</code>，所以 <code>initProps</code>、<code>initMethods</code>、<code>initComputed</code>、<code>initWatch</code> 这四个方法什么都不会做，只有 <code>initData</code> 会执行。最后是 <code>initRender</code>，除了在实例上添加一些属性外，由于我们传递了 <code>el</code> 选项，所以会执行 <code>vm.$mount(vm.$options.el)</code>。</p>
 <p>综上所述：按照我们的例子那样写，初始化工作只包含两个主要内容即：<code>initData</code> 和 <code>initRender</code>。</p>
-<h2 id="五、通过initData看Vue的数据响应系统"><a href="#五、通过initData看Vue的数据响应系统" class="headerlink" title="五、通过initData看Vue的数据响应系统"></a><span style="color: #ff6600;">五、通过<code>initData</code>看Vue的数据响应系统</span></h2><p>Vue的数据响应系统包含三个部分：<code>Observer</code>、<code>Dep</code>、<code>Watcher</code>。关于数据响应系统的内容真的已经被文章讲烂了，所以我就简单的说一下，力求大家能理解就ok，我们还是先看一下 <code>initData</code> 中的代码：</p>
+<h2 id="五、通过-initData-看Vue的数据响应系统"><a href="#五、通过-initData-看Vue的数据响应系统" class="headerlink" title="五、通过 initData 看Vue的数据响应系统"></a>五、通过 initData 看Vue的数据响应系统</h2><p>Vue的数据响应系统包含三个部分：<code>Observer</code>、<code>Dep</code>、<code>Watcher</code>。关于数据响应系统的内容真的已经被文章讲烂了，所以我就简单的说一下，力求大家能理解就ok，我们还是先看一下 <code>initData</code> 中的代码：</p>
 <pre><code>function initData (vm: Component) {
   let data = vm.$options.data
   data = vm._data = typeof data === &#39;function&#39;
@@ -883,7 +883,7 @@ export function parsePath (path: string): any {
 <p>实际上，Vue并没有直接在 <code>get</code> 中调用 <code>addSub</code>，而是调用的 <code>dep.depend</code>，目的是将当前的 dep 对象收集到 watch 对象中，如果要完整的流程，应该是这样的：（大家注意数据的每一个字段都拥有自己的 <code>dep</code> 对象和 <code>get</code> 方法。）</p>
 <p><img src="http://7xlolm.com1.z0.glb.clouddn.com/all.png" alt="Vue完整的收集依赖的流程"></p>
 <p>这样 Vue 就建立了一套数据响应系统，之前我们说过，按照我们的例子那样写，初始化工作只包含两个主要内容即：<code>initData</code> 和 <code>initRender</code>。现在 <code>initData</code> 我们分析完了，接下来看一看 <code>initRender</code></p>
-<h2 id="六、通过initRender看Vue的-render-渲染-与-re-render-重新渲染"><a href="#六、通过initRender看Vue的-render-渲染-与-re-render-重新渲染" class="headerlink" title="六、通过initRender看Vue的 render(渲染) 与 re-render(重新渲染)"></a><span style="color: #ff6600;">六、通过<code>initRender</code>看Vue的 render(渲染) 与 re-render(重新渲染)</span></h2><p>在 <code>initRender</code> 方法中，因为我们的例子中传递了 <code>el</code> 选项，所以下面的代码会执行：</p>
+<h2 id="六、通过-initRender-看Vue的-render-渲染-与-re-render-重新渲染"><a href="#六、通过-initRender-看Vue的-render-渲染-与-re-render-重新渲染" class="headerlink" title="六、通过 initRender 看Vue的 render(渲染) 与 re-render(重新渲染)"></a>六、通过 initRender 看Vue的 render(渲染) 与 re-render(重新渲染)</h2><p>在 <code>initRender</code> 方法中，因为我们的例子中传递了 <code>el</code> 选项，所以下面的代码会执行：</p>
 <pre><code>  if (vm.$options.el) {
     vm.$mount(vm.$options.el)
   }
