@@ -70,11 +70,12 @@
   </div>
 </header> 
         <div class="outer clear">
-          <section id="main">
-<div class="main clear">
-  <div class="post-content">
-    <h1 class="post-page-title">js Worker API 在倒计时中的使用</h1>
-    <p>在做开发的时候，倒计时的需求是很常见的，比如订单待提交和待支付都会有倒计时，市面上的兼职软件在领取任务后都会有倒计时，登录注册中获取验证码的时候也会有倒计时，有的页面只有一个倒计时，而有的页面作为列表页，列表中的每一项都会有倒计时，今天就来聊聊 Worker API 在js倒计时中的使用，以及为什么要使用 Worker 来做倒计时</p>
+          
+<section id="main">
+  <div class="main clear">
+    <div class="post-content">
+      <h1 class="post-page-title">js Worker API 在倒计时中的使用</h1>
+      <p>在做开发的时候，倒计时的需求是很常见的，比如订单待提交和待支付都会有倒计时，市面上的兼职软件在领取任务后都会有倒计时，登录注册中获取验证码的时候也会有倒计时，有的页面只有一个倒计时，而有的页面作为列表页，列表中的每一项都会有倒计时，今天就来聊聊 Worker API 在js倒计时中的使用，以及为什么要使用 Worker 来做倒计时</p>
 <a id="more"></a>
 <h1 id="setInterval-或-setTimeout-的问题"><a href="#setInterval-或-setTimeout-的问题" class="headerlink" title="setInterval 或 setTimeout 的问题"></a>setInterval 或 setTimeout 的问题</h1><p>当提到js的倒计时功能时，我想你第一个想到的可能就是 setInterval 这个东东，这个东西在做PC页面的时候并没有什么问题，至少我现在还没遇到什么问题，而当你在移动页面中使用它来做倒计时的时候，就会出问题了，具体来说，是在做ios中的移动页面开发的时候，问题就尤为明显了，我们有以下代码：</p>
 <pre><code>&lt;body&gt;
@@ -144,28 +145,29 @@
 <h1 id="需要注意的地方"><a href="#需要注意的地方" class="headerlink" title="需要注意的地方"></a>需要注意的地方</h1><p>在列表页面中，可能会有很多个倒计时，并且每个倒计时的开始时间不尽相同，但切记不要通过循环去 new 很多个 Worker 出来，这样可能会导致应用卡死，特别是如果在做 Hybrid App 中的 H5 页面时，可能会造成闪退，所以你只能 new 一个 Worker 对象出来，然后使用这一个 Worker 对象去做所有列表时间的倒计时，然后在更新视图中使用循环去更新，这样就不会有问题了，另外一个需要注意的是，有些Android机型中的webview不支持 web Worker 。这个时候仅仅去使用 setInterval 就可以了，因为在Android中不存在ios中那种阻塞的情况。</p>
 <p>以上就是这篇博客的内容，希望对大家有所帮助 = =。</p>
 
-  </div>
-  <div id="disqus_thread"></div>
-  <script>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
 
-  /**
-  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-  /*
-  var disqus_config = function () {
-  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-  };
-  */
-  (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://hcysunyang.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-  </script>
-</div></section>
-          <div class="sidebar-content">
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://hcysunyang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+    </script>
+  </div>
+</section>
+<div class="sidebar-content">
   <h2>Social Links</h2>
   <div class="sidebar-img-panel">
     <a href="https://github.com/HcySunYang" target="_blank">
@@ -181,8 +183,10 @@
       <i class="fa fa-twitter" aria-hidden="true"></i>
     </a>
   </div>
-  
-  
+  <h2 class="toc-h2">目录</h2>
+  <div class="toc-wrap">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#setInterval-或-setTimeout-的问题"><span class="toc-number">1.</span> <span class="toc-text">setInterval 或 setTimeout 的问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Worker-API"><span class="toc-number">2.</span> <span class="toc-text">Worker API</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#使用-Worker-解决问题"><span class="toc-number">3.</span> <span class="toc-text">使用 Worker 解决问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#需要注意的地方"><span class="toc-number">4.</span> <span class="toc-text">需要注意的地方</span></a></li></ol>
+  </div>
 </div>
 
         </div>

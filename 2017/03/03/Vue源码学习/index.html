@@ -75,11 +75,12 @@
   </div>
 </header> 
         <div class="outer clear">
-          <section id="main">
-<div class="main clear">
-  <div class="post-content">
-    <h1 class="post-page-title">Vue2.1.7源码学习</h1>
-    <p>原本文章的名字叫做《源码解析》，不过后来想想，还是用“源码学习”来的合适一点，在没有彻底掌握源码中的每一个字母之前，“解析”就有点标题党了。建议在看这篇文章之前，最好打开2.1.7的源码对照着看，这样可能更容易理解。另外本人水平有限，文中有错误或不妥的地方望大家多多指正共同成长。</p>
+          
+<section id="main">
+  <div class="main clear">
+    <div class="post-content">
+      <h1 class="post-page-title">Vue2.1.7源码学习</h1>
+      <p>原本文章的名字叫做《源码解析》，不过后来想想，还是用“源码学习”来的合适一点，在没有彻底掌握源码中的每一个字母之前，“解析”就有点标题党了。建议在看这篇文章之前，最好打开2.1.7的源码对照着看，这样可能更容易理解。另外本人水平有限，文中有错误或不妥的地方望大家多多指正共同成长。</p>
 <p>补充：Vue 2.2 刚刚发布，作为一个系列文章的第一篇，本篇文章主要从Vue代码的组织，Vue构造函数的还原，原型的设计，以及参数选项的处理和已经被写烂了的数据绑定与如何使用 Virtual DOM 更新视图入手。从整体的大方向观察框架，这么看来 <code>V2.1.7</code> 对于理解 <code>V2.2</code> 的代码不会有太大的影响。该系列文章的后续文章，都会从最新的源码入手，并对改动的地方做相应的提示。</p>
 <a id="more"></a>
 <p>很久之前写过一篇文章：<a href="http://hcysun.me/2016/04/28/JavaScript%E5%AE%9E%E7%8E%B0MVVM%E4%B9%8B%E6%88%91%E5%B0%B1%E6%98%AF%E6%83%B3%E7%9B%91%E6%B5%8B%E4%B8%80%E4%B8%AA%E6%99%AE%E9%80%9A%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%8F%98%E5%8C%96/">JavaScript实现MVVM之我就是想监测一个普通对象的变化</a>，文章开头提到了我写博客的风格，还是那句话，只写努力让小白，甚至是小学生都能看明白的文章。这不免会导致对于某些同学来说这篇文章有些墨迹，所以大家根据自己的喜好，可以详细的看，也可以跳跃着看。</p>
@@ -1153,28 +1154,29 @@ new Vue({
 <p>3、我们的例子中仅仅传递了 <code>el</code> ，<code>data</code> 选项，大家知道 Vue 支持的选项很多，比如我们都没有讲到，但都是触类旁通的，比如你搞清楚了 <code>data</code> 选项再去看 <code>computed</code> 选项或者 <code>props</code> 选项就会很容易，比如你知道了 <code>Watcher</code> 的工作机制再去看 <code>watch</code> 选项就会很容易。</p>
 <p>本篇文章作为Vue源码的启蒙文章，也许还有很多缺陷，全当抛砖引玉了。</p>
 
-  </div>
-  <div id="disqus_thread"></div>
-  <script>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
 
-  /**
-  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-  /*
-  var disqus_config = function () {
-  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-  };
-  */
-  (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://hcysunyang.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-  </script>
-</div></section>
-          <div class="sidebar-content">
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://hcysunyang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+    </script>
+  </div>
+</section>
+<div class="sidebar-content">
   <h2>Social Links</h2>
   <div class="sidebar-img-panel">
     <a href="https://github.com/HcySunYang" target="_blank">
@@ -1190,8 +1192,10 @@ new Vue({
       <i class="fa fa-twitter" aria-hidden="true"></i>
     </a>
   </div>
-  
-  
+  <h2 class="toc-h2">目录</h2>
+  <div class="toc-wrap">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、从了解一个开源项目入手"><span class="toc-number">1.</span> <span class="toc-text">一、从了解一个开源项目入手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、看源码的小提示"><span class="toc-number">2.</span> <span class="toc-text">二、看源码的小提示</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注重大体框架，从宏观到微观"><span class="toc-number">2.1.</span> <span class="toc-text">注重大体框架，从宏观到微观</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、Vue-的构造函数是什么样的"><span class="toc-number">3.</span> <span class="toc-text">三、Vue 的构造函数是什么样的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、一个贯穿始终的例子"><span class="toc-number">4.</span> <span class="toc-text">四、一个贯穿始终的例子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、通过-initData-看Vue的数据响应系统"><span class="toc-number">5.</span> <span class="toc-text">五、通过 initData 看Vue的数据响应系统</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、通过-initRender-看Vue的-render-渲染-与-re-render-重新渲染"><span class="toc-number">6.</span> <span class="toc-text">六、通过 initRender 看Vue的 render(渲染) 与 re-render(重新渲染)</span></a></li></ol>
+  </div>
 </div>
 
         </div>

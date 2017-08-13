@@ -76,11 +76,12 @@
   </div>
 </header> 
         <div class="outer clear">
-          <section id="main">
-<div class="main clear">
-  <div class="post-content">
-    <h1 class="post-page-title">使用npm和node开发命令行工具并使用npm管理你的包</h1>
-    <blockquote>
+          
+<section id="main">
+  <div class="main clear">
+    <div class="post-content">
+      <h1 class="post-page-title">使用npm和node开发命令行工具并使用npm管理你的包</h1>
+      <blockquote>
 <p>对于前端开发者来讲，玩儿js的你们肯定对nodejs已经npm并不陌生，现在npm已经集成到了node里，所以当你安装了node之后也就默认安装了npm，npm的全称是node package manager : node 包管理器，提供一个registry，你只要注册一个npm账号，就可是使用npm进行包管理了，比如发布，安装，更新…等等。最近再做公司内部框架的重构，准备使用npm开发一套命令行工具，管理核心代码，只输出业务目录给框架使用者，一方面减轻了项目体积，另一方面给开发者一个更好的开发体验，同时保证了核心代码的安全，这篇文章记录了使用npm进行包管理的事项、已经使用npm和node开发命令行工具的方法。</p>
 </blockquote>
 <a id="more"></a>
@@ -156,28 +157,29 @@ console.log(&#39;test command line!&#39;);
 <p><a href="https://www.npmjs.com/package/shelljs" target="_blank" rel="external">shelljs - 强大的执行unix系统命令的npm包</a></p>
 <p><a href="https://www.npmjs.com/package/yargs" target="_blank" rel="external">yargs - 命令行参数的处理</a></p>
 
-  </div>
-  <div id="disqus_thread"></div>
-  <script>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
 
-  /**
-  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-  /*
-  var disqus_config = function () {
-  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-  };
-  */
-  (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://hcysunyang.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-  </script>
-</div></section>
-          <div class="sidebar-content">
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://hcysunyang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+    </script>
+  </div>
+</section>
+<div class="sidebar-content">
   <h2>Social Links</h2>
   <div class="sidebar-img-panel">
     <a href="https://github.com/HcySunYang" target="_blank">
@@ -193,8 +195,10 @@ console.log(&#39;test command line!&#39;);
       <i class="fa fa-twitter" aria-hidden="true"></i>
     </a>
   </div>
-  
-  
+  <h2 class="toc-h2">目录</h2>
+  <div class="toc-wrap">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#注册npm账号"><span class="toc-number">1.</span> <span class="toc-text">注册npm账号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#如果使用npm和node开发命令行工具"><span class="toc-number">2.</span> <span class="toc-text">如果使用npm和node开发命令行工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#第一步：编写一个nodejs文件"><span class="toc-number">2.1.</span> <span class="toc-text">第一步：编写一个nodejs文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第二部：在package-json文件中添加bin字段"><span class="toc-number">2.2.</span> <span class="toc-text">第二部：在package.json文件中添加bin字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#第三部：连接到全局"><span class="toc-number">2.3.</span> <span class="toc-text">第三部：连接到全局</span></a></li></ol></li></ol>
+  </div>
 </div>
 
         </div>

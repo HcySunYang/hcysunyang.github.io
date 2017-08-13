@@ -73,11 +73,12 @@
   </div>
 </header> 
         <div class="outer clear">
-          <section id="main">
-<div class="main clear">
-  <div class="post-content">
-    <h1 class="post-page-title">nodejs使用mongodb做数据持久化</h1>
-    <blockquote>
+          
+<section id="main">
+  <div class="main clear">
+    <div class="post-content">
+      <h1 class="post-page-title">nodejs使用mongodb做数据持久化</h1>
+      <blockquote>
 <p>前段时间，写了一篇博客，讲解了在<a href="http://hcysun.me/2015/11/21/Mac%E4%B8%8B%E4%BD%BF%E7%94%A8brew%E5%AE%89%E8%A3%85mongodb/">Mac下使用brew安装mongodb</a>，这篇文章可以看做是续篇，使用nodejs操作mongodb，并封装一些有用的方法。</p>
 </blockquote>
 <a id="more"></a>
@@ -289,28 +290,29 @@ function deleteData(mongoConnectUrl, coll, opation, data, callback){
     });
 },
 </code></pre>
-  </div>
-  <div id="disqus_thread"></div>
-  <script>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
 
-  /**
-  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-  /*
-  var disqus_config = function () {
-  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-  };
-  */
-  (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://hcysunyang.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-  </script>
-</div></section>
-          <div class="sidebar-content">
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://hcysunyang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+    </script>
+  </div>
+</section>
+<div class="sidebar-content">
   <h2>Social Links</h2>
   <div class="sidebar-img-panel">
     <a href="https://github.com/HcySunYang" target="_blank">
@@ -326,8 +328,10 @@ function deleteData(mongoConnectUrl, coll, opation, data, callback){
       <i class="fa fa-twitter" aria-hidden="true"></i>
     </a>
   </div>
-  
-  
+  <h2 class="toc-h2">目录</h2>
+  <div class="toc-wrap">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、启动mongodb服务"><span class="toc-number">1.</span> <span class="toc-text">1、启动mongodb服务</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、向hcy数据库中的users集合插入一个文档"><span class="toc-number">1.1.</span> <span class="toc-text">1、向hcy数据库中的users集合插入一个文档</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#插入数据"><span class="toc-number">2.</span> <span class="toc-text">插入数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#查询数据"><span class="toc-number">3.</span> <span class="toc-text">查询数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#删除数据"><span class="toc-number">4.</span> <span class="toc-text">删除数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改一条数据"><span class="toc-number">5.</span> <span class="toc-text">修改一条数据</span></a></li></ol>
+  </div>
 </div>
 
         </div>

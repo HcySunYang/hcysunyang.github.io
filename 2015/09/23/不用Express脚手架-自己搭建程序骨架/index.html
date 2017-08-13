@@ -75,11 +75,12 @@
   </div>
 </header> 
         <div class="outer clear">
-          <section id="main">
-<div class="main clear">
-  <div class="post-content">
-    <h1 class="post-page-title">不用Express脚手架-自己搭建程序骨架</h1>
-    <h1 id="初识Express"><a href="#初识Express" class="headerlink" title="初识Express"></a>初识Express</h1><p><a href="http://expressjs.com/" target="_blank" rel="external">Express</a>的官网上是这样介绍的：“精简的、灵活的Node.js Web程序框架”。<br>express的哲学是“少即是多”，express是可扩展的，他只充当你和服务器之间薄薄的一层，这并不是说它不健壮，而是尽量少干预你，让你能够充分表达自己的思想。</p>
+          
+<section id="main">
+  <div class="main clear">
+    <div class="post-content">
+      <h1 class="post-page-title">不用Express脚手架-自己搭建程序骨架</h1>
+      <h1 id="初识Express"><a href="#初识Express" class="headerlink" title="初识Express"></a>初识Express</h1><p><a href="http://expressjs.com/" target="_blank" rel="external">Express</a>的官网上是这样介绍的：“精简的、灵活的Node.js Web程序框架”。<br>express的哲学是“少即是多”，express是可扩展的，他只充当你和服务器之间薄薄的一层，这并不是说它不健壮，而是尽量少干预你，让你能够充分表达自己的思想。</p>
 <a id="more"></a>
 <p>在开始之前，首先要确认你对node有一定的了解，以及你的电脑上已经安装了node，接下来我们就开始吧。<br>既然是使用express从零搭建项目，那么第一步我们应该创建自己的项目文件夹也叫根目录或者项目目录（一下统称为项目目录）：</p>
 <pre><code>mkdir learnexpress
@@ -263,28 +264,29 @@ app.use(function(req, res){
 <p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20150923g.png" alt="静态资源图片"></p>
 <p>好啦，这就是express搭建项目的基本使用，你还可以在public目录下面创建类似于css，js这样的子目录，存放对应的静态资源文件，更多有关于express的内容，可以继续关注我的博客，或者<a href="http://expressjs.com/" target="_blank" rel="external">express</a>官网</p>
 
-  </div>
-  <div id="disqus_thread"></div>
-  <script>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
 
-  /**
-  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-  /*
-  var disqus_config = function () {
-  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-  };
-  */
-  (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://hcysunyang.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-  </script>
-</div></section>
-          <div class="sidebar-content">
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://hcysunyang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+    </script>
+  </div>
+</section>
+<div class="sidebar-content">
   <h2>Social Links</h2>
   <div class="sidebar-img-panel">
     <a href="https://github.com/HcySunYang" target="_blank">
@@ -300,8 +302,10 @@ app.use(function(req, res){
       <i class="fa fa-twitter" aria-hidden="true"></i>
     </a>
   </div>
-  
-  
+  <h2 class="toc-h2">目录</h2>
+  <div class="toc-wrap">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#初识Express"><span class="toc-number">1.</span> <span class="toc-text">初识Express</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#莫板引擎"><span class="toc-number">2.</span> <span class="toc-text">莫板引擎</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#视图和静态资源"><span class="toc-number">3.</span> <span class="toc-text">视图和静态资源</span></a></li></ol>
+  </div>
 </div>
 
         </div>

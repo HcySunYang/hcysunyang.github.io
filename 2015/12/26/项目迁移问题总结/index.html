@@ -73,11 +73,12 @@
   </div>
 </header> 
         <div class="outer clear">
-          <section id="main">
-<div class="main clear">
-  <div class="post-content">
-    <h1 class="post-page-title">项目迁移问题总结</h1>
-    <blockquote>
+          
+<section id="main">
+  <div class="main clear">
+    <div class="post-content">
+      <h1 class="post-page-title">项目迁移问题总结</h1>
+      <blockquote>
 <p>之前在Mac系统下搭建了一套用于自动化构建H5项目的平台，一直用Mac做service服务，现在要将项目迁移到Ubuntu上面，下面是整理了迁移过程中遇到的问题，供以后查阅</p>
 </blockquote>
 <p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20151226Ubuntu.jpg" alt="Ubuntu"></p>
@@ -177,28 +178,29 @@ LANGUAGE=&quot;en_US:en&quot;
 </code></pre><p>最后reboot一下就可以了：</p>
 <pre><code>sudo reboot
 </code></pre>
-  </div>
-  <div id="disqus_thread"></div>
-  <script>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
 
-  /**
-  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-  /*
-  var disqus_config = function () {
-  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-  };
-  */
-  (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://hcysunyang.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-  </script>
-</div></section>
-          <div class="sidebar-content">
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://hcysunyang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+    </script>
+  </div>
+</section>
+<div class="sidebar-content">
   <h2>Social Links</h2>
   <div class="sidebar-img-panel">
     <a href="https://github.com/HcySunYang" target="_blank">
@@ -214,8 +216,10 @@ LANGUAGE=&quot;en_US:en&quot;
       <i class="fa fa-twitter" aria-hidden="true"></i>
     </a>
   </div>
-  
-  
+  <h2 class="toc-h2">目录</h2>
+  <div class="toc-wrap">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu下安装git和node"><span class="toc-number">1.</span> <span class="toc-text">Ubuntu下安装git和node</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Ubuntu-下安装-git"><span class="toc-number">1.1.</span> <span class="toc-text">Ubuntu 下安装 git</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ubuntu-下安装-node"><span class="toc-number">1.2.</span> <span class="toc-text">Ubuntu 下安装 node</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu默认是用dash解析shell脚本"><span class="toc-number">2.</span> <span class="toc-text">Ubuntu默认是用dash解析shell脚本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#git的一些小事儿"><span class="toc-number">3.</span> <span class="toc-text">git的一些小事儿</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、让git忽略文件权限"><span class="toc-number">3.1.</span> <span class="toc-text">1、让git忽略文件权限</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、https方式克隆的项目每次都提示输入用户名和密码"><span class="toc-number">3.2.</span> <span class="toc-text">2、https方式克隆的项目每次都提示输入用户名和密码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu下mongodb启动失败"><span class="toc-number">4.</span> <span class="toc-text">Ubuntu下mongodb启动失败</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#nohup-命令让进程在后台运行"><span class="toc-number">5.</span> <span class="toc-text">nohup 命令让进程在后台运行</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Ubuntu下添加用户并赋予root权限"><span class="toc-number">6.</span> <span class="toc-text">Ubuntu下添加用户并赋予root权限</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#安装完Ubuntu后乱码"><span class="toc-number">7.</span> <span class="toc-text">安装完Ubuntu后乱码</span></a></li></ol>
+  </div>
 </div>
 
         </div>

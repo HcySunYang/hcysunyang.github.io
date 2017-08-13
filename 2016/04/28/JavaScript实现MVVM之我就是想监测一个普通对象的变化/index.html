@@ -82,11 +82,12 @@
   </div>
 </header> 
         <div class="outer clear">
-          <section id="main">
-<div class="main clear">
-  <div class="post-content">
-    <h1 class="post-page-title">JavaScript实现MVVM之我就是想监测一个普通对象的变化</h1>
-    <p>我的博客始终都有一个特点，就是喜欢从0开始，努力让小白都能看的明白，即使看不明白，也能知道整体的来龙去脉，这篇博客依然秉承着这个风格。<br>以MVVM模式为主线去实现的JavaScript框架非常流行，诸如 angular、Ember、Polymer、vue 等等，它们的一个特点就是数据的双向绑定。这对于小白来说就像变魔术一样，但无论对谁来讲，当你看到一个令你感兴趣的魔术，那么揭秘它总是能吸引你的眼球。<br>这篇文章主要讲述MVVM实现中的一部分：如何监测数据的变化。</p>
+          
+<section id="main">
+  <div class="main clear">
+    <div class="post-content">
+      <h1 class="post-page-title">JavaScript实现MVVM之我就是想监测一个普通对象的变化</h1>
+      <p>我的博客始终都有一个特点，就是喜欢从0开始，努力让小白都能看的明白，即使看不明白，也能知道整体的来龙去脉，这篇博客依然秉承着这个风格。<br>以MVVM模式为主线去实现的JavaScript框架非常流行，诸如 angular、Ember、Polymer、vue 等等，它们的一个特点就是数据的双向绑定。这对于小白来说就像变魔术一样，但无论对谁来讲，当你看到一个令你感兴趣的魔术，那么揭秘它总是能吸引你的眼球。<br>这篇文章主要讲述MVVM实现中的一部分：如何监测数据的变化。</p>
 <a id="more"></a>
 <blockquote>
 <p>注：本篇文章将生产出一个迷你库，代码托管在 <a href="https://github.com/HcySunYang/jsonob" target="_blank" rel="external">https://github.com/HcySunYang/jsonob</a>，由于本篇文章代码采用ES6编写，所以不能直接在浏览器下运行，读者在实践的时候可以采用该仓库的代码，clone仓库后：<br>1、安装依赖<br>npm install<br>2、构建项目<br>npm run build<br>3、使用浏览器打开 test/index.html 查看运行结果</p>
@@ -474,28 +475,29 @@ data.level1.level2.d = &#39;msn&#39;;       // 修改 data.level1.level2.d 的�
 <p><img src="http://7xlolm.com1.z0.glb.clouddn.com/20160501ad.jpg" alt="四"></p>
 <p>图中我用红色圈标出了变化属性的路径，由于我们的路径是数组标示的，所以看上去是以逗号“,”隔开的，现在，我们就算完成了这个迷你库，相信读者也有自己的实现思路，笔者水平有限，如果哪里有欠缺还希望大家指正，共同进步。</p>
 
-  </div>
-  <div id="disqus_thread"></div>
-  <script>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
 
-  /**
-  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-  /*
-  var disqus_config = function () {
-  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-  };
-  */
-  (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://hcysunyang.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-  </script>
-</div></section>
-          <div class="sidebar-content">
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://hcysunyang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+    </script>
+  </div>
+</section>
+<div class="sidebar-content">
   <h2>Social Links</h2>
   <div class="sidebar-img-panel">
     <a href="https://github.com/HcySunYang" target="_blank">
@@ -511,8 +513,10 @@ data.level1.level2.d = &#39;msn&#39;;       // 修改 data.level1.level2.d 的�
       <i class="fa fa-twitter" aria-hidden="true"></i>
     </a>
   </div>
-  
-  
+  <h2 class="toc-h2">目录</h2>
+  <div class="toc-wrap">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Object-defineProperty"><span class="toc-number">1.</span> <span class="toc-text">Object.defineProperty</span></a></li></ol>
+  </div>
 </div>
 
         </div>

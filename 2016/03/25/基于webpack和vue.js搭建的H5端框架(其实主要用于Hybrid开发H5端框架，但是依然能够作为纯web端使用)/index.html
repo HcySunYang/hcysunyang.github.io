@@ -80,11 +80,12 @@
   </div>
 </header> 
         <div class="outer clear">
-          <section id="main">
-<div class="main clear">
-  <div class="post-content">
-    <h1 class="post-page-title">基于webpack和vue.js搭建的H5端框架(其实主要用于Hybrid开发H5端框架，但是依然能够作为纯web端使用)</h1>
-    <p>人类的发展得益于对追求不断的提升，在能活着的基础上是否要活得潇洒一点，技术的发展亦如是。在公司作为一个最最最最最最最底层的搬砖码农，经历了两个版本的铸(zhe)炼(mo)之后，我痛下决心今后一定要：…………..一定要和产品惺(shi)惺(bu)相(liang)惜(li)。</p>
+          
+<section id="main">
+  <div class="main clear">
+    <div class="post-content">
+      <h1 class="post-page-title">基于webpack和vue.js搭建的H5端框架(其实主要用于Hybrid开发H5端框架，但是依然能够作为纯web端使用)</h1>
+      <p>人类的发展得益于对追求不断的提升，在能活着的基础上是否要活得潇洒一点，技术的发展亦如是。在公司作为一个最最最最最最最底层的搬砖码农，经历了两个版本的铸(zhe)炼(mo)之后，我痛下决心今后一定要：…………..一定要和产品惺(shi)惺(bu)相(liang)惜(li)。</p>
 <a id="more"></a>
 <h1 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h1><p>本文包含以下技术，文中尽量给与详细的描述，并且附上参考链接，读者可以深入学习：</p>
 <p>1、<a href="http://webpack.github.io/" target="_blank" rel="external">webpack</a><br>2、<a href="http://cn.vuejs.org/" target="_blank" rel="external">Vue.js</a><br>3、<a href="https://www.npmjs.com/" target="_blank" rel="external">npm</a><br>4、nodejs —- 这个就不给连接了，因为上面的连接都是在你实践的过程中要去不断访问的<br>5、<a href="http://es6.ruanyifeng.com/#README" target="_blank" rel="external">ES6语法</a></p>
@@ -788,28 +789,29 @@ module.exports = config;
 ]
 </code></pre><p>这样，当我们的css样式表文件中使用 url(xxxx.png)或者js中去require(‘xxxx.png’)的时候，webpack就知道如何处理，另外url-loader的一个好处就是，以上面的配置来说，当我们的图片大小小于10000字节的时候，webpack会把图片转换成base64格式插入到代码中，从而减少http请求，另外，我们在这里谈到的任何一个loader都可以在npm中查找到，读者可以查询更多的loader了解并使用。</p>
 
-  </div>
-  <div id="disqus_thread"></div>
-  <script>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
 
-  /**
-  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-  /*
-  var disqus_config = function () {
-  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-  };
-  */
-  (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://hcysunyang.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-  </script>
-</div></section>
-          <div class="sidebar-content">
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://hcysunyang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+    </script>
+  </div>
+</section>
+<div class="sidebar-content">
   <h2>Social Links</h2>
   <div class="sidebar-img-panel">
     <a href="https://github.com/HcySunYang" target="_blank">
@@ -825,8 +827,10 @@ module.exports = config;
       <i class="fa fa-twitter" aria-hidden="true"></i>
     </a>
   </div>
-  
-  
+  <h2 class="toc-h2">目录</h2>
+  <div class="toc-wrap">
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#开始之前"><span class="toc-number">1.</span> <span class="toc-text">开始之前</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-number">2.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题所在"><span class="toc-number">2.0.1.</span> <span class="toc-text">问题所在</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#webpack"><span class="toc-number">3.</span> <span class="toc-text">webpack</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Vue-js"><span class="toc-number">4.</span> <span class="toc-text">Vue.js</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#npm-和-nodejs"><span class="toc-number">5.</span> <span class="toc-text">npm 和 nodejs</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#让我们一步一步从零搭建这个项目"><span class="toc-number">6.</span> <span class="toc-text">让我们一步一步从零搭建这个项目</span></a></li></ol>
+  </div>
 </div>
 
         </div>

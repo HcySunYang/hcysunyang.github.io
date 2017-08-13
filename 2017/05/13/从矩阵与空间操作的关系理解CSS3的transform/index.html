@@ -105,11 +105,12 @@
   </div>
 </header> 
         <div class="outer clear">
-          <section id="main">
-<div class="main clear">
-  <div class="post-content">
-    <h1 class="post-page-title">从矩阵与空间操作的关系理解CSS3的transform</h1>
-    <p>前不久开源了一个插件化移动端运动效果库 <a href="https://github.com/HcySunYang/finger-mover" target="_blank" rel="external">finger-mover</a>，说到运动效果，不得不提到CSS3的 <code>transform</code>，也就是变换。这篇文章概括了在实现 <a href="https://github.com/HcySunYang/finger-mover" target="_blank" rel="external">finger-mover</a> 时对 <code>transform</code> 的理解与总结。</p>
+          
+<section id="main">
+  <div class="main clear">
+    <div class="post-content">
+      <h1 class="post-page-title">从矩阵与空间操作的关系理解CSS3的transform</h1>
+      <p>前不久开源了一个插件化移动端运动效果库 <a href="https://github.com/HcySunYang/finger-mover" target="_blank" rel="external">finger-mover</a>，说到运动效果，不得不提到CSS3的 <code>transform</code>，也就是变换。这篇文章概括了在实现 <a href="https://github.com/HcySunYang/finger-mover" target="_blank" rel="external">finger-mover</a> 时对 <code>transform</code> 的理解与总结。</p>
 <p>注：文中的图片多数截取自视频：<a href="http://www.bilibili.com/video/av6731067/index_1.html#page=1" target="_blank" rel="external">线性代数的本质</a>，也强烈建议大家系统的观看这套视频。另外如果文中有误请不吝指教。</p>
 <a id="more"></a>
 <p>文章结构如下：</p>
@@ -284,28 +285,29 @@ transform: matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 <p>类似于我们讲解 2D 变换一样，其中由 <img src="http://7xlolm.com1.z0.glb.clouddn.com/transform3d33.png?imageView/2/w/70" alt=""> 组成的 <code>3 x 3</code> 矩阵用来描述空间的 3D 线性变换，如：<code>rotateX</code> <code>rotateY</code> <code>scaleZ</code> 等等，注意：<code>rotateZ</code> 是 2D 变换哦。</p>
 <p>而 <code>m</code> <code>n</code> <code>o</code> 则分别用来描述位移：<code>translateX</code> <code>translateY</code> <code>translateZ</code>。</p>
 
-  </div>
-  <div id="disqus_thread"></div>
-  <script>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
 
-  /**
-  *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-  *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-  /*
-  var disqus_config = function () {
-  this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-  this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-  };
-  */
-  (function() { // DON'T EDIT BELOW THIS LINE
-    var d = document, s = d.createElement('script');
-    s.src = 'https://hcysunyang.disqus.com/embed.js';
-    s.setAttribute('data-timestamp', +new Date());
-    (d.head || d.body).appendChild(s);
-  })();
-  </script>
-</div></section>
-          <div class="sidebar-content">
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://hcysunyang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+    </script>
+  </div>
+</section>
+<div class="sidebar-content">
   <h2>Social Links</h2>
   <div class="sidebar-img-panel">
     <a href="https://github.com/HcySunYang" target="_blank">
@@ -321,8 +323,10 @@ transform: matrix(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
       <i class="fa fa-twitter" aria-hidden="true"></i>
     </a>
   </div>
-  
-  
+  <h2 class="toc-h2">目录</h2>
+  <div class="toc-wrap">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#矩阵"><span class="toc-number">1.</span> <span class="toc-text">矩阵</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#概述"><span class="toc-number">1.0.1.</span> <span class="toc-text">概述</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#向量"><span class="toc-number">2.</span> <span class="toc-text">向量</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是向量"><span class="toc-number">2.0.1.</span> <span class="toc-text">什么是向量</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#基向量"><span class="toc-number">2.0.2.</span> <span class="toc-text">基向量</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#线性变换"><span class="toc-number">3.</span> <span class="toc-text">线性变换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何用数值描述线性变换？"><span class="toc-number">4.</span> <span class="toc-text">如何用数值描述线性变换？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#回到-CSS-的-transform"><span class="toc-number">5.</span> <span class="toc-text">回到 CSS 的 transform</span></a></li></ol>
+  </div>
 </div>
 
         </div>
