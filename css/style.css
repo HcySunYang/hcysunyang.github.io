@@ -428,6 +428,29 @@ body,
   padding-top: 88px;
   padding-bottom: 70px;
 }
+.main .main-tip {
+  margin: 0 70px;
+  padding: 6px 20px;
+  font-size: 14px;
+  color: #00abe4;
+  border-color: #99ddf4;
+  background-color: #e5f6fc;
+}
+@media screen and (max-width: 860px) {
+  .main .main-tip {
+    margin: 0 40px;
+  }
+}
+@media screen and (max-width: 550px) {
+  .main .main-tip {
+    margin: 0 20px;
+  }
+}
+@media screen and (max-width: 320px) {
+  .main .main-tip {
+    margin: 0 10px;
+  }
+}
 .main .index-content {
   margin-left: 70px;
 }
