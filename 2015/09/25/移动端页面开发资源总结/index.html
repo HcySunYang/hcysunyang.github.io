@@ -12,7 +12,7 @@
 <meta property="og:url" content="hcysun.me/2015/09/25/移动端页面开发资源总结/index.html">
 <meta property="og:site_name" content="HcySunYang">
 <meta property="og:description" content="移动端页面开发资源总结及技巧工作了有一段时间，基本上都在搞移动端的前端开发，工作的过程中遇到过很多问题，bug的解决方案，记录下来，以便后用！！！内容并不是很全，以后每遇到一个问题都会总结在这里，分享给大家！">
-<meta property="og:updated_time" content="2017-03-08T08:24:41.000Z">
+<meta property="og:updated_time" content="2017-12-13T13:28:55.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="移动端页面开发资源总结">
 <meta name="twitter:description" content="移动端页面开发资源总结及技巧工作了有一段时间，基本上都在搞移动端的前端开发，工作的过程中遇到过很多问题，bug的解决方案，记录下来，以便后用！！！内容并不是很全，以后每遇到一个问题都会总结在这里，分享给大家！">
@@ -111,26 +111,43 @@
 
 &lt;/html&gt;
 </code></pre><h1 id="二、CSS样式技巧"><a href="#二、CSS样式技巧" class="headerlink" title="二、CSS样式技巧"></a>二、CSS样式技巧</h1><p>1、禁止ios和android用户选中文字</p>
-<pre><code>.css{-webkit-user-select:none}
-</code></pre><p>2、禁止ios长按时触发系统的菜单，禁止ios&amp;android长按时下载图片</p>
-<pre><code>.css{-webkit-touch-callout: none}
-</code></pre><p>3、webkit去除表单元素的默认样式</p>
-<pre><code>.css{-webkit-appearance:none;}
-</code></pre><p>4、修改webkit表单输入框placeholder的样式</p>
-<pre><code>input::-webkit-input-placeholder{color:#AAAAAA;}
+<pre><code class="css">.css{-webkit-user-select:none}
+</code></pre>
+<p>2、禁止ios长按时触发系统的菜单，禁止ios&amp;android长按时下载图片</p>
+<pre><code class="css">.css{-webkit-touch-callout: none}
+</code></pre>
+<p>3、webkit去除表单元素的默认样式</p>
+<pre><code class="css">.css{-webkit-appearance:none;}
+</code></pre>
+<p>4、修改webkit表单输入框placeholder的样式</p>
+<pre><code class="css">input::-webkit-input-placeholder{color:#AAAAAA;}
 input:focus::-webkit-input-placeholder{color:#EEEEEE;}
-</code></pre><p>5、去除android a/button/input标签被点击时产生的边框 &amp; 去除ios a标签被点击时产生的半透明灰色背景</p>
-<pre><code>a,button,input{-webkit-tap-highlight-color:rgba(255,0,0,0);}
-</code></pre><p>6、ios使用-webkit-text-size-adjust禁止调整字体大小</p>
-<pre><code>body{-webkit-text-size-adjust: 100%!important;}
-</code></pre><p>7、android 上去掉语音输入按钮</p>
-<pre><code>input::-webkit-input-speech-button {display: none}
-</code></pre><p>8、移动端定义字体，移动端没有微软雅黑字体</p>
-<pre><code>/* 移动端定义字体的代码 */
+</code></pre>
+<p>5、去除android a/button/input标签被点击时产生的边框 &amp; 去除ios a标签被点击时产生的半透明灰色背景</p>
+<pre><code class="css">a,button,input{-webkit-tap-highlight-color:rgba(255,0,0,0);}
+</code></pre>
+<p>6、ios使用-webkit-text-size-adjust禁止调整字体大小</p>
+<pre><code class="css">body{-webkit-text-size-adjust: 100%!important;}
+</code></pre>
+<p>7、android 上去掉语音输入按钮</p>
+<pre><code class="css">input::-webkit-input-speech-button {display: none}
+</code></pre>
+<p>8、移动端定义字体，移动端没有微软雅黑字体</p>
+<pre><code class="css">/* 移动端定义字体的代码 */
 body{font-family:Helvetica;}
-</code></pre><p>9、禁用Webkit内核浏览器的文字大小调整功能。</p>
-<pre><code>-webkit-text-size-adjust: none;
-</code></pre><h1 id="三、其他技巧"><a href="#三、其他技巧" class="headerlink" title="三、其他技巧"></a>三、其他技巧</h1><p>1、手机拍照和上传图片</p>
+</code></pre>
+<p>9、禁用Webkit内核浏览器的文字大小调整功能。</p>
+<pre><code class="css">-webkit-text-size-adjust: none;
+</code></pre>
+<p>10、去掉 <code>input[type=search]</code> 搜索框默认的叉号</p>
+<pre><code class="css">input[type=&quot;search&quot;]{
+    -webkit-appearance:none;
+}
+input::-webkit-search-cancel-button {
+    display: none;
+}
+</code></pre>
+<h1 id="三、其他技巧"><a href="#三、其他技巧" class="headerlink" title="三、其他技巧"></a>三、其他技巧</h1><p>1、手机拍照和上传图片</p>
 <pre><code>&lt;!-- 选择照片 --&gt;
 &lt;input type=file accept=&quot;image/*&quot;&gt;
 &lt;!-- 选择视频 --&gt;
