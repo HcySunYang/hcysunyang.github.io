@@ -1,0 +1,551 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>探索Vue高阶组件 | HcySunYang</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="高阶组件(HOC)是 React 生态系统的常用词汇，React 中代码复用的主要方式就是使用高阶组件，并且这也是官方推荐的做法。而 Vue 中复用代码的主要方式是使用 mixins，并且在 Vue 中很少提到高阶组件的概念，这是因为在 Vue 中实现高阶组件并不像 React 中那样简单，原因在于 React 和 Vue 的设计思想不同，但并不是说在 Vue 中就不能使用高阶组件，只不过在 Vu">
+<meta name="keywords" content="Vue,React">
+<meta property="og:type" content="article">
+<meta property="og:title" content="探索Vue高阶组件">
+<meta property="og:url" content="hcysun.me/2018/01/05/探索Vue高阶组件/index.html">
+<meta property="og:site_name" content="HcySunYang">
+<meta property="og:description" content="高阶组件(HOC)是 React 生态系统的常用词汇，React 中代码复用的主要方式就是使用高阶组件，并且这也是官方推荐的做法。而 Vue 中复用代码的主要方式是使用 mixins，并且在 Vue 中很少提到高阶组件的概念，这是因为在 Vue 中实现高阶组件并不像 React 中那样简单，原因在于 React 和 Vue 的设计思想不同，但并不是说在 Vue 中就不能使用高阶组件，只不过在 Vu">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-084715.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-090407.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-102532.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-104411.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-113740.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-145059.jpg">
+<meta property="og:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-145129.jpg">
+<meta property="og:updated_time" content="2018-01-07T15:32:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="探索Vue高阶组件">
+<meta name="twitter:description" content="高阶组件(HOC)是 React 生态系统的常用词汇，React 中代码复用的主要方式就是使用高阶组件，并且这也是官方推荐的做法。而 Vue 中复用代码的主要方式是使用 mixins，并且在 Vue 中很少提到高阶组件的概念，这是因为在 Vue 中实现高阶组件并不像 React 中那样简单，原因在于 React 和 Vue 的设计思想不同，但并不是说在 Vue 中就不能使用高阶组件，只不过在 Vu">
+<meta name="twitter:image" content="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-084715.jpg">
+  
+  
+  
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atelier-sulphurpool-dark.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+
+</head>
+ 
+  <body>
+    <div id="container">
+      <div id="wrap">
+         <header id="header">
+  <div class="header-content clear">
+    <h1 id="logo-wrap">
+      <img src="/img/hcysun.jpg">
+      <a href="/" class="title">HcySunYang</a>
+    </h1>
+    <nav class="main-nav">
+      
+        <a href="/">Home</a>
+      
+        <a href="/about">About</a>
+      
+        <a href="/donate">Donate</a>
+      
+        <a href="/recruitment">诚邀FE来聊</a>
+      
+    </nav>
+    <div class="search-box">
+      <img src="/img/search.png">
+    </div>
+    <div class="sm-nav-bar">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="sm-nav-toc">显示目录</div>
+  </div>
+  <div class="search-input">
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-input-el"><input type="search" name="q" class="search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+  <div class="sm-nav">
+    
+      <a href="/">Home</a>
+    
+      <a href="/about">About</a>
+    
+      <a href="/donate">Donate</a>
+    
+      <a href="/recruitment">诚邀FE来聊</a>
+    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="sm-search-input-el"><input type="search" name="q" class="sm-search-input-el-input" placeholder="Search"><input type="hidden" name="sitesearch" value="hcysun.me"></form>
+  </div>
+</header> 
+        <div class="outer clear">
+          
+<section id="main">
+  <div class="main clear">
+    <div class="post-content">
+      <h1 class="post-page-title">探索Vue高阶组件</h1>
+      <p>高阶组件(<code>HOC</code>)是 <code>React</code> 生态系统的常用词汇，<code>React</code> 中代码复用的主要方式就是使用高阶组件，并且这也是官方推荐的做法。而 <code>Vue</code> 中复用代码的主要方式是使用 <code>mixins</code>，并且在 <code>Vue</code> 中很少提到高阶组件的概念，这是因为在 <code>Vue</code> 中实现高阶组件并不像 <code>React</code> 中那样简单，原因在于 <code>React</code> 和 <code>Vue</code> 的设计思想不同，但并不是说在 <code>Vue</code> 中就不能使用高阶组件，只不过在 <code>Vue</code> 中使用高阶组件所带来的收益相对于 <code>mixins</code> 并没有质的变化。本篇文章主要从技术性的角度阐述 <code>Vue</code> 高阶组件的实现，且会从 <code>React</code> 与 <code>Vue</code> 两者的角度进行分析。</p>
+<a id="more"></a>
+<h2 id="从-React-说起"><a href="#从-React-说起" class="headerlink" title="从 React 说起"></a>从 React 说起</h2><p>起初 <code>React</code> 也是使用 <code>mixins</code> 来完成代码复用的，比如为了避免组件不必要的重复渲染我们可以在组件中混入 <code>PureRenderMixin</code>：</p>
+<pre><code class="js">const PureRenderMixin = require(&#39;react-addons-pure-render-mixin&#39;)
+const MyComponent = React.createClass({
+  mixins: [PureRenderMixin]
+})
+</code></pre>
+<p>后来 <code>React</code> 抛弃了这种方式，进而使用 <code>shallowCompare</code>：</p>
+<pre><code class="js">const shallowCompare = require(&#39;react-addons-shallow-compare&#39;)
+const Button = React.createClass({
+  shouldComponentUpdate: function(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState);
+  }
+})
+</code></pre>
+<p>这需要你自己在组件中实现 <code>shouldComponentUpdate</code> 方法，只不过这个方法具体的工作由 <code>shallowCompare</code> 帮你完成，即浅比较。</p>
+<p>再后来 <code>React</code> 为了避免开发者在组件中总是要写这样一段同样的代码，进而推荐使用 <code>React.PureComponent</code>，总之 <code>React</code> 在一步步的脱离 <code>mixins</code>，他们认为 <code>mixins</code> 在 <code>React</code> 生态系统中并不是一种好的模式(注意：并没有说 <code>mixins</code> 不好，仅仅针对 <code>React</code> 生态系统)，观点如下：</p>
+<blockquote>
+<p>1、<code>mixins</code> 带来了隐式依赖<br>2、<code>mixins</code> 与 <code>mixins</code> 之间，<code>mixins</code> 与组件之间容易导致命名冲突<br>3、由于 <code>mixins</code> 是侵入式的，它改变了原组件，所以修改 <code>mixins</code> 等于修改原组件，随着需求的增长 <code>mixins</code> 将变得复杂，导致滚雪球的复杂性。</p>
+</blockquote>
+<p>具体大家可以查看这篇文章 <a href="https://reactjs.org/blog/2016/07/13/mixins-considered-harmful.html" target="_blank" rel="external">Mixins Considered Harmful</a>。不过 <code>HOC</code> 也并不是银弹，它自然带来了它的问题，有兴趣的同学可以查看这个视频：<a href="https://www.youtube.com/watch?v=BcVAq3YFiuc" target="_blank" rel="external">Michael Jackson - Never Write Another HoC</a>，其观点是：<strong>使用普通组件配合 <code>render prop</code> 可以做任何 HOC 能做的事情</strong>。</p>
+<p>本篇文章不会过多讨论 <code>mixins</code> 和 <code>HOC</code> 谁好谁坏，就像技术本身就没有好坏之分，只有适合不适合。难道 <code>React</code> 和 <code>Vue</code> 这俩哥们儿不也是这样吗🙂。</p>
+<p><code>ok</code>，我们回到高阶组件，所谓高阶组件其实就是高阶函数啦，<code>React</code> 和 <code>Vue</code> 都证明了一件事儿：<strong>一个函数就是一个组件</strong>。所以组件是函数这个命题成立了，那高阶组件很自然的就是高阶函数，即一个返回函数的函数，我们知道在 <code>React</code> 中写高阶组件就是在写高阶函数，很简单，那是不是在 <code>Vue</code> 中实现高阶组件也同样简单呢？其实 <code>Vue</code> 稍微复杂，甚至需要你对 <code>Vue</code> 足够了解，接下来就让我们一块在 <code>Vue</code> 中实现高阶组件，在文章的后面会分析为什么同样都是 <code>函数就是组件</code> 的思想，<code>Vue</code> 却不能像 <code>React</code> 那样轻松的实现高阶组件。</p>
+<p>也正因如此所以我们有必要在实现 <code>Vue</code> 高阶组件之前充分了解 <code>React</code> 中的高阶组件，看下面的 <code>React</code> 代码：</p>
+<pre><code class="js">function WithConsole (WrappedComponent) {
+  return class extends React.Component {
+    componentDidMount () {
+      console.log(&#39;with console: componentDidMount&#39;)
+    }
+    render () {
+      return &lt;WrappedComponent {...this.props}/&gt;
+    }
+  }
+}
+</code></pre>
+<p><code>WithConsole</code> 就是一个高阶组件，它有以下几个特点：</p>
+<blockquote>
+<p>1、高阶组件(<code>HOC</code>)应该是无副作用的纯函数，且不应该修改原组件</p>
+</blockquote>
+<p>可以看到 <code>WithConsole</code> 就是一个纯函数，它接收一个组件作为参数并返回了一个新的组件，在新组件的 <code>render</code> 函数中仅仅渲染了被包装的组件(<code>WrappedComponent</code>)，并没有侵入式的修改它。</p>
+<blockquote>
+<p>2、高阶组件(<code>HOC</code>)不关心你传递的数据(<code>props</code>)是什么，并且被包装组件(<code>WrappedComponent</code>)不关心数据来源</p>
+</blockquote>
+<p>这是保证高阶组件与被包装组件能够完美配合的根本</p>
+<blockquote>
+<p>3、高阶组件(<code>HOC</code>)接收到的 <code>props</code> 应该透传给被包装组件(<code>WrappedComponent</code>)</p>
+</blockquote>
+<p>高阶组件完全可以添加、删除、修改 <code>props</code>，但是除此之外，要将其余 <code>props</code> 透传，否则在层级较深的嵌套关系中(<code>这是高阶组件的常见问题</code>)将造成 <code>props</code> 阻塞。</p>
+<p>以上是 <code>React</code> 中高阶组件的基本约定，除此之外还要注意其他问题，如：高阶组件(<code>HOC</code>)不应该在 <code>render</code> 函数中创建；高阶组件(<code>HOC</code>)也需要复制组件中的静态方法；高阶组件(<code>HOC</code>)中的 <code>ref</code> 引用的是最外层的容器组件而不是被包装组件(<code>WrappedComponent</code>) 等等。</p>
+<h2 id="Vue-中的高阶组件"><a href="#Vue-中的高阶组件" class="headerlink" title="Vue 中的高阶组件"></a>Vue 中的高阶组件</h2><p>了解了这些，接下来我们就可以开始着手实现 <code>Vue</code> 高阶组件了，为了让大家有一个直观的感受，我仍然会使用 <code>React</code> 与 <code>Vue</code> 进行对比的讲解。首先是一个基本的 <code>Vue</code> 组件，我们常称其为被包装组件(<code>WrappedComponent</code>)，假设我们的组件叫做 <code>BaseComponent</code>：</p>
+<p><strong>base-component.vue</strong></p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div&gt;
+    &lt;span @click=&quot;handleClick&quot;&gt;props: {{test}}&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &#39;BaseComponent&#39;,
+  props: {
+    test: Number
+  },
+  methods: {
+    handleClick () {
+      this.$emit(&#39;customize-click&#39;)
+    }
+  }
+}
+&lt;/script&gt;
+</code></pre>
+<p>我们观察一个 <code>Vue</code> 组件主要观察三点：<code>props</code>、<code>event</code> 以及 <code>slots</code>。对于 <code>BaseComponent</code> 组件而言，它接收一个数字类型的 <code>props</code> 即 <code>test</code>，并发射一个自定义事件，事件的名称是：<code>customize-click</code>，没有 <code>slots</code>。我们会这样使用该组件：</p>
+<pre><code class="html">&lt;base-component @customize-click=&quot;handleCustClick&quot; :test=&quot;100&quot; /&gt;
+</code></pre>
+<p>现在我们需要 <code>base-component</code> 组件每次挂载完成的时候都打印一句话：<code>I have already mounted</code>，同时这也许是很多组件的需求，所以按照 <code>mixins</code> 的方式，我们可以这样做，首先定义个 <code>mixins</code>：</p>
+<pre><code class="js">export default consoleMixin {
+  mounted () {
+    console.log(&#39;I have already mounted&#39;)
+  }
+}
+</code></pre>
+<p>然后在 <code>BaseComponent</code> 组件中将 <code>consoleMixin</code> 混入：</p>
+<pre><code class="js">export default {
+  name: &#39;BaseComponent&#39;,
+  props: {
+    test: Number
+  },
+  mixins: [ consoleMixin ]
+  methods: {
+    handleClick () {
+      this.$emit(&#39;customize-click&#39;)
+    }
+  }
+}
+</code></pre>
+<p>这样使用 <code>BaseComponent</code> 组件的时候，每次挂载完成之后都会打印一句 <code>I have already mounted</code>，不过现在我们要使用高阶组件的方式实现同样的功能，回忆高阶组件的定义：<strong>接收一个组件作为参数，返回一个新的组件</strong>，那么此时我们需要思考的是，在 <code>Vue</code> 中组件是什么？有的同学可能会有疑问，难道不是函数吗？对，<code>Vue</code> 中组件是函数没有问题，不过那是最终结果，比如我们在单文件组件中的组件定义其实就是一个普通的选项对象，如下：</p>
+<pre><code class="js">export default {
+  name: &#39;BaseComponent&#39;,
+  props: {...},
+  mixins: [...]
+  methods: {...}
+}
+</code></pre>
+<p>这不就是一个纯对象吗？所以当我们从单文件中导入一个组件的时候：</p>
+<pre><code class="js">import BaseComponent from &#39;./base-component.vue&#39;
+console.log(BaseComponent)
+</code></pre>
+<p>思考一下，这里的 <code>BaseComponent</code> 是什么？它是函数吗？不是，虽然单文件组件会被 <code>vue-loader</code> 处理，但处理后的结果，也就是我们这里的 <code>BaseComponent</code> 仍然还是一个普通的 JSON 对象，只不过当你把这个对象注册为组件(<code>components</code> 选项)之后，<code>Vue</code> 最终会以该对象为参数创建一个构造函数，该构造函数就是生产组件实例的构造函数，所以在 <code>Vue</code> 中组件确实是函数，只不过那是最终结果罢了，在这之前我们完全可以说在 <code>Vue</code> 中组件也可以是一个普通对象，就像单文件组件中所导出的对象一样。</p>
+<p>基于此，我们知道在 <code>Vue</code> 中一个组件可以以纯对象的形式存在，所以 <code>Vue</code> 中的高阶组件可以这样定义：<strong>接收一个纯对象，并返回一个新的纯对象</strong>，如下代码：</p>
+<p><strong>hoc.js</strong></p>
+<pre><code class="js">export default function WithConsole (WrappedComponent) {
+  return {
+    template: &#39;&lt;wrapped v-on=&quot;$listeners&quot; v-bind=&quot;$attrs&quot;/&gt;&#39;,
+    components: {
+      wrapped: WrappedComponent
+    },
+    mounted () {
+      console.log(&#39;I have already mounted&#39;)
+    }
+  }
+}
+</code></pre>
+<p><code>WithConsole</code> 就是一个高阶组件，它接收一个组件作为参数：<code>WrappedComponent</code>，并返回一个新的组件。在新的组件定义中，我们将 <code>WrappedComponent</code> 注册为 <code>wrapped</code> 组件，并在 <code>template</code> 中将其渲染出来，同时添加 <code>mounted</code> 钩子，打印 <code>I have already mounted</code>。</p>
+<p>以上就完成了与 <code>mixins</code> 同样的功能，不过这一次我们采用的是高阶组件，所以是非侵入式的，我们没有修改原组件(<code>WrappedComponent</code>)，而是在新组件中渲染了原组件，并且没有对原组件做任何修改。并且这里大家要注意 <code>$listeners</code> 和 <code>$attrs</code>：</p>
+<pre><code class="js">&#39;&lt;wrapped v-on=&quot;$listeners&quot; v-bind=&quot;$attrs&quot;/&gt;&#39;
+</code></pre>
+<p>这么做是必须的，这就等价于在 <code>React</code> 中透传 <code>props</code>：</p>
+<pre><code class="js">&lt;WrappedComponent {...this.props}/&gt;
+</code></pre>
+<p>否则在使用高阶组件的时候，被包装组件(<code>WrappedComponent</code>)接收不到 <code>props</code> 和 <code>事件</code>。</p>
+<p>那这样真的就完美解决问题了吗？不是的，首先 <code>template</code> 选项只有在完整版的 <code>Vue</code> 中可以使用，在运行时版本中是不能使用的，所以最起码我们应该使用渲染函数(<code>render</code>)替代模板(<code>template</code>)，如下：</p>
+<p><strong>hoc.js</strong></p>
+<pre><code class="js">export default function WithConsole (WrappedComponent) {
+  return {
+    mounted () {
+      console.log(&#39;I have already mounted&#39;)
+    },
+    render (h) {
+      return h(WrappedComponent, {
+        on: this.$listeners,
+        attrs: this.$attrs,
+      })
+    }
+  }
+}
+</code></pre>
+<p>上面的代码中，我们将模板改写成了渲染函数，看上去没什么问题，实则不然，上面的代码中 <code>WrappedComponent</code> 组件依然收不到 <code>props</code>，有的同学可能会问了，我们不是已经在 <code>h</code> 函数的第二个参数中将 <code>attrs</code> 传递过去了吗，怎么还收不到？当然收不到，<code>attrs</code> 指的是那些没有被声明为 <code>props</code> 的属性，所以在渲染函数中还需要添加 <code>props</code> 参数：</p>
+<p><strong>hoc.js</strong></p>
+<pre><code class="js">export default function WithConsole (WrappedComponent) {
+  return {
+    mounted () {
+      console.log(&#39;I have already mounted&#39;)
+    },
+    render (h) {
+      return h(WrappedComponent, {
+        on: this.$listeners,
+        attrs: this.$attrs,
+        props: this.$props
+      })
+    }
+  }
+}
+</code></pre>
+<p>那这样是不是可以了呢？依然不行，因为 <code>this.$props</code> 始终是空对象，这是因为这里的 <code>this.$props</code> 指的是高阶组件接收到的 <code>props</code>，而高阶组件没有声明任何 <code>props</code>，所以 <code>this.$props</code> 自然是空对象啦，那怎么办呢？很简单只需要将高阶组件的 <code>props</code> 设置与被包装组件的 <code>props</code> 相同即可了：</p>
+<p><strong>hoc.js</strong></p>
+<pre><code class="js">export default function WithConsole (WrappedComponent) {
+  return {
+    mounted () {
+      console.log(&#39;I have already mounted&#39;)
+    },
+    props: WrappedComponent.props,
+    render (h) {
+      return h(WrappedComponent, {
+        on: this.$listeners,
+        attrs: this.$attrs,
+        props: this.$props
+      })
+    }
+  }
+}
+</code></pre>
+<p>现在才是一个稍微完整可用的高阶组件。大家注意用词：<code>稍微</code>，纳尼？都修改成这样了还不行吗？当然，上面的高阶组件能完成以下工作：</p>
+<blockquote>
+<p>1、透传 <code>props</code><br>2、透传没有被声明为 <code>props</code> 的属性<br>3、透传事件</p>
+</blockquote>
+<p>大家不觉得缺少点儿什么吗？我们前面说过，一个 <code>Vue</code> 组件的三个重要因素：<code>props</code>、<code>事件</code> 以及 <code>slots</code>，前两个都搞定了，但 <code>slots</code> 还不行。我们修改 <code>BaseComponent</code> 组件为其添加一个具名插槽和默认插槽，如下：</p>
+<p><strong>base-component.vue</strong></p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div&gt;
+    &lt;span @click=&quot;handleClick&quot;&gt;props: {{test}}&lt;/span&gt;
+    &lt;slot name=&quot;slot1&quot;/&gt; &lt;!-- 具名插槽 --&gt;
+    &lt;p&gt;===========&lt;/p&gt;
+    &lt;slot/&gt; &lt;!-- 默认插槽 --&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  ...
+}
+&lt;/script&gt;
+</code></pre>
+<p>然后我们写下如下测试代码：</p>
+<pre><code class="html">&lt;template&gt;
+  &lt;div&gt;
+    &lt;base-component&gt;
+      &lt;h2 slot=&quot;slot1&quot;&gt;BaseComponent slot&lt;/h2&gt;
+      &lt;p&gt;default slot&lt;/p&gt;
+    &lt;/base-component&gt;
+    &lt;enhanced-com&gt;
+      &lt;h2 slot=&quot;slot1&quot;&gt;EnhancedComponent slot&lt;/h2&gt;
+      &lt;p&gt;default slot&lt;/p&gt;
+    &lt;/enhanced-com&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+  import BaseComponent from &#39;./base-component.vue&#39;
+  import hoc from &#39;./hoc.js&#39;
+
+  const EnhancedCom = hoc(BaseComponent)
+
+  export default {
+    components: {
+      BaseComponent,
+      EnhancedCom
+    }
+  }
+&lt;/script&gt;
+</code></pre>
+<p>渲染结果如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-084715.jpg" alt=""></p>
+<p>上图中蓝色框是 <code>BaseComponent</code> 组件渲染的内容，是正常的。红色框是高阶组件渲染的内容，可以发现无论是具名插槽还是默认插槽全部丢失。其原因很简单，就是因为我们在高阶组件中没有将分发的插槽内容透传给被包装组件(<code>WrappedComponent</code>)，所以我们尝试着修改高阶组件：</p>
+<p><strong>hoc.js</strong></p>
+<pre><code class="js">function WithConsole (WrappedComponent) {
+  return {
+    mounted () {
+      console.log(&#39;I have already mounted&#39;)
+    },
+    props: WrappedComponent.props,
+    render (h) {
+
+      // 将 this.$slots 格式化为数组，因为 h 函数第三个参数是子节点，是一个数组
+      const slots = Object.keys(this.$slots)
+        .reduce((arr, key) =&gt; arr.concat(this.$slots[key]), [])
+
+      return h(WrappedComponent, {
+        on: this.$listeners,
+        attrs: this.$attrs,
+        props: this.$props
+      }, slots) // 将 slots 作为 h 函数的第三个参数
+    }
+  }
+}
+</code></pre>
+<p>好啦，大功告成刷新页面，如下：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-090407.jpg" alt=""></p>
+<p>纳尼😱？我们发现，分发的内容确实是渲染出来了，不过貌似顺序不太对。。。。。。蓝色框是正常的，在具名插槽与默认插槽的中间是有分界线(<code>===========</code>)的，而红色框中所有的插槽全部渲染到了分界线(<code>===========</code>)的下面，看上去貌似具名插槽也被作为默认插槽处理了。这到底是怎么回事呢？</p>
+<p>想弄清楚这个问题，就回到了文章开始时我提到的一点，即你需要对 <code>Vue</code> 的实现原理有所了解才行，否则无解。接下来就从原理触发讲解如何解决这个问题。这个问题的根源在于：<strong><code>Vue</code> 在处理具名插槽的时候会考虑作用域的因素</strong>。不明白没关系，我们一点点分析。</p>
+<p>首先补充一个提示：<strong><code>Vue</code> 会把模板(<code>template</code>)编译成渲染函数(<code>render</code>)</strong>，比如如下模板：</p>
+<pre><code class="html">&lt;div&gt;
+  &lt;h2 slot=&quot;slot1&quot;&gt;BaseComponent slot&lt;/h2&gt;
+&lt;/div&gt;
+</code></pre>
+<p>会被编译成如下渲染函数：</p>
+<pre><code class="js">var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(&quot;div&quot;, [
+    _c(&quot;h2&quot;, {
+      attrs: { slot: &quot;slot1&quot; },
+      slot: &quot;slot1&quot;
+    }, [
+      _vm._v(&quot;BaseComponent slot&quot;)
+    ])
+  ])
+}
+</code></pre>
+<p>想要查看一个组件的模板被编译后的渲染函数很简单，只需要在访问 <code>this.$options.render</code> 即可。观察上面的渲染函数我们发现普通的 <code>DOM</code> 是通过 <code>_c</code> 函数创建对应的 <code>VNode</code> 的。现在我们修改模板，模板中除了有普通 <code>DOM</code> 之外，还有组件，如下：</p>
+<pre><code class="html">&lt;div&gt;
+  &lt;base-component&gt;
+    &lt;h2 slot=&quot;slot1&quot;&gt;BaseComponent slot&lt;/h2&gt;
+    &lt;p&gt;default slot&lt;/p&gt;
+  &lt;/base-component&gt;
+&lt;/div&gt;
+</code></pre>
+<p>那么生成的渲染函数(<code>render</code>)是这样的：</p>
+<pre><code class="js">var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    &quot;div&quot;,
+    [
+      _c(&quot;base-component&quot;, [
+        _c(&quot;h2&quot;, { attrs: { slot: &quot;slot1&quot; }, slot: &quot;slot1&quot; }, [
+          _vm._v(&quot;BaseComponent slot&quot;)
+        ]),
+        _vm._v(&quot; &quot;),
+        _c(&quot;p&quot;, [_vm._v(&quot;default slot&quot;)])
+      ])
+    ],
+    1
+  )
+}
+</code></pre>
+<p>我们发现无论是普通DOM还是组件，都是通过 <code>_c</code> 函数创建其对应的 <code>VNode</code> 的。其实 <code>_c</code> 在 <code>Vue</code> 内部就是 <code>createElement</code> 函数。<code>createElement</code> 函数会自动检测第一个参数是不是普通DOM标签，如果不是普通DOM标签那么 <code>createElement</code> 会将其视为组件，并且创建组件实例，<strong>注意组件实例是这个时候才创建的</strong>。但是创建组件实例的过程中就面临一个问题：<strong>组件需要知道父级模板中是否传递了 <code>slot</code> 以及传递了多少，传递的是具名的还是不具名的等等</strong>。那么子组件如何才能得知这些信息呢？很简单，假如组件的模板如下：</p>
+<pre><code class="html">&lt;div&gt;
+  &lt;base-component&gt;
+    &lt;h2 slot=&quot;slot1&quot;&gt;BaseComponent slot&lt;/h2&gt;
+    &lt;p&gt;default slot&lt;/p&gt;
+  &lt;/base-component&gt;
+&lt;/div&gt;
+</code></pre>
+<p>父组件的模板最终会生成父组件对应的 <code>VNode</code>，所以以上模板对应的 <code>VNode</code> 全部由父组件所有，那么在创建子组件实例的时候能否通过获取父组件的 <code>VNode</code> 进而拿到 <code>slot</code> 的内容呢？即通过父组件将下面这段模板对应的 <code>VNode</code> 拿到：</p>
+<pre><code class="html">&lt;base-component&gt;
+  &lt;h2 slot=&quot;slot1&quot;&gt;BaseComponent slot&lt;/h2&gt;
+  &lt;p&gt;default slot&lt;/p&gt;
+&lt;/base-component&gt;
+</code></pre>
+<p>如果能够通过父级拿到这段模板对应的 <code>VNode</code>，那么子组件就知道要渲染哪些 <code>slot</code> 了，其实 <code>Vue</code> 内部就是这么干的，实际上你可以通过访问子组件的 <code>this.$vnode</code> 来获取这段模板对应的 <code>VNode</code>：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-102532.jpg" alt=""></p>
+<p>其中 <code>this.$vnode</code> 并没有写进 <code>Vue</code> 的官方文档。子组件拿到了需要渲染的 <code>slot</code> 之后进入到了关键的一步，这一步就是导致高阶组件中透传 <code>slot</code> 给 <code>BaseComponent</code> 却无法正确渲染的原因，看下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-104411.jpg" alt=""></p>
+<p>这张图与上一张图相同，在子组件中打印 <code>this.$vnode</code>，标注中的 <code>context</code> 引用着 <code>VNode</code> 被创建时所在的组件实例，由于 <code>this.$vnode</code> 中引用的 <code>VNode</code> 对象是在父组件中被创建的，所以 <code>this.$vnode</code> 中的 <code>context</code> 引用着父实例。理论上图中标注的两个 <code>context</code> 应该是相等的：</p>
+<pre><code class="js">console.log(this.$vnode.context === this.$vnode.componentOptions.children[0].context) // true
+</code></pre>
+<p>而 <code>Vue</code> 内部做了一件很重要的事儿，即上面那个表达式必须成立，才能够正确处理具名 <code>slot</code>，否则即使 <code>slot</code> 具名也不会被考虑，而是被作为默认插槽。这就是高阶组件中不能正确渲染 <code>slot</code> 的原因。</p>
+<p>那么为什么高阶组件中上面的表达式就不成立了呢？那是因为由于高阶组件的引入，在原本的父组件与子组件之间插入了一个组件(<code>也就是高阶组件</code>)，这导致在子组件中访问的 <code>this.$vnode</code> 已经不是原来的父组件中的 <code>VNode</code> 片段了，而是高阶组件的 <code>VNode</code> 片段，所以此时 <code>this.$vnode.context</code> 引用的是高阶组件，但是我们却将 <code>slot</code> 透传，<code>slot</code> 中的 <code>VNode</code> 的 <code>context</code> 引用的还是原来的父组件实例，所以这就造成了以下表达式为假：</p>
+<pre><code class="js">console.log(this.$vnode.context === this.$vnode.componentOptions.children[0].context) // false
+</code></pre>
+<p>最终导致具名插槽被作为默认插槽，从而渲染不正确。</p>
+<p>而解决办法也很简单，只需要手动设置一下 <code>slot</code> 中 <code>VNode</code> 的 <code>context</code> 值为高阶组件实例即可，修改高阶组件如下：</p>
+<p><strong>hoc.js</strong></p>
+<pre><code class="js">function WithConsole (WrappedComponent) {
+  return {
+    mounted () {
+      console.log(&#39;I have already mounted&#39;)
+    },
+    props: WrappedComponent.props,
+    render (h) {
+      const slots = Object.keys(this.$slots)
+        .reduce((arr, key) =&gt; arr.concat(this.$slots[key]), [])
+        // 手动更正 context
+        .map(vnode =&gt; {
+          vnode.context = this._self
+          return vnode
+        })
+
+      return h(WrappedComponent, {
+        on: this.$listeners,
+        props: this.$props,
+        attrs: this.$attrs
+      }, slots)
+    }
+  }
+}
+</code></pre>
+<p>现在，都能够正常渲染啦，如下图：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-113740.jpg" alt=""></p>
+<p>这里的关键点除了你需要了解 <code>Vue</code> 处理 <code>slot</code> 的方式之外，你还要知道通过当前实例 <code>_self</code> 属性访问当实例本身，而不是直接使用 <code>this</code>，因为 <code>this</code> 是一个代理对象。</p>
+<p>现在貌似看上去没什么问题了，不过我们还忘记了一件事儿，即 <code>scopedSlots</code>，不过 <code>scopedSlots</code> 与 <code>slot</code> 的实现机制不一样，本质上 <code>scopedSlots</code> 就是一个接收数据作为参数并渲染 <code>VNode</code> 的函数，所以不存在 <code>context</code> 的概念，所以直接透传即可：</p>
+<p><strong>hoc.js</strong></p>
+<pre><code class="js">function WithConsole (WrappedComponent) {
+  return {
+    mounted () {
+      console.log(&#39;I have already mounted&#39;)
+    },
+    props: WrappedComponent.props,
+    render (h) {
+      const slots = Object.keys(this.$slots)
+        .reduce((arr, key) =&gt; arr.concat(this.$slots[key]), [])
+        .map(vnode =&gt; {
+          vnode.context = this._self
+          return vnode
+        })
+
+      return h(WrappedComponent, {
+        on: this.$listeners,
+        props: this.$props,
+        // 透传 scopedSlots
+        scopedSlots: this.$scopedSlots,
+        attrs: this.$attrs
+      }, slots)
+    }
+  }
+}
+</code></pre>
+<p>到现在为止，一个高阶组件应该具备的基本功能算是实现了，但这仅仅是个开始，要实现一个完整健壮的 <code>Vue</code> 高阶组件，还要考虑很多内容，比如：</p>
+<blockquote>
+<p>函数式组件中要使用 <code>render</code> 函数的第二个参数代替 <code>this</code>。<br>以上我们只讨论了以纯对象形式存在的 <code>Vue</code> 组件，然而除了纯对象外还可以函数。<br>创建 <code>render</code> 函数的很多步骤都可以进行封装。<br>处理更多高阶函数组件本身的选项(<code>而不仅仅是上面例子中的一个简单的生命周期钩子</code>)</p>
+</blockquote>
+<p>我觉得需要放上两个关于高阶组件的参考链接，供参考交流：</p>
+<p><a href="https://github.com/vuejs/vue/issues/6201" target="_blank" rel="external">Discussion: Best way to create a HOC</a><br><a href="https://github.com/jackmellis/vue-hoc" target="_blank" rel="external">https://github.com/jackmellis/vue-hoc</a></p>
+<h2 id="为什么在-Vue-中实现高阶组件比较难"><a href="#为什么在-Vue-中实现高阶组件比较难" class="headerlink" title="为什么在 Vue 中实现高阶组件比较难"></a>为什么在 Vue 中实现高阶组件比较难</h2><p>前面说过要分析一下为什么在 <code>Vue</code> 中实现高阶组件比较复杂而 <code>React</code> 比较简单。这主要是二者的设计思想和设计目标不同，在 <code>React</code> 中写组件就是在写函数，函数拥有的功能组件都有。而 <code>Vue</code> 更像是高度封装的函数，在更高的层面 <code>Vue</code> 能够让你轻松的完成一些事情，但与高度的封装相对的就是损失一定的灵活，你需要按照一定规则才能使系统更好的运行。</p>
+<p>有句话说的好：</p>
+<blockquote>
+<p>会了不难，难了不会</p>
+</blockquote>
+<p>复杂还是简单都是相对而言的，最后希望大家玩的转 <code>Vue</code> 也欣赏的了 <code>React</code>。放上两张我比较认同的图片供各位看官讨论：</p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-145059.jpg" alt=""></p>
+<p><img src="http://7xlolm.com1.z0.glb.clouddn.com/2018-01-07-145129.jpg" alt=""></p>
+
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
+
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+      var d = document, s = d.createElement('script');
+      s.src = 'https://hcysunyang.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+    </script>
+  </div>
+</section>
+<div class="sidebar-content">
+  <h2>Social Links</h2>
+  <div class="sidebar-img-panel">
+    <a href="https://github.com/HcySunYang" target="_blank">
+      <i class="fa fa-github" aria-hidden="true"></i>
+    </a>
+    <a href="http://weibo.com/5316956357" target="_blank">
+      <i class="fa fa-weibo" aria-hidden="true"></i>
+    </a>
+    <a href="https://www.zhihu.com/people/huo-chun-yang-77" target="_blank" class="zhihu-fa">
+      知
+    </a>
+    <a href="https://twitter.com/HcySunYang" target="_blank">
+      <i class="fa fa-twitter" aria-hidden="true"></i>
+    </a>
+  </div>
+  <h2 class="toc-h2">目录</h2>
+  <div class="toc-wrap">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#从-React-说起"><span class="toc-number">1.</span> <span class="toc-text">从 React 说起</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vue-中的高阶组件"><span class="toc-number">2.</span> <span class="toc-text">Vue 中的高阶组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么在-Vue-中实现高阶组件比较难"><span class="toc-number">3.</span> <span class="toc-text">为什么在 Vue 中实现高阶组件比较难</span></a></li></ol>
+  </div>
+</div>
+
+        </div>
+      </div>
+      <div class="search-mark"></div>
+    </div>
+    <footer id="footer">
+  &copy; 2018 HcySunYang
+</footer>
+    
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+<script src="/js/script.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+  </body>
+</html>
